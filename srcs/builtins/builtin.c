@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:03:41 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/05/25 13:54:54 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/06/09 09:08:20 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int     exec_builtin(t_cmd *command, int flag)
         else if (!ft_strncmp(command->cmd, "env", ft_strlen(command->cmd)))
         env();
         else if (!ft_strncmp(command->cmd, "exit", ft_strlen(command->cmd)))
-        exit(); //TODO
+        exit();
         else if (!ft_strncmp(command->cmd, "export", ft_strlen(command->cmd)))
         export(); //TODO
         else if (!ft_strncmp(command->cmd, "pwd", ft_strlen(command->cmd)))

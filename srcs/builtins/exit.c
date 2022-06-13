@@ -6,13 +6,21 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 12:10:03 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/01 11:30:02 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/06/09 09:04:06 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int     check_exit(char *str)
+void    exit_handler(int av)
+{
+    if (av < 0)
+        exit(255);
+    else
+        exit(av);
+}
+
+int check_exit(char *str)
 {
     int i;
 
@@ -32,7 +40,24 @@ void    ft_exit(t_cmd *command)
     {
         ft_putendl_fd("exit", STDERR_FILENO);
         if (!command->av[1])
-            exit(127);
+        exit(127);
     }
-    // if (!check_exit)
+    if (!check_exit(command->av[1]))
+    {
+        ft_putstr_fd("MINISHELL: exit: ", STDERR_FILENO);
+        ft_putstr_fd(command->av[1], STDERR_FILENO);
+        ft_putendl_fd(": error", STDERR_FILENO);
+        exit(255);
+    }
+    else if (command->ac > 2)
+    {
+        ft_putendl_fd("MINISHELL: exit: too many arguments", STDERR_FILENO);
+        	if (command->sys_call || (command->prev && command->prev->sys_call))
+			exit(1);
+		else
+			g_ms.exit = 1;
+		return ;
+    }
+    else
+        exit_handler(ft_atoi(command->av[1]));
 }

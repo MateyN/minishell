@@ -1,22 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/19 12:10:08 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/09 09:04:46 by mnikolov         ###   ########.fr       */
+/*   Created: 2022/06/09 09:28:34 by mnikolov          #+#    #+#             */
+/*   Updated: 2022/06/10 12:34:41 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void    unset_error(char *error)
+void    sigint_handler(int sig)
 {
-    ft_putstr_fd("MINISHELL: unset: ", STDERR_FILENO);
-    ft_putstr_fd(error, STDERR_FILENO);
-    ft_putendl_fd(": error", STDERR_FILENO);
-    g_ms.exit = 1;
-    return ;
+    (void)sig;
+    printf("\n");
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+}
+
+void    sigquit_handler(int sig)
+{
+    (void)sig;
+    printf("Quit: %d\n", sig);
+}
+
+void    init_signals(void)
+{
+    signal(SIGINT, sigint_handler);
+    signal(SIGQUIT, SIG_IGN);
 }

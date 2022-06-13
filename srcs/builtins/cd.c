@@ -6,48 +6,57 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:33:24 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/05/19 12:03:13 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/06/09 09:03:23 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-/*
-void    handler()
-{
-    ...
-}
-void    path error()
-{
-    ...
-}
 
-void    changedir(char *path)
+void    path_error(char *path, int file)
+{
+    if (file)
+    {
+        ft_putstr_fd("MINISHELL: cd: ", STDERR_FILENO);
+        ft_putstr_fd(path, STDERR_FILENO);
+        ft_putendl_fd(": not a directory", STDERR_FILENO);
+    }
+    else
+    {
+        ft_putstr_fd("MINISHELL: cd: ", STDERR_FILENO);
+        ft_putstr_fd(path, STDERR_FILENO);
+        ft_putstr_fd(": ", STDERR_FILENO);
+        ft_putendl_fd(strerror(2), STDERR_FILENO);
+    }
+    g_ms.exit = 1;
+}
+void    changedir(char *path, int file)
 {
     char    *old_path;
-
-    old_path = getcwd();
-    if (chdir(path) == 0)
-        ...
-    else
-        path error
-    free path
+    old_path = getcwd(0, _PC_PATH_MAX);
+    //if (chdir(path) == 0)
+    //    chdir_handler(old_path);
+    //else
+        path_error(path, file);
+    free(old_path);
+    old_path = NULL;
+    return ;
 }
-*/
+
 void    cd(t_cmd *command)
 {
     char    *home;
     int     file;
     struct stat buff;
 
-    home = get_env("HOME");
+    home = getenv("HOME=");
     file = FALSE;
     if(command->ac == 1)
-        // change directory
+        changedir(home, file);
     else
     {
         if(stat(command->av[1], &buff) == 0)
-        file == TRUE;
-        // change directory
+        file = TRUE;
+        changedir(home, file);
     }
     free(home);
     home = NULL;
