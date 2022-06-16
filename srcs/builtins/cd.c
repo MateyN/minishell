@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:33:24 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/09 09:03:23 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/06/15 11:05:20 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ void    changedir(char *path, int file)
 {
     char    *old_path;
     old_path = getcwd(0, _PC_PATH_MAX);
-    //if (chdir(path) == 0)
+    if (chdir(path) == 0)
     //    chdir_handler(old_path);
-    //else
+    else
         path_error(path, file);
     free(old_path);
     old_path = NULL;
