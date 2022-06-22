@@ -1,17 +1,21 @@
 CFLAGS = -Wall -Wextra -Werror -Iinclude
 CC = gcc
 
-READLINE_LIB 	= -lreadline -L /Users/$(USER)/.brew/opt/readline/lib
-READLINE_INC	= -I /Users/$(USER)/.brew/opt/readline/include
+READLINE_LIB 	= -lreadline -L /Users/$(USER)/.brew/Cellar/readline/8.1.2/include/readline
+READLINE_INC	= -I /Users/$(USER)/.brew/Cellar/readline/8.1.2/lib
 
 SRCS = srcs/main.c \
 	   srcs/builtins/cd.c \
+	   srcs/builtins/builtin.c \
 	   srcs/builtins/echo.c \
 	   srcs/builtins/env.c \
 	   srcs/builtins/exit.c \
 	   srcs/builtins/export.c \
 	   srcs/builtins/pwd.c \
-	   srcs/builtins/unset.c \
+	   srcs/builtins/unset.c \   #TODO
+	   srcs/env/environment.c \
+	   srcs/signals/signals.c \
+	   srcs/utils/errors.c \
 
 LIBFT = libft/libft.a
 
