@@ -14,18 +14,12 @@ NAME = minishell
 
 LIBFT = libft
 
-SRC = main.c \
-	builtins/builtin.c \
-	builtins/echo.c \
-	builtins/cd.c \
-	builtins/env.c \
-	builtins/exit.c \
-	builtins/pwd.c \
-	env/environment.c \
-	signals/signals.c \
-	utils/errors.c \
+SRC =	main.c builtins/builtin.c builtins/echo.c builtins/cd.c \
+	builtins/env.c builtins/exit.c builtins/pwd.c env/environment.c \
+	signals/signals.c utils/errors.c \
 	
 SRCS = $(addprefix srcs/, $(SRC))
+DIR_S = srcs
 
 INCLUDE = -I includes/ -I libft/
 		  #-I ~/.brew/Cellar/readline/8.1.2/include/readline
@@ -48,20 +42,20 @@ CLONE = file_object \
 	file_object/srcs/utils \
 
 $(DIR)/%.o : %.c
-	@echo "Compiling libft..."
-	@make -C $(LIBFT)
-	@echo "Compilation is done!"
 	@mkdir -p $(CLONE)
 	@echo "Creating file_object..."
-	@$(CC) $(INCLUDE) -c $< -o $@
+	@$(CC) $(INCLUDE) -c $^ -o $@
 	@echo "File_object created!"
 
 all : $(NAME)
 
 $(NAME) : $(OB)
-	@echo "Compiling..."
+	@echo "Compiling libft..."
+	@make -C $(LIBFT)
+	@echo "compilation [libft] is done!"
+	@echo "Compiling minishell..."
 	@$(CC) $(FLAGS) $(READLINE_LIB) $(OB) -o $@ libft/libft.a
-	@echo "Compilation is done!"
+	@echo "Compilation [minishell] is done!"
 
 clean :
 	@echo "Remove all file_object..."
