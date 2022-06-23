@@ -12,22 +12,39 @@
 
 #include "../includes/minishell.h"
 
-char	*getprompt(char **shell)
+void	getprompt(char **shell)
 {
 	*shell = readline("Minishell$> ");
-	return (*shell);
+	//return (*shell);
 }
 
 void	prompt_handle(void)
 {
+	t_cmd	test;
 	char	*shell;
-	getprompt(&shell);
+	
+	while (1)
+	{
+		getprompt(&shell);
+		if ((check_quote(shell)) < 0)
+		{
+			free(shell);
+			exit(EXIT_FAILURE);
+		}
+		test.av = lex_split(shell, ' ');
+		if (!strncmp(test.av[0], "echo", 4))
+			echo(&test);
+		//while (*(test.av))
+			//printf("%s\n", *(test.av++));
+	}
 }
 
 int	main(int ac, char **av, char **envp)
 {
-	while (*envp)
-		printf("%s\n",*envp++);
+	t_cmd c;
+
+	//while (*envp)
+	//	printf("%s\n",*envp++);
 	(void)ac;
 	(void)av;
     	prompt_handle();

@@ -62,4 +62,12 @@ void    exit_handler(int av);
 int     check_exit(char *str);
 void    ft_exit(t_cmd *command);
 
-#endif
+/*----------------------------------------------------------------------------*/
+	/*JUD HEADERS MY PART*/	
+
+int	check_quote(char *s);
+char	**lex_split(const char *s, char sep);
+
+/*-----------------------------------------------------------------------------*/
+
+# endif

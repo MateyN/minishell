@@ -14,9 +14,14 @@ NAME = minishell
 
 LIBFT = libft
 
-SRC =	main.c builtins/builtin.c builtins/echo.c builtins/cd.c \
-	builtins/env.c builtins/exit.c builtins/pwd.c env/environment.c \
+SRC =	main.c \
+	builtins/builtin.c \
+	builtins/echo.c builtins/cd.c \
+	builtins/env.c builtins/exit.c \
+	builtins/pwd.c env/environment.c \
 	signals/signals.c utils/errors.c \
+	jud/check_input.c \
+	jud/lexical_split.c \
 	
 SRCS = $(addprefix srcs/, $(SRC))
 DIR_S = srcs
@@ -40,6 +45,7 @@ CLONE = file_object \
 	file_object/srcs/env \
 	file_object/srcs/signals \
 	file_object/srcs/utils \
+	file_object/srcs/jud \
 
 $(DIR)/%.o : %.c
 	@mkdir -p $(CLONE)
