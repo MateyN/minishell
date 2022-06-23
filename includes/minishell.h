@@ -13,9 +13,9 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <signal.h>
@@ -29,12 +29,14 @@
 # define SUCCESS 1
 # define FAIL -1
 
+
 typedef struct  s_ms
 {
     char    **env_p;    //env pointer
     int     exit;
 }   t_ms;
 
+extern t_ms    g_ms;   //global
 //redirections
 
 typedef struct s_cmd
@@ -47,15 +49,12 @@ typedef struct s_cmd
     struct s_cmd    *prev;
 }   t_cmd;
 
-t_ms    g_ms;   //global
 
 void    cd(t_cmd *command);
 void    path_error(char *path, int file);
 void    changedir(char *path, int file);
-
 void    pwd(void);
 void    env(void);
-
 void    echo(t_cmd *command);
 int     check_option(t_cmd *command, int j, char *option);
 

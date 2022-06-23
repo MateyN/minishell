@@ -32,14 +32,14 @@ char    *get_environ_key(char *cmd, int start)
     while (cmd[i])
     {
         if (!ft_isalnum(cmd[i]))
-            break ;
-            i++;
-            length++;
+		break ;
+	i++;
+        length++;
     }
     key = ft_substr(cmd, start, length);
     return (key);
 }
-
+/*
 void    join_environ(char *key, char **tmp)
 {
     char    *value;
@@ -58,4 +58,4 @@ void    join_environ(char *key, char **tmp)
 void    cpy_environ(char **envp)
 {
     
-}
+}*/

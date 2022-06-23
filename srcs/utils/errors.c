@@ -29,7 +29,8 @@ void    ft_error(void)
 }
 
 int invalid_command(char *cmd)
-{
+{	
+	(void) cmd;
     ft_putstr_fd("MINISHELL: ", STDERR_FILENO);
     ft_putstr_fd("cmd", STDERR_FILENO);
     ft_putstr_fd(": ", STDERR_FILENO);

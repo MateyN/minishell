@@ -20,20 +20,20 @@ CC 		= gcc
 all : $(NAME)	
 
 %.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@ $(INCLD_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@ $(INCLD_DIR)
 
 $(NAME) : $(OBJS)
-	ar -rc $(NAME) $(OBJS)
-	ranlib $(NAME)
+	@ar -rc $(NAME) $(OBJS)
+	@ranlib $(NAME)
 
 bonus : $(B_OBJ)
-	ar -rc $(NAME) $(B_OBJ)
+	@ar -rc $(NAME) $(B_OBJ)
 
 clean :
-	rm -f $(OBJS) $(B_OBJ)
+	@rm -f $(OBJS) $(B_OBJ)
 
 fclean: clean 
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re : fclean all
 

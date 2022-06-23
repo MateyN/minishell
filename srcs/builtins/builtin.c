@@ -27,17 +27,17 @@ int     exec_builtin(t_cmd *command, int flag)
 	if (!ft_strncmp(command->cmd, "echo", ft_strlen(command->cmd)))
 		echo(command);
         else if (!ft_strncmp(command->cmd, "cd", ft_strlen(command->cmd)))
-        cd(command);
+        	cd(command);
         else if (!ft_strncmp(command->cmd, "env", ft_strlen(command->cmd)))
-        env();
+        	env();
         else if (!ft_strncmp(command->cmd, "exit", ft_strlen(command->cmd)))
-        exit();
-        else if (!ft_strncmp(command->cmd, "export", ft_strlen(command->cmd)))
-        export(); //TODO
+        	exit(0);
+       // else if (!ft_strncmp(command->cmd, "export", ft_strlen(command->cmd)))
+        //export(); //TODO
         else if (!ft_strncmp(command->cmd, "pwd", ft_strlen(command->cmd)))
         pwd();
-        else if (!ft_strncmp(command->cmd, "unset", ft_strlen(command->cmd)))
-        unset(); //TODO
+        //else if (!ft_strncmp(command->cmd, "unset", ft_strlen(command->cmd)))
+        //unset(); //TODO
         if (flag)
             exit(0);
         return (SUCCESS);

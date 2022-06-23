@@ -12,6 +12,8 @@
 
 #include "../../includes/minishell.h"
 
+t_ms g_ms;
+
 int check_option(t_cmd *command, int j, char *option)
 {
     int i;
@@ -42,10 +44,10 @@ void    echo(t_cmd *command)
 {
     char    option;
     int     i;
-    int     str;
+    //int     str;
 
     i = 0;
-    str = 0;
+    //str = 0;
     option = 0;
     while (command->av[++i])
     {

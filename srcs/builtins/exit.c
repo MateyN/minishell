@@ -28,8 +28,8 @@ int check_exit(char *str)
     while (str[i])
     {
         if (!ft_isdigit(str[i]) && str[i] != '-')
-            return (FALSE);
-            i++;
+        	return (FALSE);
+	i++;
     }
     return (TRUE);
 }
