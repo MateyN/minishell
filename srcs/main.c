@@ -32,8 +32,9 @@ void	prompt_handle(void)
 			exit(EXIT_FAILURE);
 		}
 		test.av = lex_split(shell, ' ');
-		if (!strncmp(test.av[0], "echo", 4))
-			echo(&test);
+		test.cmd = test.av[0];
+		if (check_builtin(test.cmd) == TRUE)
+			exec_builtin(&test, 1);
 		//while (*(test.av))
 			//printf("%s\n", *(test.av++));
 	}
@@ -41,8 +42,6 @@ void	prompt_handle(void)
 
 int	main(int ac, char **av, char **envp)
 {
-	t_cmd c;
-
 	//while (*envp)
 	//	printf("%s\n",*envp++);
 	(void)ac;

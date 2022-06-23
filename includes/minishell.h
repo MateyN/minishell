@@ -57,7 +57,8 @@ void    pwd(void);
 void    env(void);
 void    echo(t_cmd *command);
 int     check_option(t_cmd *command, int j, char *option);
-
+int	check_builtin(char *cmd);
+int	exec_builtin(t_cmd *command,int flag);
 void    exit_handler(int av);
 int     check_exit(char *str);
 void    ft_exit(t_cmd *command);

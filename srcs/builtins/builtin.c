@@ -38,7 +38,7 @@ int     exec_builtin(t_cmd *command, int flag)
         pwd();
         //else if (!ft_strncmp(command->cmd, "unset", ft_strlen(command->cmd)))
         //unset(); //TODO
-        if (flag)
+        if (flag == FALSE)
             exit(0);
         return (SUCCESS);
 }
