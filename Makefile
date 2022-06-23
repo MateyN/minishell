@@ -43,9 +43,7 @@ CLONE = file_object \
 
 $(DIR)/%.o : %.c
 	@mkdir -p $(CLONE)
-	@echo "Creating file_object..."
 	@$(CC) $(INCLUDE) -c $^ -o $@
-	@echo "File_object created!"
 
 all : $(NAME)
 
