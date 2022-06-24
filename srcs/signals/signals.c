@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 09:28:34 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/10 12:34:41 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/06/24 11:05:29 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void    sigint_handler(int sig)
     (void)sig;
     printf("\n");
     rl_on_new_line();
-    rl_replace_line("", 0);
+    rl_replace_line(" ", 0);
     rl_redisplay();
 }
 

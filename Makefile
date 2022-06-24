@@ -6,7 +6,7 @@
 #    By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/14 18:02:56 by rmamison          #+#    #+#              #
-#    Updated: 2022/06/16 19:04:13 by rmamison         ###   ########.fr        #
+#    Updated: 2022/06/24 11:05:46 by rmamison         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,15 +19,15 @@ SRC =	main.c \
 	builtins/echo.c builtins/cd.c \
 	builtins/env.c builtins/exit.c \
 	builtins/pwd.c env/environment.c \
-	signals/signals.c utils/errors.c \
+	utils/errors.c \
 	jud/check_input.c \
 	jud/lexical_split.c \
 	
 SRCS = $(addprefix srcs/, $(SRC))
 DIR_S = srcs
 
-INCLUDE = -I includes/ -I libft/
-		  #-I ~/.brew/Cellar/readline/8.1.2/include/readline
+INCLUDE = -I includes/ -I libft/ \
+		  -I ~/.brew/Cellar/readline/8.1.2/include/readline
 
 READLINE_LIB = -L /Users/$(USER)/.brew/Cellar/readline/8.1.2/lib -lreadline
 LIB_LIBFT = libft/libft.a

@@ -6,13 +6,13 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 19:30:03 by rmamison          #+#    #+#             */
-/*   Updated: 2022/06/16 19:33:10 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/06/24 12:19:25 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	exception(const char *s, int *i)
+static void	exception(char *s, int *i)
 {
 	char	quote;
 
@@ -21,7 +21,7 @@ static void	exception(const char *s, int *i)
 		;
 }
 
-static	int	count_sep(const char *s, char sep)
+static	int	count_sep(char *s, char sep)
 {
 	int	ret;
 	int	time;
@@ -47,7 +47,7 @@ static	int	count_sep(const char *s, char sep)
 }
 /*-------------------------------------------*/
 
-static int	len_word(const char *s, char sep, int i)
+static int	len_word(char *s, char sep, int i)
 {
 	char	quote;
 	int	ret;
@@ -72,7 +72,7 @@ static int	len_word(const char *s, char sep, int i)
 	return (ret);
 }
 
-static char	*take_word(const char *s, char sep, int *i)
+static char	*take_word(char *s, char sep, int *i)
 {
 	char	quote;
 	char	*word;
@@ -103,7 +103,7 @@ in betwen the quote*/
 }
 /*-------------------------------------------------*/
 
-char	**lex_split(const char *s, char sep)
+char	**lex_split(char *s, char sep)
 {
 	char	**tab;
 	int	i;

@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:18:51 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/10 12:00:26 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/06/24 12:11:30 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
 # include <termios.h>
 # include <string.h>
 # include <sys/stat.h>
-# include <linux/limits.h> //header for macro PATH_MAX
 # include <limits.h> //for mac
 # include "../libft/libft.h"
+//# include <linux/limits.h> //header for macro PATH_MAX
 
 /*--------MACRO-COLOR------------------*/
 #define BOLDGREEN   "\033[1m\033[36m"   
@@ -47,8 +47,8 @@ extern t_ms    g_ms;   //global
 //redirections
 
 typedef struct s_cmd
-{
-    char            *cmd;
+{	
+	char            *cmd;
     char            **av;
     int             ac;
     int             sys_call;
@@ -64,8 +64,8 @@ void    pwd(void);
 void    env(void);
 void    echo(t_cmd *command);
 int     check_option(t_cmd *command, int j, char *option);
-int	check_builtin(char *cmd);
-int	exec_builtin(t_cmd *command,int flag);
+int		check_builtin(char *cmd);
+int		exec_builtin(t_cmd *command,int flag);
 void    exit_handler(int av);
 int     check_exit(char *str);
 void    ft_exit(t_cmd *command);
