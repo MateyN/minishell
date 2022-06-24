@@ -33,7 +33,7 @@ READLINE_LIB = -L /Users/$(USER)/.brew/Cellar/readline/8.1.2/lib -lreadline
 LIB_LIBFT = libft/libft.a
 
 FLAGS = -Wall -Wextra -Werror -g -fsanitize=address
-CC = gcc
+CC = clang
 
 RM = rm -rf
 

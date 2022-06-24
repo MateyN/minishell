@@ -14,7 +14,7 @@
 
 void	getprompt(char **shell)
 {
-	*shell = readline("Minishell$> ");
+	*shell = readline(BOLDGREEN"Minishell$> "RESET);
 	//return (*shell);
 }
 

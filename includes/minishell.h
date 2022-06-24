@@ -22,7 +22,14 @@
 # include <termios.h>
 # include <string.h>
 # include <sys/stat.h>
+# include <linux/limits.h> //header for macro PATH_MAX
+# include <limits.h> //for mac
 # include "../libft/libft.h"
+
+/*--------MACRO-COLOR------------------*/
+#define BOLDGREEN   "\033[1m\033[36m"   
+#define RESET "\033[m" //white color
+/*-----------------------------------*/
 
 # define TRUE 1
 # define FALSE 0

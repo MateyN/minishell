@@ -14,12 +14,11 @@
 
 void    pwd(void)
 {
-    char    *pwd;
+    //char    *pwd;
 
-    pwd = getcwd(0, _PC_PATH_MAX);
-    printf("%s\n", pwd);
-    free(pwd);
-    pwd = NULL;
+    printf("%s\n", getcwd(0, PATH_MAX));
+    //free(pwd);
+    //pwd = NULL;
     g_ms.exit = 0;
     return ;
 }
