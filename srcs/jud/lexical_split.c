@@ -87,7 +87,7 @@ static char	*take_word(char *s, char sep, int *i)
 	{
 		if (s[*i] == '\'' || s[*i] == '\"')
 		{
-			quote = s[*i];
+			if (s[*i] == '\"')
 			while (s[++(*i)] && s[*i] != quote)
 				word[++j] = s[*i];
 			++(*i);

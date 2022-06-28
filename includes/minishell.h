@@ -74,7 +74,7 @@ void    ft_exit(t_cmd *command);
 	/*JUD HEADERS MY PART*/	
 
 int	check_quote(char *s);
-char	**lex_split(const char *s, char sep);
+char	**lex_split(char *s, char sep);
 
 /*-----------------------------------------------------------------------------*/
 
