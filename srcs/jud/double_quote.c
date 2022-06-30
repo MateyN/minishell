@@ -1,26 +1,39 @@
 #include "minishell.h"
+
 static int      len_var(char    *s, int i)
 {
 	int     ret;
 
 	ret = 0;
-	while ((s[++i]) && (s[i] != '\"' && s[i] != ' '))
+	while ((s[++i]) && (s[i] != '\"' && s[i] != ' ') \
+			&& s[i] != '$')
 		ret++;
 	return (ret);
 }
+/*-----------------------------------*/
 
-static int	len_s_quote(char *s)
+static char *news_s_quote(char *s)
 {	
 	int	i;
+	int	j;
 	int	quote;
+	char	*temp;
 
+	j = 0;
 	i = -1;
 	quote = 0;
 	while (s[++i])
 		if (s[i] == '\'')
 			quote++;
-	return (i - quote);		
+	temp = malloc(sizeof(char) * ((i - quote) + 1));
+	i = -1;
+	while (s[++i])
+		if (s[i] != '\'')
+			temp[j++] = s[i];
+	temp[j] = '\0';
+	return (temp);		
 }
+/*-----------------------------------*/
 
 int	len_d_quote(char *s)
 {
@@ -45,12 +58,14 @@ int	len_d_quote(char *s)
 				free(temp);
 			}
 		}
-		if (s[i] != '\"')
+		if (s[i] != '\"' && s[i] != '$')
 			car++;
-		i++;
+		if (s[i] != '$')
+			i++;
 	}
 	return (car + dollar);	
 }
+/*-----------------------------------*/
 
 char	*take_val_var(char *s)
 {
@@ -74,6 +89,21 @@ char	*take_val_var(char *s)
 	temp[++i] = '\0';
 	return (temp);
 }
+/*-----------------------------------*/
+
+static int	recheck_cmp(char *env, char *temp)
+{
+	int	i;
+	
+	i = -1;
+	while (env[++i] && env[i] != '=')
+		;
+	if (ft_strncmp(env, temp, i) == 0)
+		return (TRUE);
+	else 
+		return (FALSE);
+}
+	/*-------------------*/
 
 char	*handle_sign(char *s, int *i)
 {
@@ -85,15 +115,17 @@ char	*handle_sign(char *s, int *i)
 	if (!temp)
 		return (NULL);
 	j = -1;
-	while ((s[++(*i)]) && (s[*(i)] != ' ' && s[*(i)] != '\"'))
+	while ((s[++(*i)]) && (s[*(i)] != ' ' && s[*(i)] != '\"') \
+			&& s[*i] != '$')
 		temp[++j] = s[(*i)];
 	temp[++j] = '\0';
-	printf("%s\n", temp);
+	printf("dans handle => %s\n", temp);
 	size = j; 
 	j = -1;
 	while (g_ms.env_p[++j])
 	{	
-		if(ft_strncmp(g_ms.env_p[j], temp, size) == 0)
+		if(ft_strncmp(temp, g_ms.env_p[j], ft_strlen(g_ms.env_p[j])) == 0 \
+				&& (recheck_cmp(g_ms.env_p[j], temp) == TRUE)) //need it for check the exact size to env before '='
 		{
 			free(temp);
 			temp = NULL;
@@ -103,50 +135,55 @@ char	*handle_sign(char *s, int *i)
 	free(temp);
 	return (NULL);
 }
-/*
-void	single_quote(char **s)
-{
-	char	*temp
+/*-----------------------------------*/
 
-	temp = malloc(sizeof(char) * (len_s_quote(s) + 1));
-	while (s[(*i)] && s[(*i)] != '\"')
-	{	
-		if (s[(*i)] == '$' && s[*i + 1] != '$')
+/*
+static char	*news_d_quote(char *s)
+{
+	int	i;
+	int	j;
+	char	*temp;
+	char	*env_val;
+
+	temp = malloc(sizeof(char) * len_d_quote(s));
+	if (!temp)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s[i])
+	{
+		printf("Im here");	
+		if (s[i] == '$')
 		{
-			temp = handle_sign(s, i);
-			while (*temp)
-				(*tab)[++(*j)] = *(temp++);
-			//free(temp);
-			temp = NULL;
+			env_val = handle_sign(s, &i);
+			if (env_val)
+			{
+				while (*env_val)
+					temp[j++] = *(env_val++);
+				free(env_val);
+			}
 		}
-		else if (s[(*i)] == '$' && s[*i + 1] == '$')
-			while (s[++(*i)] != ' ' && s[(*i)] != '\"')
-				(*tab)[++(*j)] = s[(*i)];
-		else
-			(*tab)[++(*j)] = s[(*i)++];
+		else if (s[i] && (s[i] != '\"'))
+			temp[j++] = s[i];
+		else if (s[i] != '$')
+			i++;
 	}
+	temp[j] = '\0';
+	return (temp);
 }
 
-void	double_quote(char **tab, int *j, char *s, int *i)
+void	handle_action(t_lst *li)
 {
-	char	*temp;
+	int	i;$ksdjbj
+	char *temp;
 
-	temp = NULL;
-	++(*i);
-	while (s[(*i)] && s[(*i)] != '\"')
-	{	
-		if (s[(*i)] == '$' && s[*i + 1] != '$')
-		{
-			temp = handle_sign(s, i);
-			while (*temp)
-				(*tab)[++(*j)] = *(temp++);
-			//free(temp);
-			temp = NULL;
-		}
-		else if (s[(*i)] == '$' && s[*i + 1] == '$')
-			while (s[++(*i)] != ' ' && s[(*i)] != '\"')
-				(*tab)[++(*j)] = s[(*i)];
-		else
-			(*tab)[++(*j)] = s[(*i)++];
+	i = -1;
+	while (li->tab[++i])
+	{
+		temp = news_d_quote(li->tab[i]);
+		free(li->tab[i]);
+		li->tab[i] = temp;
+		temp = NULL;
 	}
-}*/
+}
+*/

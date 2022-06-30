@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 14:07:39 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/16 15:09:17 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:35:50 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	prompt_handle(void)
 			exit(EXIT_FAILURE);
 		}
 		init_struct(&li, lex_split(shell, ' '));
-		printf("len av 2m %d\n", len_d_quote(li.tab[1]));
+		handle_action(&li);
 		//if (check_builtin(test.cmd) == TRUE)
 			//exec_builtin(&test, 1);
 		while (*(li.tab))

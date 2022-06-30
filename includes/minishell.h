@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:18:51 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/24 18:00:49 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:36:38 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,15 +79,12 @@ void    ft_exit(t_cmd *command);
 /*----------------------------------------------------------------------------*/
 	/*JUD HEADERS MY PART*/	
 
-typedef struct s_node{
-	char	*
-}
 int	check_quote(char *s);
 void	init_struct(t_lst *li, char **tab);
 char	**lex_split(char *s, char sep);
 void	double_quote(char **tab, int *j, char *s, int *i);
 char	*handle_sign(char *s, int *i);
-int	len_d_quote(char *s);
+void	handle_action(t_lst *li);
 /*-----------------------------------------------------------------------------*/
 
 # endif
