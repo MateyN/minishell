@@ -12,6 +12,25 @@
 
 #include "minishell.h"
 
+int	double_dollar(char *s, int *i, int *ret)
+{
+	int	temp;
+	
+	temp = *i + 1;
+	if (s[temp] == '$')
+	{	
+		while (s[temp] && (s[temp] != ' ' && s[temp] != '\"'))
+		{
+			(*ret)++;
+			temp++;
+		}
+		*i = temp;
+		return (1);
+	}
+	else
+		return (0);
+}
+
 static void	exception(char *s, int *i)
 {
 	char	quote;
@@ -49,51 +68,48 @@ static	int	count_sep(char *s, char sep)
 
 static int	len_word(char *s, char sep, int i)
 {
-	char	quote;
 	int	ret;
+	char	quote;
 
-	ret = 0;
 	quote = ' ';
+	ret = 0;
 	while (s[i] && s[i] != sep)
 	{
 		if (s[i] == '\'' || s[i] == '\"')
 		{
 			quote = s[i];
+			ret++;
 			while (s[++i] && s[i] != quote)
 				ret++;
-			++i;
 		}
-		else
-		{
-			ret++;
-			i++;
-		}
+		ret++;
+		i++;
 	}
 	return (ret);
 }
+/*---------------------------------------------------*/
 
 static char	*take_word(char *s, char sep, int *i)
 {
-	char	quote;
 	char	*word;
+	char	quote;
 	int	j;
 	
 	j = -1;
 	word = malloc(sizeof(char) * (len_word(s, sep, *i) + 1));
 	if (!word)
 		return (NULL);
-	quote = ' ';
 	while (s[*i] && s[*i] != sep)
 	{
 		if (s[*i] == '\'' || s[*i] == '\"')
-		{
-			if (s[*i] == '\"')
+		{	
+			quote = s[*i];
+			word[++j] = s[*i];
 			while (s[++(*i)] && s[*i] != quote)
 				word[++j] = s[*i];
-			++(*i);
 		}
-		else
-			word[++j] = s[(*i)++];
+		word[++j] = s[(*i)];
+		++(*i);
 	}
 	word[++j] = '\0';
 	return (word);

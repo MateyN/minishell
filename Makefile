@@ -22,6 +22,8 @@ SRC =	main.c \
 	utils/errors.c \
 	jud/check_input.c \
 	jud/lexical_split.c \
+	jud/double_quote.c \
+	jud/init_struct.c \
 	
 SRCS = $(addprefix srcs/, $(SRC))
 DIR_S = srcs

@@ -36,7 +36,6 @@
 # define SUCCESS 1
 # define FAIL -1
 
-
 typedef struct  s_ms
 {
     char    **env_p;    //env pointer
@@ -48,14 +47,21 @@ extern t_ms    g_ms;   //global
 
 typedef struct s_cmd
 {	
-	char            *cmd;
+    char            *cmd;
     char            **av;
-    int             ac;
-    int             sys_call;
+	int	ac;
+    int     sys_call;
     struct s_cmd    *next;
     struct s_cmd    *prev;
 }   t_cmd;
 
+typedef struct s_lst
+{
+	struct	s_cmd	*head;
+	char		**tab;
+	int	nb_arg;
+	int	pipe;
+}	t_lst;
 
 void    cd(t_cmd *command);
 void    path_error(char *path, int file);
@@ -74,8 +80,11 @@ void    ft_exit(t_cmd *command);
 	/*JUD HEADERS MY PART*/	
 
 int	check_quote(char *s);
+void	init_struct(t_lst *li, char **tab);
 char	**lex_split(char *s, char sep);
-
+void	double_quote(char **tab, int *j, char *s, int *i);
+char	*handle_sign(char *s, int *i);
+int	len_d_quote(char *s);
 /*-----------------------------------------------------------------------------*/
 
 # endif

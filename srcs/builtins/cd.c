@@ -50,14 +50,14 @@ void    cd(t_cmd *command)
 
     home = getenv("HOME=");
     file = FALSE;
-    if(command->ac == 1)
+    /*if(command->ac == 1)
         changedir(home, file);
     else
     {
         if(stat(command->av[1], &buff) == 0)
         file = TRUE;
         changedir(home, file);
-    }
+    }*/
     free(home);
     home = NULL;
     return ;
