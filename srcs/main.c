@@ -46,6 +46,7 @@ int	main(int ac, char **av, char **envp)
 	//	printf("%s\n",*envp++);
 	(void)ac;
 	(void)av;
+    cpy_environ(envp);
     	prompt_handle();
 	g_ms.exit = 1;
 	return (g_ms.exit);

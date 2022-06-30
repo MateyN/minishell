@@ -26,10 +26,9 @@ SRC =	main.c \
 SRCS = $(addprefix srcs/, $(SRC))
 DIR_S = srcs
 
-INCLUDE = -I includes/ -I libft/
-		  #-I ~/.brew/Cellar/readline/8.1.2/include/readline
+INCLUDE = -I includes/ -I libft/ -I /Users/$(USER)/.brew/opt/readline/include/readline
 
-READLINE_LIB = -L /Users/$(USER)/.brew/Cellar/readline/8.1.2/lib -lreadline
+READLINE_LIB = -L /Users/$(USER)/.brew/opt/readline/lib -lreadline
 LIB_LIBFT = libft/libft.a
 
 FLAGS = -Wall -Wextra -Werror -g -fsanitize=address

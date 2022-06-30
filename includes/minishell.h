@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:18:51 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/10 12:00:26 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/06/30 11:03:54 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include "../libft/libft.h"
 
 /*--------MACRO-COLOR------------------*/
-#define BOLDGREEN   "\033[1m\033[36m"   
+#define BOLDGREEN   "\033[1m\033[36m"
 #define RESET "\033[m" //white color
 /*-----------------------------------*/
 
@@ -35,7 +35,6 @@
 # define FALSE 0
 # define SUCCESS 1
 # define FAIL -1
-
 
 typedef struct  s_ms
 {
@@ -56,19 +55,41 @@ typedef struct s_cmd
     struct s_cmd    *prev;
 }   t_cmd;
 
+int     exec_builtin(t_cmd *command, int flag);
+int     check_builtin(char *cmd);
 
 void    cd(t_cmd *command);
+void    changedir_handler(char *oldpath);
 void    path_error(char *path, int file);
 void    changedir(char *path, int file);
+
 void    pwd(void);
 void    env(void);
+
+void	output_envp(void);
+void	handle_export(char *av);
+void	export_error(char *av);
+void	update_environ(char *key, char *new_val);
+void	set_new_env(char *new_val, char *key);
+char	*get_nval(char *key, char *str);
+char	*get_key(char *cmd, int start);
+void	export(t_cmd *command);
+
 void    echo(t_cmd *command);
 int     check_option(t_cmd *command, int j, char *option);
-int	check_builtin(char *cmd);
-int	exec_builtin(t_cmd *command,int flag);
+
 void    exit_handler(int av);
 int     check_exit(char *str);
 void    ft_exit(t_cmd *command);
+
+void    ft_error(void);
+
+//char    *get_environ();
+void    join_environ(char *key, char **tmp);
+int check_env_key(char *key);
+int get_index(char *key);
+void    cpy_environ(char **envp);
+char    *get_environ_key(char *cmd, int start);
 
 /*----------------------------------------------------------------------------*/
 	/*JUD HEADERS MY PART*/	
@@ -78,4 +99,4 @@ char	**lex_split(const char *s, char sep);
 
 /*-----------------------------------------------------------------------------*/
 
-# endif
+#endif
