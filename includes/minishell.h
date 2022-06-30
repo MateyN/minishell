@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:18:51 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/24 12:11:30 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/06/24 18:00:49 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,9 @@ void    ft_exit(t_cmd *command);
 /*----------------------------------------------------------------------------*/
 	/*JUD HEADERS MY PART*/	
 
+typedef struct s_node{
+	char	*
+}
 int	check_quote(char *s);
 char	**lex_split(const char *s, char sep);
 
