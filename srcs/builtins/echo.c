@@ -12,8 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-t_ms g_ms;
-
 int check_option(t_cmd *command, int j, char *option)
 {
     int i;

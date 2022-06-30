@@ -12,6 +12,8 @@
 
 #include "../includes/minishell.h"
 
+t_ms	g_ms;
+
 void	getprompt(char **shell)
 {
 	*shell = readline(BOLDGREEN"Minishell$> "RESET);
@@ -20,7 +22,7 @@ void	getprompt(char **shell)
 
 void	prompt_handle(void)
 {
-	t_cmd	test;
+	t_lst	li;
 	char	*shell;
 	
 	while (1)
@@ -31,12 +33,12 @@ void	prompt_handle(void)
 			free(shell);
 			exit(EXIT_FAILURE);
 		}
-		test.av = lex_split(shell, ' ');
-		test.cmd = test.av[0];
-		if (check_builtin(test.cmd) == TRUE)
-			exec_builtin(&test, 1);
-		//while (*(test.av))
-			//printf("%s\n", *(test.av++));
+		init_struct(&li, lex_split(shell, ' '));
+		printf("len av 2m %d\n", len_d_quote(li.tab[1]));
+		//if (check_builtin(test.cmd) == TRUE)
+			//exec_builtin(&test, 1);
+		while (*(li.tab))
+			printf("%s\n", *(li.tab++));
 	}
 }
 
@@ -46,6 +48,7 @@ int	main(int ac, char **av, char **envp)
 	//	printf("%s\n",*envp++);
 	(void)ac;
 	(void)av;
+	g_ms.env_p = envp; //to do//just for test
     	prompt_handle();
 	g_ms.exit = 1;
 	return (g_ms.exit);
