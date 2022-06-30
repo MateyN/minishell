@@ -1,4 +1,4 @@
 # minishell
 This project is about creating a simple shell.
 
-To be done.
+TO DO unset builtin, signals
