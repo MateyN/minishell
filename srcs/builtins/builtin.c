@@ -22,10 +22,10 @@ int    check_builtin(char *cmd)
     return (FALSE);
 }
 
-int     exec_builtin(t_cmd *command, int flag)
+int     exec_builtin(t_lst *command, int flag)
 {
-	if (!ft_strncmp(command->cmd, "echo", ft_strlen(command->cmd)))
-		echo(command);
+	if (!ft_strncmp(command->tab[0], "echo", ft_strlen(command->tab[0])))
+		echo(command);/*
         else if (!ft_strncmp(command->cmd, "cd", ft_strlen(command->cmd)))
         	cd(command);
         else if (!ft_strncmp(command->cmd, "env", ft_strlen(command->cmd)))
@@ -37,7 +37,7 @@ int     exec_builtin(t_cmd *command, int flag)
         else if (!ft_strncmp(command->cmd, "pwd", ft_strlen(command->cmd)))
         pwd();
         //else if (!ft_strncmp(command->cmd, "unset", ft_strlen(command->cmd)))
-        //unset(); //TODO
+        //unset(); //TODO*/
         if (flag == FALSE)
             exit(0);
         return (SUCCESS);

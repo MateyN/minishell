@@ -12,33 +12,33 @@
 
 #include "../../includes/minishell.h"
 
-int check_option(t_cmd *command, int j, char *option)
+int check_option(t_lst *command, int j, char *option)
 {
     int i;
 
-    	if (command->av[j] == NULL)
+    	if (command->tab[j] == NULL)
         	return (0);
-    	if (command->av[j][0] != '-')
+    	if (command->tab[j][0] != '-')
         	return (0);
-    	if (!ft_strncmp("-n", command->av[j], 3))
+    	if (!ft_strncmp("-n", command->tab[j], 3))
     	{		
         	*option = 'n';
         	return (1);
 	}	
     	i = 1;
-	while (command->av[j][i])
+	while (command->tab[j][i])
 	{
-		if (command->av[j][i] != 'n')
+		if (command->tab[j][i] != 'n')
 			return (0);
 		i++;
 	}
-	*option = command->av[j][i - 1];
+	*option = command->tab[j][i - 1];
 	if (*option == 'n')
 		return (1);
 	return (0);
 }
 
-void    echo(t_cmd *command)
+void    echo(t_lst *command)
 {
     char    option;
     int     i;
@@ -47,14 +47,14 @@ void    echo(t_cmd *command)
     i = 0;
     //str = 0;
     option = 0;
-    while (command->av[++i])
+    while (command->tab[++i])
     {
         while (check_option(command, i, &option))
             i++;
-        if (command->av[i] == NULL)
+        if (command->tab[i] == NULL)
             break ;
-        printf("%s", command->av[i]);
-        if (command->av[i] != NULL)
+        printf("%s", command->tab[i]);
+        if (command->tab[i] != NULL)
             printf(" ");
        	g_ms.exit = 0;
     }

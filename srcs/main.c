@@ -35,10 +35,10 @@ void	prompt_handle(void)
 		}
 		init_struct(&li, lex_split(shell, ' '));
 		handle_action(&li);
-		//if (check_builtin(test.cmd) == TRUE)
-			//exec_builtin(&test, 1);
-		while (*(li.tab))
-			printf("%s\n", *(li.tab++));
+		if (check_builtin(li.tab[0]) == TRUE)
+			exec_builtin(&li, 1);
+		//while (*(li.tab))
+		//	printf(" from main ::> %s\n", *(li.tab++));
 	}
 }
 

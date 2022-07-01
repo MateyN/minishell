@@ -119,16 +119,14 @@ char	*handle_sign(char *s, int *i)
 			&& s[*i] != '$')
 		temp[++j] = s[(*i)];
 	temp[++j] = '\0';
-	printf("dans handle => %s\n", temp);
 	size = j; 
 	j = -1;
 	while (g_ms.env_p[++j])
 	{	
-		if(ft_strncmp(temp, g_ms.env_p[j], ft_strlen(g_ms.env_p[j])) == 0 \
+		if(ft_strncmp(temp, g_ms.env_p[j], size) == 0 \
 				&& (recheck_cmp(g_ms.env_p[j], temp) == TRUE)) //need it for check the exact size to env before '='
 		{
 			free(temp);
-			temp = NULL;
 			return (take_val_var(g_ms.env_p[j]));
 		}
 	}
@@ -137,53 +135,75 @@ char	*handle_sign(char *s, int *i)
 }
 /*-----------------------------------*/
 
-/*
+
 static char	*news_d_quote(char *s)
 {
 	int	i;
 	int	j;
 	char	*temp;
 	char	*env_val;
-
-	temp = malloc(sizeof(char) * len_d_quote(s));
+	int a;
+	
+	temp = malloc(sizeof(char) * (len_d_quote(s) + 1));
 	if (!temp)
 		return (NULL);
 	i = 0;
 	j = 0;
 	while (s[i])
 	{
-		printf("Im here");	
 		if (s[i] == '$')
 		{
 			env_val = handle_sign(s, &i);
 			if (env_val)
 			{
-				while (*env_val)
-					temp[j++] = *(env_val++);
+				a = -1;
+				while (env_val[++a])
+					temp[j++] = env_val[a];
 				free(env_val);
 			}
 		}
 		else if (s[i] && (s[i] != '\"'))
 			temp[j++] = s[i];
-		else if (s[i] != '$')
+		if (s[i] != '$')
 			i++;
 	}
 	temp[j] = '\0';
 	return (temp);
 }
 
+static int	test_s_quote(char *s)
+{
+	int	i;
+
+	i = -1;
+	while (s[++i])
+	{
+		if (s[i] == '\'')
+			return (1);
+		else if (s[i] == '\"' || s[i] == '$')
+			return (2);
+	}
+	return (FALSE); 
+}
+
 void	handle_action(t_lst *li)
 {
-	int	i;$ksdjbj
+	int	i;
 	char *temp;
 
 	i = -1;
+	temp = NULL;
 	while (li->tab[++i])
 	{
-		temp = news_d_quote(li->tab[i]);
-		free(li->tab[i]);
-		li->tab[i] = temp;
-		temp = NULL;
+		if (test_s_quote(li->tab[i]) == 1)
+			temp = news_s_quote(li->tab[i]);
+		else if (test_s_quote(li->tab[i]) == 2) 
+			temp = news_d_quote(li->tab[i]);
+		if (temp)
+		{
+			free(li->tab[i]);
+			li->tab[i] = temp;
+			temp = NULL;
+		}
 	}
 }
-*/
