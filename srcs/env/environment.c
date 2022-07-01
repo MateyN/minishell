@@ -6,16 +6,35 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 15:56:06 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/30 10:52:48 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/07/01 12:17:53 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-//char    *get_environ()
-//{
-//
-//}
+char    *get_environ(char *key)
+{
+    int     i;
+    char    *tmp;
+
+    i = -1;
+    if (ft_strlen(key) == 0)
+        return (ft_strdup(""));
+    if (!ft_strncmp(key, "?", ft_strlen(key)))
+        return (ft_itoa(g_ms.exit));
+    tmp = ft_strjoin(key, "=");
+    while (g_ms.env_p[++i])
+    {
+        if (!ft_strncmp(tmp, g_ms.env_p[i], ft_strlen(tmp)))
+            free(tmp);
+            tmp = NULL;
+            return (ft_substr(g_ms.env_p[i], ft_strlen(key), \
+                ft_strlen(g_ms.env_p[i])));
+    }
+    free(tmp);
+    tmp = NULL;
+    return (ft_strdup(""));
+}
 
 char    *get_environ_key(char *cmd, int start)
 {
@@ -53,43 +72,6 @@ void    join_environ(char *key, char **tmp)
     free(tmp_parse);
     tmp_parse = NULL;
     return ;
-}
-
-int check_env_key(char *key)
-{
-    int i;
-
-    i = 0;
-    if (!ft_isalpha(key[i]) && key[i] != '_')
-        return (FALSE);
-    else
-        i++;
-    while (key[i])
-    {
-        if (!ft_isalnum(key[i]) && key[i] != '_')
-        return (FALSE);
-        i++;
-    }
-    return (TRUE);
-}
-
-int get_index(char *key)
-{
-    int     i;
-    char    **tmp;
-
-    i = -1;
-    while (g_ms.env_p[++i])
-    {
-        tmp = ft_split(g_ms.env_p[i], '=');
-        if (!ft_strncmp(tmp[0], key, ft_strlen(key) + 1))
-        {
-            free(tmp);
-            return (i);
-        }
-        free(tmp);
-    }
-    return (1);
 }
 
 void    cpy_environ(char **envp)

@@ -6,12 +6,14 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 09:28:34 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/10 12:34:41 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:19:08 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <readline/readline.h>
 
+void    rl_replace_line(const char *, int);
 void    sigint_handler(int sig)
 {
     if (sig == SIGINT)

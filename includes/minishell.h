@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:18:51 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/30 11:03:54 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/06/30 15:33:14 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <termios.h>
 # include <string.h>
 # include <sys/stat.h>
-# include <linux/limits.h> //header for macro PATH_MAX
+//# include <linux/limits.h> //header for macro PATH_MAX
 # include <limits.h> //for mac
 # include "../libft/libft.h"
 
@@ -84,10 +84,10 @@ void    ft_exit(t_cmd *command);
 
 void    ft_error(void);
 
-//char    *get_environ();
+char    *get_environ(char *key);
 void    join_environ(char *key, char **tmp);
-int check_env_key(char *key);
-int get_index(char *key);
+int     check_env_key(char *key);
+int     get_index(char *key);
 void    cpy_environ(char **envp);
 char    *get_environ_key(char *cmd, int start);
 

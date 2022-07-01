@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+         #
+#    By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/14 18:02:56 by rmamison          #+#    #+#              #
-#    Updated: 2022/06/16 19:04:13 by rmamison         ###   ########.fr        #
+#    Updated: 2022/07/01 12:24:32 by mnikolov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ SRC =	main.c \
 	builtins/echo.c builtins/cd.c \
 	builtins/env.c builtins/exit.c \
 	builtins/pwd.c env/environment.c \
+	builtins/export.c env/utils.c \
+	builtins/export_utils.c \
 	signals/signals.c utils/errors.c \
 	jud/check_input.c \
 	jud/lexical_split.c \
