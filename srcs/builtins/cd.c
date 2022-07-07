@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:33:24 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/30 10:54:40 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/07/07 11:46:38 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void    cd(t_cmd *command)
     {
         if(stat(command->av[1], &buff) == 0)
         file = TRUE;
-        changedir(home, file);
+        changedir(command->av[1], file);
     }
     free(home);
     home = NULL;

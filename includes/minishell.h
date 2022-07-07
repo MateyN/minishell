@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:18:51 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/30 15:33:14 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/07/07 11:55:40 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int     get_index(char *key);
 void    cpy_environ(char **envp);
 char    *get_environ_key(char *cmd, int start);
 
+int     len_2ptr(char **ptr);
 /*----------------------------------------------------------------------------*/
 	/*JUD HEADERS MY PART*/	
 

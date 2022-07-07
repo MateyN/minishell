@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 12:23:37 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/07/01 12:25:14 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/07/07 11:57:51 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,17 @@ void	set_new_env(char *new_val, char *key)
 	char	**tmp;
 	char	*new_tmp;
 
-	length = 0;
+	//length = 0;
 	new_tmp = ft_strjoin("=", new_val);
-	tmp = (char **)malloc(sizeof(char *) * (length + 1));
+	length = len_2ptr(g_ms.env_p);
+	tmp = (char **)malloc(sizeof(char *) * (length + 2));
 	if (!tmp)
 		return (ft_error());
 	i = -1;
 	while (g_ms.env_p[++i])
 		tmp[i] = g_ms.env_p[i];
 	if (new_tmp != NULL)
-		tmp[i++] = ft_strjoin(key, new_val);
+		tmp[i++] = ft_strjoin(key, new_tmp);
 	else
 		tmp[i++] = ft_strdup(key);
 	tmp[i] = NULL;

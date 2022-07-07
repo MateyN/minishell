@@ -6,7 +6,7 @@
 #    By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/14 18:02:56 by rmamison          #+#    #+#              #
-#    Updated: 2022/07/01 12:24:32 by mnikolov         ###   ########.fr        #
+#    Updated: 2022/07/07 12:00:23 by mnikolov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SRC =	main.c \
 	builtins/env.c builtins/exit.c \
 	builtins/pwd.c env/environment.c \
 	builtins/export.c env/utils.c \
-	builtins/export_utils.c \
+	builtins/export_utils.c utils/utils.c \
 	signals/signals.c utils/errors.c \
 	jud/check_input.c \
 	jud/lexical_split.c \
