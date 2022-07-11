@@ -6,32 +6,59 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 19:30:03 by rmamison          #+#    #+#             */
-/*   Updated: 2022/06/24 12:19:25 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/07/11 19:16:56 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	caract_spes(char *s, int *i)
+int	redirection(char c)
 {
-	if (s[*i] == '|')
+	if (c != '|' && c != '>' && c != '<')
+		return (0);
+	return (1);
+}
 
-	else if(s[*i] == '>'|| s[*i] == '<') //l_chevr, r_chevr
+int	check_redirect(char *s, int *i, char **tab, int *j)
+{
+	printf("je passe\n");
+	char c;
+
+	int	chevr;
+	chevr = 0;
+	if (s[*i] == '|')
+		tab[++(*j)] = "|";
+	else if(s[*i] == '>' || s[*i] == '<') //l_chevr, r_chevr
 	{
-		while (s[*i] && s[(*i)++] == '>')
-			chevron++;
-		if (chevron > 2)
-		{	
-			if (chevr == 3)
-				msg_error("minishell: parse error near `>'");
-			else
-				msg_error("minishell: parse error near `>>'");
+		c = s[*i];
+		chevr++;
+		while (s[++(*i)] && s[(*i)] == c)
+		{
+			chevr++;
+			if (chevr > 2 || c == '>' && s[*i] == '<' || c == '<' && s[*i] == '>')
+			{	
+				ft_putstr_fd("minishell: syntax error near `", 2);
+				ft_putstr_fd(&c, 2);
+				ft_putstr_fd("\"", 2);
+				return (-1);
+			}
 		}
-		else if (chevron == 2)
-			//to do fonction
-		else
-			chevron = 1;//to fo fonction
-	}		
+		if (c == '>')
+		{	
+			if (chevr == 1)
+				tab[++(*j)] = ">";
+			else
+				tab[++(*j)] = ">>";
+		}
+		else if (c == '<')
+		{	
+			if (chevr == 1)
+				tab[++(*j)] = "<";
+			else
+				tab[++(*j)] = "<<";
+		}
+	}
+	return (0);
 }
 
 int	double_dollar(char *s, int *i, int *ret)
@@ -97,7 +124,7 @@ static int	len_word(char *s, char sep, int i)
 
 	quote = ' ';
 	ret = 0;
-	while (s[i] && (s[i] != sep && s[i] != '|'))
+	while (s[i] && (s[i] != sep && !redirection(s[i])))
 	{
 		if (s[i] == '\'' || s[i] == '\"')
 		{
@@ -109,6 +136,8 @@ static int	len_word(char *s, char sep, int i)
 		ret++;
 		i++;
 	}
+	if (ret == 0 && redirection(s[i]))
+		return ()
 	return (ret);
 }
 /*---------------------------------------------------*/
@@ -123,7 +152,7 @@ static char	*take_word(char *s, char sep, int *i)
 	word = malloc(sizeof(char) * (len_word(s, sep, *i) + 1));
 	if (!word)
 		return (NULL);
-	while (s[*i] && (s[*i] != sep && s[*i] != '|')) 
+	while (s[*i] && (s[*i] != sep && !redirection(s[*i]))) 
 	{
 		if (s[*i] == '\'' || s[*i] == '\"')
 		{	
@@ -136,7 +165,7 @@ static char	*take_word(char *s, char sep, int *i)
 		++(*i);
 	}
 	word[++j] = '\0';
-	if (s[*i] == '|') //for copy | in tab
+	if (redirection(s[*i])) //for copy | in tab
 		--(*i);
 	return (word);
 /* when the quote its not close I increment the index
@@ -160,18 +189,12 @@ char	**lex_split(char *s, char sep)
 		return (NULL);
 	while (++i <= (ft_strlen(s)))
 	{
-		if (s[i] == '|')
-		{	
-			tab[++j] = malloc(sizeof(char) * 2);
-			tab[j][0] = s[i];
-			tab[j][1] = '\0';
-			i++;
-		}
 		if (s[i] == sep)
 			while (s[++i] == sep)
 				;
 		if (s[i] != sep && s[i])
 			tab[++j] = take_word(s, sep, &i);
+		printf("lex => %s\n", tab[j]);
 	}
 	tab[j + 1] = NULL;
 	j = -1;
