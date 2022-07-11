@@ -192,7 +192,7 @@ static int	test_s_quote(char *s)
 void	handle_action(t_lst *li)
 {
 	int	i;
-	char *temp;
+	char	*temp;
 
 	i = -1;
 	temp = NULL;
@@ -208,6 +208,7 @@ void	handle_action(t_lst *li)
 			li->tab[i] = temp;
 			temp = NULL;
 		}
+		printf("%s\n", li->tab[i]);
 	}
 	
 }

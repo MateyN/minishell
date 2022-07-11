@@ -61,6 +61,8 @@ typedef struct s_lst
 	char		**tab;
 	int	nb_arg;
 	int	pipe;
+	int	r_chevron;
+	int	l_chevron;
 }	t_lst;
 
 void    cd(t_cmd *command);

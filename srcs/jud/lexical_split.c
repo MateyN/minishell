@@ -12,6 +12,28 @@
 
 #include "minishell.h"
 
+int	caract_spes(char *s, int *i)
+{
+	if (s[*i] == '|')
+
+	else if(s[*i] == '>'|| s[*i] == '<') //l_chevr, r_chevr
+	{
+		while (s[*i] && s[(*i)++] == '>')
+			chevron++;
+		if (chevron > 2)
+		{	
+			if (chevr == 3)
+				msg_error("minishell: parse error near `>'");
+			else
+				msg_error("minishell: parse error near `>>'");
+		}
+		else if (chevron == 2)
+			//to do fonction
+		else
+			chevron = 1;//to fo fonction
+	}		
+}
+
 int	double_dollar(char *s, int *i, int *ret)
 {
 	int	temp;
@@ -140,7 +162,9 @@ char	**lex_split(char *s, char sep)
 	{
 		if (s[i] == '|')
 		{	
-			tab[++j] = "|";	
+			tab[++j] = malloc(sizeof(char) * 2);
+			tab[j][0] = s[i];
+			tab[j][1] = '\0';
 			i++;
 		}
 		if (s[i] == sep)

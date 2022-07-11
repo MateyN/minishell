@@ -1,8 +1,9 @@
 #include "minishell.h"
-
+//cette fonction dois verifier aussi les chaines qui ne sont pas dans les quotes
 int     check_pipe(char **tab)
 {
 	//pipe ne doit pas √tre a l'int√rieur des quotes
+
 	int     i;
 	int	j;
 	
