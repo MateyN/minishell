@@ -1,19 +1,47 @@
 #include "minishell.h"
-
-int	check_pipe(t_lst *li, char **tab)
+/*
+int	check_pipe(t_lst *li)
 {
 	int	i;
 	int	j;
+	char	**temp;
 
+	temp = li->tab;
 	i = -1;
 	j = -1;
-	while (*(tab))
+	while (*temp)
 	{
-		if (*(tab) == "|")
+		if ((**temp) == '|')
 			li->pipe++;
-		*(tab++);
+		(*temp)++;
 	}
 	return (li->pipe);
+}*/
+/*--------------------------------*/
+
+void	delete_first(t_lst *li)
+{
+
+	t_cmd *temp;	
+	t_cmd *new;	
+
+	new = NULL;
+	temp = NULL;
+	if (!li->head)
+		return ;
+	temp = li->head;
+	while (temp != NULL)
+	{
+		new = temp->next;
+		if (new)
+			new->prev = NULL;
+		free_tab(temp->av);
+		temp->av = NULL;
+		temp->cmd = NULL;
+		free(li->head);
+		li->head = new;
+		temp = li->head;
+	}
 }
 
 t_cmd	*get_node(char	**tab)
@@ -27,42 +55,73 @@ t_cmd	*get_node(char	**tab)
 	node->cmd = tab[0]; 
 	node->next = NULL;
 	node->prev = NULL;
+	return (node);
 }
 
-void	get_list(t_lst *li, char **tab)
+void	get_list(char **new_tab, t_lst **li)
 {
-	t_cmd *init;
+	t_cmd 	*init;
 	t_cmd	*temp;
-
-	init = get_node(s);
-	if (!li->head)
+	
+	init = get_node(new_tab);
+	if (!(*li)->head)
 	{
-		li->head = init;
+		((*li)->head) = init;
 		return ;
 	}
-	temp = li->head;
-	while (temp->next != NULL)
+	temp = ((*li)->head);
+	while (temp && temp->next)
 		temp = temp->next;
 	init->prev = temp;
 	temp->next = init;
 }
+/*-------------------------------*/
 
-void	take_tab(t_lst *li, char **tab)
+char	**sep_cmd(char **old, int *pos)
 {
 	int	i;
+	char	**new;
 
-	i = -1;
-	if (!tab)
+	i = *pos;
+	while (old[i] && old[i][0] != '|')
+		i++;
+	new = malloc(sizeof(char *) * ((i - *pos) + 1));
+	if (!new)
+		return (NULL);
+	i = 0;
+	while (old[*pos] && old[*pos][0] != '|')
+		new[i++] = old[(*pos)++];
+	new[i] = NULL;
+	return (new);
+}
+
+void	take_tab(t_lst *li)
+{
+	int	i;
+	int	pos;
+	char	**new_tab;
+	
+	i = 0;
+	pos = 0;
+	new_tab = NULL;
+	if (!li->tab)
 		exit(1);
-	if (check_pipe(li, tab))
+	else if (li->pipe > 0)
 	{
-		while (++i <= pipe)
+		while (i++ <= li->pipe)
 		{
-			new_tab = <-tab[i];
-			get_list(li, new_tab)
-			free_tab(new_tab);
+			new_tab = sep_cmd(li->tab, &pos);
+			get_list(new_tab, &li);
+			new_tab = NULL;
+			pos++;
 		}
+		free(li->tab);
+		li->tab = NULL;
 	}
 	else
-		get_list(li, tab);
+	{	
+		new_tab = li->tab;
+		get_list(new_tab, &li);
+		new_tab = NULL;
+	}
 }

@@ -14,6 +14,30 @@
 
 t_ms	g_ms;
 
+void	print_list(t_lst *li)
+{
+	int	i;
+
+	t_cmd *temp;
+
+	temp = li->head;
+	if (!li->head)
+	{
+		printf("Empty list\n");
+		return ;
+	}
+	while (temp && temp->av)
+	{
+		i = -1;
+			printf("LIST:\n------\n");
+		while (temp->av[++i])
+			printf("%s\n", temp->av[i]);
+		printf("------\n\n");
+		temp = temp->next;
+	}
+	
+}
+
 void	getprompt(char **shell)
 {
 	*shell = readline(BOLDGREEN"Minishell$> "RESET);
@@ -24,21 +48,27 @@ void	prompt_handle(void)
 {
 	t_lst	li;
 	char	*shell;
-	
+
 	while (1)
 	{
 		getprompt(&shell);
-		if ((check_quote(shell)) < 0)
+		if ((check_quote(shell)) == 0)
 		{
-			free(shell);
-			exit(EXIT_FAILURE);
+			init_struct(&li, lex_split(shell, ' '));
+			handle_action(&li);
+			if (li.pipe > 0)
+				take_tab(&li);
+			if (check_builtin(li.tab[0]) == TRUE)
+				exec_builtin(&li, 1);
+			if (li.head)
+				free_list(&li);
+			else 
+			{
+				free_tab(li.tab);
+				li.tab = NULL;
+			}
 		}
-		init_struct(&li, lex_split(shell, ' '));
-		handle_action(&li);
-		if (check_builtin(li.tab[0]) == TRUE)
-			exec_builtin(&li, 1);
-		//while (*(li.tab))
-		//	printf(" from main ::> %s\n", *(li.tab++));
+		free(shell);
 	}
 }
 

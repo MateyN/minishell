@@ -6,7 +6,7 @@ static int      len_var(char    *s, int i)
 
 	ret = 0;
 	while ((s[++i]) && (s[i] != '\"' && s[i] != ' ') \
-			&& s[i] != '$')
+			&& (s[i] != '$' && s[i] != '\''))
 		ret++;
 	return (ret);
 }
@@ -19,14 +19,16 @@ static char *news_s_quote(char *s)
 	int	quote;
 	char	*temp;
 
-	j = 0;
 	i = -1;
 	quote = 0;
 	while (s[++i])
 		if (s[i] == '\'')
 			quote++;
 	temp = malloc(sizeof(char) * ((i - quote) + 1));
+	if (!temp)
+		return (NULL);
 	i = -1;
+	j = 0;
 	while (s[++i])
 		if (s[i] != '\'')
 			temp[j++] = s[i];
@@ -63,6 +65,7 @@ int	len_d_quote(char *s)
 		if (s[i] != '$')
 			i++;
 	}
+	int a = car + dollar;
 	return (car + dollar);	
 }
 /*-----------------------------------*/
@@ -116,7 +119,7 @@ char	*handle_sign(char *s, int *i)
 		return (NULL);
 	j = -1;
 	while ((s[++(*i)]) && (s[*(i)] != ' ' && s[*(i)] != '\"') \
-			&& s[*i] != '$')
+			&& (s[*i] != '$' && s[*i] != '\''))
 		temp[++j] = s[(*i)];
 	temp[++j] = '\0';
 	size = j; 
@@ -162,7 +165,7 @@ static char	*news_d_quote(char *s)
 				free(env_val);
 			}
 		}
-		else if (s[i] && (s[i] != '\"'))
+		if (s[i] && (s[i] != '\"' && s[i] != '$'))//need improvement
 			temp[j++] = s[i];
 		if (s[i] != '$')
 			i++;
@@ -206,4 +209,5 @@ void	handle_action(t_lst *li)
 			temp = NULL;
 		}
 	}
+	
 }

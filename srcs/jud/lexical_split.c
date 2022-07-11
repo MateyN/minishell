@@ -51,13 +51,15 @@ static	int	count_sep(char *s, char sep)
 	i = -1;
 	while (s[++i])
 	{
-		while (s[i] != sep && s[i])
+		while (s[i] && (s[i] != sep && s[i] != '|'))  
 		{
 			if (s[i] == '\'' || s[i] == '\"')
 				exception(s, &i);
 			++i;
 			time = 1;
 		}
+		if (s[i] == '|')
+			ret++;
 		if (time == 1)
 			ret ++;
 		time = 0;
@@ -73,7 +75,7 @@ static int	len_word(char *s, char sep, int i)
 
 	quote = ' ';
 	ret = 0;
-	while (s[i] && s[i] != sep)
+	while (s[i] && (s[i] != sep && s[i] != '|'))
 	{
 		if (s[i] == '\'' || s[i] == '\"')
 		{
@@ -99,7 +101,7 @@ static char	*take_word(char *s, char sep, int *i)
 	word = malloc(sizeof(char) * (len_word(s, sep, *i) + 1));
 	if (!word)
 		return (NULL);
-	while (s[*i] && s[*i] != sep)
+	while (s[*i] && (s[*i] != sep && s[*i] != '|')) 
 	{
 		if (s[*i] == '\'' || s[*i] == '\"')
 		{	
@@ -112,6 +114,8 @@ static char	*take_word(char *s, char sep, int *i)
 		++(*i);
 	}
 	word[++j] = '\0';
+	if (s[*i] == '|') //for copy | in tab
+		--(*i);
 	return (word);
 /* when the quote its not close I increment the index
 for count the all char, my split must ignore the seperator 
@@ -123,19 +127,22 @@ char	**lex_split(char *s, char sep)
 {
 	char	**tab;
 	int	i;
-	int	start;
 	int	j;
 	
 	if (!s)
 		return (NULL);
 	j = -1;
 	i = -1;
-	start = -1;
 	tab = (char **)malloc(sizeof(char *) * (count_sep(s, sep) + 1));
 	if (!tab)
 		return (NULL);
 	while (++i <= (ft_strlen(s)))
-	{	
+	{
+		if (s[i] == '|')
+		{	
+			tab[++j] = "|";	
+			i++;
+		}
 		if (s[i] == sep)
 			while (s[++i] == sep)
 				;
@@ -143,5 +150,6 @@ char	**lex_split(char *s, char sep)
 			tab[++j] = take_word(s, sep, &i);
 	}
 	tab[j + 1] = NULL;
+	j = -1;
 	return (tab);
 }

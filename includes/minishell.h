@@ -70,8 +70,8 @@ void    pwd(void);
 void    env(void);
 void    echo(t_lst *command);
 int     check_option(t_lst *command, int j, char *option);
-int		check_builtin(char *cmd);
-int		exec_builtin(t_lst *command,int flag);
+int	check_builtin(char *cmd);
+int	exec_builtin(t_lst *command,int flag);
 void    exit_handler(int av);
 int     check_exit(char *str);
 void    ft_exit(t_cmd *command);
@@ -85,6 +85,10 @@ char	**lex_split(char *s, char sep);
 void	double_quote(char **tab, int *j, char *s, int *i);
 char	*handle_sign(char *s, int *i);
 void	handle_action(t_lst *li);
+void	take_tab(t_lst *li);
+void	free_tab(char	**tab);
+void	free_list(t_lst *li);
+void	delete_first(t_lst *li);
 /*-----------------------------------------------------------------------------*/
 
 # endif

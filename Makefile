@@ -22,8 +22,10 @@ SRC =	main.c \
 	utils/errors.c \
 	jud/check_input.c \
 	jud/lexical_split.c \
-	jud/double_quote.c \
+	jud/treat_input.c \
 	jud/init_struct.c \
+	jud/list_utils.c \
+	jud/free_utils.c \
 	
 SRCS = $(addprefix srcs/, $(SRC))
 DIR_S = srcs
@@ -34,8 +36,8 @@ INCLUDE = -I includes/ -I libft/ \
 READLINE_LIB = -L /Users/$(USER)/.brew/Cellar/readline/8.1.2/lib -lreadline
 LIB_LIBFT = libft/libft.a
 
-FLAGS = -Wall -Wextra -Werror -g -fsanitize=address
-CC = clang
+FLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CC = gcc
 
 RM = rm -rf
 
