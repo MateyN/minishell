@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+         #
+#    By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/14 18:02:56 by rmamison          #+#    #+#              #
-#    Updated: 2022/06/16 19:04:13 by rmamison         ###   ########.fr        #
+#    Updated: 2022/07/07 12:00:23 by mnikolov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ SRC =	main.c \
 	builtins/echo.c builtins/cd.c \
 	builtins/env.c builtins/exit.c \
 	builtins/pwd.c env/environment.c \
+	builtins/export.c env/utils.c \
+	builtins/export_utils.c utils/utils.c \
 	signals/signals.c utils/errors.c \
 	jud/check_input.c \
 	jud/lexical_split.c \
@@ -26,10 +28,9 @@ SRC =	main.c \
 SRCS = $(addprefix srcs/, $(SRC))
 DIR_S = srcs
 
-INCLUDE = -I includes/ -I libft/
-		  #-I ~/.brew/Cellar/readline/8.1.2/include/readline
+INCLUDE = -I includes/ -I libft/ -I /Users/$(USER)/.brew/opt/readline/include/readline
 
-READLINE_LIB = -L /Users/$(USER)/.brew/Cellar/readline/8.1.2/lib -lreadline
+READLINE_LIB = -L /Users/$(USER)/.brew/opt/readline/lib -lreadline
 LIB_LIBFT = libft/libft.a
 
 FLAGS = -Wall -Wextra -Werror -g -fsanitize=address
