@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 19:30:03 by rmamison          #+#    #+#             */
-/*   Updated: 2022/07/11 19:16:56 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/07/12 20:18:39 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,13 @@ static	int	count_sep(char *s, char sep)
 
 static int	len_word(char *s, char sep, int i)
 {
-	static int times = 0;
 	int	ret;
 	char	quote;
 
 	quote = ' ';
 	ret = 0;
 	if (redirection(s[i]) == 1)
-		return (count_redirection(s, i, &times));
+		return (count_redirection(s, i));
 	while (s[i] && (s[i] != sep && !redirection(s[i])))
 	{
 		if (s[i] == '\'' || s[i] == '\"')
@@ -78,7 +77,6 @@ static int	len_word(char *s, char sep, int i)
 		}
 		ret++;
 		i++;
-		times = 0;
 	}
 	return (ret);
 }

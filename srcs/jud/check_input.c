@@ -42,9 +42,6 @@ int	error_redirection(char *s)
 	c = s[ft_strlen(s) - 1];
 	if (!redirection(c)) 
 		return (FALSE);
-	if (c == '|') //to do for pipe 
-		return (FALSE);
 	ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
 	return (TRUE);
-		
 }

@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 14:07:39 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/30 16:35:50 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/07/12 20:18:36 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	prompt_handle(void)
 	while (1)
 	{
 		getprompt(&shell);
-		if (!error_quote(shell) && !error_redirection(shell))
+		if (!error_quote(shell)) //&& !error_redirection(shell))
 		{
 			init_struct(&li, lex_split(shell, ' '));
 			handle_action(&li);

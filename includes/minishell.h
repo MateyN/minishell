@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:18:51 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/30 16:36:38 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/07/12 19:42:10 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	delete_first(t_lst *li);
 	/*Redirection.c*/
 void	msg_redir(char c);
 int	redirection(char c);
-int	count_redirection(char *s, int i, int *times);
+int	count_redirection(char *s, int i);
 void	write_redirection(char **p_word, char *s, int *i);
 /*-----------------------------------------------------------------------------*/
 

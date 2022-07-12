@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 19:30:03 by rmamison          #+#    #+#             */
-/*   Updated: 2022/07/11 19:16:56 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/07/12 20:18:32 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	msg_redir(char	c)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-	ft_putstr_fd(&c, 2);
+	write(2, &c, 1);
 	ft_putstr_fd("\"\n", 2);
 	exit (1);
 }
@@ -27,7 +27,7 @@ int	redirection(char c)
 	return (1);
 }
 
-int	count_redirection(char *s, int i, int *times)
+int	count_redirection(char *s, int i)//to do separer checkerror et count(check a mettre dans prompt tout au debut)
 {
 	int	redir;
 	char	c;
@@ -37,15 +37,19 @@ int	count_redirection(char *s, int i, int *times)
 	while (s[i] == c)
 	{
 		redir++;
-		if (*times == 1)
-			msg_redir(s[i]);
+		if (s[i + 1] == ' ')
+		{
+			while (s[++i] == ' ');
+			if (redirection(s[i]))
+				msg_redir(s[i]);
+			--i;
+		}
 		else if (redir == 2 && c == '|')
 			msg_redir(s[i]);
 		else if (redir > 2)
 			msg_redir(s[i]);
 		i++;		
 	}
-	*times = 1;
 	return (redir);
 }
 
