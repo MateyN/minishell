@@ -26,6 +26,7 @@ SRC =	main.c \
 	jud/init_struct.c \
 	jud/list_utils.c \
 	jud/free_utils.c \
+	jud/redirection_parse.c \
 	
 SRCS = $(addprefix srcs/, $(SRC))
 DIR_S = srcs

@@ -26,6 +26,10 @@
 # include "../libft/libft.h"
 //# include <linux/limits.h> //header for macro PATH_MAX
 
+# define QUOTE 1
+# define S_QUOTE 2
+# define D_QUOTE 3
+# define REDIR 4
 /*--------MACRO-COLOR------------------*/
 #define BOLDGREEN   "\033[1m\033[36m"   
 #define RESET "\033[m" //white color
@@ -81,16 +85,23 @@ void    ft_exit(t_cmd *command);
 /*----------------------------------------------------------------------------*/
 	/*JUD HEADERS MY PART*/	
 
-int	check_quote(char *s);
+int	error_quote(char *s);
+int	error_redirection(char *s);
 void	init_struct(t_lst *li, char **tab);
 char	**lex_split(char *s, char sep);
 void	double_quote(char **tab, int *j, char *s, int *i);
 char	*handle_sign(char *s, int *i);
+	/*Utils_lists*/
 void	handle_action(t_lst *li);
 void	take_tab(t_lst *li);
 void	free_tab(char	**tab);
 void	free_list(t_lst *li);
 void	delete_first(t_lst *li);
+	/*Redirection.c*/
+void	msg_redir(char c);
+int	redirection(char c);
+int	count_redirection(char *s, int i, int *times);
+void	write_redirection(char **p_word, char *s, int *i);
 /*-----------------------------------------------------------------------------*/
 
 # endif

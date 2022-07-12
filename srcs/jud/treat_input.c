@@ -174,7 +174,7 @@ static char	*news_d_quote(char *s)
 	return (temp);
 }
 
-static int	test_s_quote(char *s)
+static int	quote_exist(char *s)
 {
 	int	i;
 
@@ -182,9 +182,9 @@ static int	test_s_quote(char *s)
 	while (s[++i])
 	{
 		if (s[i] == '\'')
-			return (1);
+			return (S_QUOTE);
 		else if (s[i] == '\"' || s[i] == '$')
-			return (2);
+			return (D_QUOTE);
 	}
 	return (FALSE); 
 }
@@ -198,9 +198,9 @@ void	handle_action(t_lst *li)
 	temp = NULL;
 	while (li->tab[++i])
 	{
-		if (test_s_quote(li->tab[i]) == 1)
+		if (quote_exist(li->tab[i]) == S_QUOTE)
 			temp = news_s_quote(li->tab[i]);
-		else if (test_s_quote(li->tab[i]) == 2) 
+		else if (quote_exist(li->tab[i]) == D_QUOTE) 
 			temp = news_d_quote(li->tab[i]);
 		if (temp)
 		{
@@ -208,7 +208,5 @@ void	handle_action(t_lst *li)
 			li->tab[i] = temp;
 			temp = NULL;
 		}
-		printf("%s\n", li->tab[i]);
 	}
-	
 }

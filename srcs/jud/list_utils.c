@@ -35,7 +35,7 @@ void	delete_first(t_lst *li)
 		new = temp->next;
 		if (new)
 			new->prev = NULL;
-		free_tab(temp->av);
+		free(temp->av);
 		temp->av = NULL;
 		temp->cmd = NULL;
 		free(li->head);
@@ -83,13 +83,13 @@ char	**sep_cmd(char **old, int *pos)
 	char	**new;
 
 	i = *pos;
-	while (old[i] && old[i][0] != '|')
+	while (old[i] && ft_strcmp(old[i], "|") != 0)
 		i++;
 	new = malloc(sizeof(char *) * ((i - *pos) + 1));
 	if (!new)
 		return (NULL);
 	i = 0;
-	while (old[*pos] && old[*pos][0] != '|')
+	while (old[*pos] && ft_strcmp(old[*pos], "|") != 0)
 		new[i++] = old[(*pos)++];
 	new[i] = NULL;
 	return (new);
@@ -115,8 +115,6 @@ void	take_tab(t_lst *li)
 			new_tab = NULL;
 			pos++;
 		}
-		free(li->tab);
-		li->tab = NULL;
 	}
 	else
 	{	

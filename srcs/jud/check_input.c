@@ -7,7 +7,7 @@ void	msg_error(char *s)
 }
 */
 
-int	check_quote(char *s)
+int	error_quote(char *s)
 {
 	char	quote;
 	
@@ -22,15 +22,29 @@ int	check_quote(char *s)
 			if (*s == '\0')
 			{
 				perror("Error quote not close");
-				return (-1);
+				return (TRUE);
 			}
 		}
 		else if (*s == ';' || *s == '\\')
 		{
 			perror("Error caracter forbiden");
-			return (-1);
+			return (TRUE);
 		}
 		s++;
 	}
-	return (0);
+	return (FALSE);
+}
+
+int	error_redirection(char *s)
+{
+	char	c;
+	
+	c = s[ft_strlen(s) - 1];
+	if (!redirection(c)) 
+		return (FALSE);
+	if (c == '|') //to do for pipe 
+		return (FALSE);
+	ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
+	return (TRUE);
+		
 }

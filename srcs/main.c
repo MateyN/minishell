@@ -52,21 +52,18 @@ void	prompt_handle(void)
 	while (1)
 	{
 		getprompt(&shell);
-		if ((check_quote(shell)) == 0)
+		if (!error_quote(shell) && !error_redirection(shell))
 		{
 			init_struct(&li, lex_split(shell, ' '));
 			handle_action(&li);
 			if (li.pipe > 0)
 				take_tab(&li);
-			if (check_builtin(li.tab[0]) == TRUE)
+			if (check_builtin(*li.tab) == TRUE)
 				exec_builtin(&li, 1);
+			free_tab(li.tab);
+			li.tab = NULL;
 			if (li.head)
 				free_list(&li);
-			else 
-			{
-				free_tab(li.tab);
-				li.tab = NULL;
-			}
 		}
 		free(shell);
 	}

@@ -12,81 +12,17 @@
 
 #include "minishell.h"
 
-int	redirection(char c)
+static void	exception(char *s, int *i, int flag)
 {
-	if (c != '|' && c != '>' && c != '<')
-		return (0);
-	return (1);
-}
+	char	c;
 
-int	check_redirect(char *s, int *i, char **tab, int *j)
-{
-	printf("je passe\n");
-	char c;
-
-	int	chevr;
-	chevr = 0;
-	if (s[*i] == '|')
-		tab[++(*j)] = "|";
-	else if(s[*i] == '>' || s[*i] == '<') //l_chevr, r_chevr
-	{
-		c = s[*i];
-		chevr++;
-		while (s[++(*i)] && s[(*i)] == c)
-		{
-			chevr++;
-			if (chevr > 2 || c == '>' && s[*i] == '<' || c == '<' && s[*i] == '>')
-			{	
-				ft_putstr_fd("minishell: syntax error near `", 2);
-				ft_putstr_fd(&c, 2);
-				ft_putstr_fd("\"", 2);
-				return (-1);
-			}
-		}
-		if (c == '>')
-		{	
-			if (chevr == 1)
-				tab[++(*j)] = ">";
-			else
-				tab[++(*j)] = ">>";
-		}
-		else if (c == '<')
-		{	
-			if (chevr == 1)
-				tab[++(*j)] = "<";
-			else
-				tab[++(*j)] = "<<";
-		}
-	}
-	return (0);
-}
-
-int	double_dollar(char *s, int *i, int *ret)
-{
-	int	temp;
-	
-	temp = *i + 1;
-	if (s[temp] == '$')
-	{	
-		while (s[temp] && (s[temp] != ' ' && s[temp] != '\"'))
-		{
-			(*ret)++;
-			temp++;
-		}
-		*i = temp;
-		return (1);
-	}
-	else
-		return (0);
-}
-
-static void	exception(char *s, int *i)
-{
-	char	quote;
-
-	quote = s[*i];
-	while (s[++(*i)] != quote)
-		;
+	c = s[*i];
+	if (flag == QUOTE)
+		while (s[++(*i)] && s[*i] != c)
+			;
+	else if (flag == REDIR)
+		while (s[++(*i)] && s[*i] == c)
+			;
 }
 
 static	int	count_sep(char *s, char sep)
@@ -100,15 +36,19 @@ static	int	count_sep(char *s, char sep)
 	i = -1;
 	while (s[++i])
 	{
-		while (s[i] && (s[i] != sep && s[i] != '|'))  
+		while (s[i] && (s[i] != sep && !redirection(s[i])))  
 		{
 			if (s[i] == '\'' || s[i] == '\"')
-				exception(s, &i);
+				exception(s, &i, QUOTE);
 			++i;
 			time = 1;
 		}
-		if (s[i] == '|')
+		if (redirection(s[i]))
+		{
+			exception(s, &i, REDIR);
 			ret++;
+			--i;
+		}
 		if (time == 1)
 			ret ++;
 		time = 0;
@@ -119,11 +59,14 @@ static	int	count_sep(char *s, char sep)
 
 static int	len_word(char *s, char sep, int i)
 {
+	static int times = 0;
 	int	ret;
 	char	quote;
 
 	quote = ' ';
 	ret = 0;
+	if (redirection(s[i]) == 1)
+		return (count_redirection(s, i, &times));
 	while (s[i] && (s[i] != sep && !redirection(s[i])))
 	{
 		if (s[i] == '\'' || s[i] == '\"')
@@ -135,9 +78,8 @@ static int	len_word(char *s, char sep, int i)
 		}
 		ret++;
 		i++;
+		times = 0;
 	}
-	if (ret == 0 && redirection(s[i]))
-		return ()
 	return (ret);
 }
 /*---------------------------------------------------*/
@@ -152,21 +94,25 @@ static char	*take_word(char *s, char sep, int *i)
 	word = malloc(sizeof(char) * (len_word(s, sep, *i) + 1));
 	if (!word)
 		return (NULL);
-	while (s[*i] && (s[*i] != sep && !redirection(s[*i]))) 
+	if (redirection(s[*i]) == 1)
+		write_redirection(&word, s, i);
+	else
 	{
-		if (s[*i] == '\'' || s[*i] == '\"')
-		{	
-			quote = s[*i];
-			word[++j] = s[*i];
-			while (s[++(*i)] && s[*i] != quote)
+		while (s[*i] && (s[*i] != sep && !redirection(s[*i]))) 
+		{
+			if (s[*i] == '\'' || s[*i] == '\"')
+			{	
+				quote = s[*i];
 				word[++j] = s[*i];
+				while (s[++(*i)] && s[*i] != quote)
+					word[++j] = s[*i];
+			}
+			word[++j] = s[(*i)];
+			++(*i);
 		}
-		word[++j] = s[(*i)];
-		++(*i);
+		word[++j] = '\0';
 	}
-	word[++j] = '\0';
-	if (redirection(s[*i])) //for copy | in tab
-		--(*i);
+	--(*i);
 	return (word);
 /* when the quote its not close I increment the index
 for count the all char, my split must ignore the seperator 
@@ -188,13 +134,14 @@ char	**lex_split(char *s, char sep)
 	if (!tab)
 		return (NULL);
 	while (++i <= (ft_strlen(s)))
-	{
+	{	
+		if (!s[i])
+			break ;
 		if (s[i] == sep)
 			while (s[++i] == sep)
 				;
 		if (s[i] != sep && s[i])
 			tab[++j] = take_word(s, sep, &i);
-		printf("lex => %s\n", tab[j]);
 	}
 	tab[j + 1] = NULL;
 	j = -1;
