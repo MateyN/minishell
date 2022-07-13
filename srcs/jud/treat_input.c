@@ -51,7 +51,7 @@ int	len_d_quote(char *s)
 	temp = NULL; 
 	while (s[i])
 	{
-		if(s[i] == '$')
+		if (s[i] == '$' && (s[i + 1] != ' ' && s[i + 1]))
 		{	
 			temp =  handle_sign(s, &i);
 			if (temp)
@@ -60,12 +60,11 @@ int	len_d_quote(char *s)
 				free(temp);
 			}
 		}
-		if (s[i] != '\"' && s[i] != '$')
+		else if (s[i] != '\"')
 			car++;
-		if (s[i] != '$')
+		if (s[i] != '$' || s[i] == '$' && (s[i + 1] == ' ' || !s[i + 1]))
 			i++;
 	}
-	int a = car + dollar;
 	return (car + dollar);	
 }
 /*-----------------------------------*/
@@ -154,7 +153,7 @@ static char	*news_d_quote(char *s)
 	j = 0;
 	while (s[i])
 	{
-		if (s[i] == '$')
+		if (s[i] == '$' && (s[i + 1] != ' ' && s[i + 1])) //s[i + 1] check if $ is only
 		{
 			env_val = handle_sign(s, &i);
 			if (env_val)
@@ -165,9 +164,9 @@ static char	*news_d_quote(char *s)
 				free(env_val);
 			}
 		}
-		if (s[i] && (s[i] != '\"' && s[i] != '$'))//need improvement
+		else if (s[i] && s[i] != '\"')//need improvement
 			temp[j++] = s[i];
-		if (s[i] != '$')
+		if (s[i] != '$' || s[i] == '$' && (s[i + 1] == ' ' || !s[i + 1]))
 			i++;
 	}
 	temp[j] = '\0';
@@ -200,7 +199,7 @@ void	handle_action(t_lst *li)
 	{
 		if (quote_exist(li->tab[i]) == S_QUOTE)
 			temp = news_s_quote(li->tab[i]);
-		else if (quote_exist(li->tab[i]) == D_QUOTE) 
+		else if (quote_exist(li->tab[i]) == D_QUOTE)
 			temp = news_d_quote(li->tab[i]);
 		if (temp)
 		{

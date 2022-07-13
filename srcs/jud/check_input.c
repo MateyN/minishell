@@ -1,47 +1,90 @@
 #include "minishell.h"
 
-/*
-void	msg_error(char *s)
+void	msg_error(char *s1, char c, char *s2)
 {
-	perror(s);
+	ft_putstr_fd(s1, 2);
+	if (c)
+		write(2, &c, 1);
+	if (s2)
+		ft_putstr_fd(s2, 2);
 }
-*/
 
-int	error_quote(char *s)
+static int	error_quote(char *s, int *i)
 {
 	char	quote;
 	
-	quote = ' ';
-	while (*s)
+	quote = s[*i];
+	while (s[++(*i)] && s[*i] != quote)
+		;
+	if (s[*i] == '\0')
 	{
-		if (*s == '\'' || *s == '\"')
-		{	
-			quote = *s;
-			while (*(++s) != quote && *s)
-				;
-			if (*s == '\0')
-			{
-				perror("Error quote not close");
+				msg_error("minishell: Error quote not close\n", 0, NULL);
 				return (TRUE);
-			}
-		}
-		else if (*s == ';' || *s == '\\')
-		{
-			perror("Error caracter forbiden");
-			return (TRUE);
-		}
-		s++;
 	}
 	return (FALSE);
 }
 
-int	error_redirection(char *s)
+static int	error_redirection(char *s, int *i)
 {
 	char	c;
-	
-	c = s[ft_strlen(s) - 1];
-	if (!redirection(c)) 
-		return (FALSE);
-	ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
-	return (TRUE);
+	char	error;
+	int 	redir;
+
+	error = 0;
+	redir = 1;
+	c = s[*i];
+	while (s[*i] == c)
+	{
+		++redir;
+		if (redirection(s[*i + 1]) && s[*i + 1] != s[*i])
+			error = s[*i + 1];
+		else if (s[*i + 1] == ' ')
+		{
+			while (s[++(*i)] && s[*i] == ' ')
+				;
+			if (redirection(s[*i]))
+				error = s[*i];
+		}
+		else if (redir > 2 || (redir == 2 && c == '|'))
+			error = s[*i];
+		if (error)
+		{
+			msg_error("minishel: syntax error near unexpected token `", error, "\"\n");
+			return (TRUE);
+		}
+		++(*i);
+	}
+	--(*i);
+	return (FALSE);
+}
+
+int	error_exist(char *s)
+{	
+	int		i;
+
+	if (redirection(s[ft_strlen(s) - 1]))
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
+		return (TRUE);
+	}
+	i = -1;
+	while (s[++i])
+	{
+		if (s[i] == '\'' || s[i] == '\"')
+		{
+			if (error_quote(s, &i))
+				return (TRUE);
+		}
+		else if (redirection(s[i]))
+		{
+			if (error_redirection(s, &i))
+				return (TRUE);
+		}
+		else if (s[i] == ';' || s[i] == '\\')
+		{
+			msg_error("minishell: Error caracter forbiden\n", 0, NULL);
+			return (TRUE);
+		}
+	}
+	return (FALSE);
 }

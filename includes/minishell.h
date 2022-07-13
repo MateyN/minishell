@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:18:51 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/07/12 19:42:10 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/07/13 17:13:38 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,23 @@ typedef struct s_cmd
     struct s_cmd    *prev;
 }   t_cmd;
 
+typedef struct s_redir{
+	int	infile;
+	int	outfile;
+	int	fd[2];
+	int	pid;
+}	t_redir;
+
 typedef struct s_lst
 {
 	struct	s_cmd	*head;
-	char		**tab;
-	int	nb_arg;
-	int	pipe;
-	int	r_chevron;
-	int	l_chevron;
+	struct	s_redir	*redir;
+	char	**tab;
+	int		nb_arg;
+	int		redir_in; // <
+	int		heredoc; // <<
+	int		redir_out; // > & >>
+	int		pipe;
 }	t_lst;
 
 void    cd(t_cmd *command);
@@ -84,9 +93,8 @@ void    ft_exit(t_cmd *command);
 
 /*----------------------------------------------------------------------------*/
 	/*JUD HEADERS MY PART*/	
-
-int	error_quote(char *s);
-int	error_redirection(char *s);
+void	msg_error(char *s1, char c, char *s2);
+int		error_exist(char *s);
 void	init_struct(t_lst *li, char **tab);
 char	**lex_split(char *s, char sep);
 void	double_quote(char **tab, int *j, char *s, int *i);

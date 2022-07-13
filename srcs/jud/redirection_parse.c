@@ -6,19 +6,11 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 19:30:03 by rmamison          #+#    #+#             */
-/*   Updated: 2022/07/12 20:18:32 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/07/13 10:36:14 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	msg_redir(char	c)
-{
-	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-	write(2, &c, 1);
-	ft_putstr_fd("\"\n", 2);
-	exit (1);
-}
 
 int	redirection(char c)
 {
@@ -37,17 +29,6 @@ int	count_redirection(char *s, int i)//to do separer checkerror et count(check a
 	while (s[i] == c)
 	{
 		redir++;
-		if (s[i + 1] == ' ')
-		{
-			while (s[++i] == ' ');
-			if (redirection(s[i]))
-				msg_redir(s[i]);
-			--i;
-		}
-		else if (redir == 2 && c == '|')
-			msg_redir(s[i]);
-		else if (redir > 2)
-			msg_redir(s[i]);
 		i++;		
 	}
 	return (redir);
