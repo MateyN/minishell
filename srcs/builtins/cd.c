@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:33:24 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/07/07 11:46:38 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/07/14 13:38:28 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void    changedir_handler(char *oldpath)
 void    changedir(char *path, int file)
 {
     char    *old_path;
+    
     old_path = getcwd(0, _PC_PATH_MAX);
     if (chdir(path) == 0)
         changedir_handler(old_path);
@@ -67,7 +68,7 @@ void    cd(t_cmd *command)
     int     file;
     struct stat buff;
 
-    home = get_environ("HOME=");
+    home = get_environ("HOME");
     file = FALSE;
     if(command->ac == 1)
         changedir(home, file);

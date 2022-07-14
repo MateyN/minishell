@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:18:51 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/07/07 11:55:40 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/07/14 14:45:08 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef struct  s_ms
 }   t_ms;
 
 extern t_ms    g_ms;   //global
-//redirections
 
 typedef struct s_cmd
 {
@@ -54,6 +53,26 @@ typedef struct s_cmd
     struct s_cmd    *next;
     struct s_cmd    *prev;
 }   t_cmd;
+
+typedef struct s_redir
+{
+	int	infile;
+	int	outfile;
+	int	fd[2];
+	int	pid;
+}	t_redir;
+
+typedef struct s_lst
+{
+	struct	s_cmd	*head;
+	struct	s_redir	*redir;
+	char	**tab;
+	int		nb_arg;
+	int		redir_in; // <
+	int		heredoc; // <<
+	int		redir_out; // > & >>
+	int		pipe;
+}	t_lst;
 
 int     exec_builtin(t_cmd *command, int flag);
 int     check_builtin(char *cmd);
@@ -67,12 +86,12 @@ void    pwd(void);
 void    env(void);
 
 void	output_envp(void);
-void	handle_export(char *av);
-void	export_error(char *av);
+static void	handle_export(char *av);
+static void	export_error(char *av);
 void	update_environ(char *key, char *new_val);
 void	set_new_env(char *new_val, char *key);
 char	*get_nval(char *key, char *str);
-char	*get_key(char *cmd, int start);
+static char	*get_key(char *cmd, int start);
 void	export(t_cmd *command);
 
 void    echo(t_cmd *command);
@@ -83,6 +102,11 @@ int     check_exit(char *str);
 void    ft_exit(t_cmd *command);
 
 void    ft_error(void);
+
+void    unset(t_cmd *command);
+static void unset_handle(char *av);
+static void    unset_environ(int index);
+static void    unset_error(char *error);
 
 char    *get_environ(char *key);
 void    join_environ(char *key, char **tmp);

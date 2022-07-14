@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 12:03:26 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/09 09:03:36 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/07/07 12:27:11 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,25 @@ void    echo(t_cmd *command)
 {
     char    option;
     int     i;
-    //int     str;
+    int     str;
 
     i = 0;
-    //str = 0;
+    str = 0;
     option = 0;
     while (command->av[++i])
     {
-        while (check_option(command, i, &option))
+        while (!str && check_option(command, i, &option))
             i++;
         if (command->av[i] == NULL)
             break ;
         printf("%s", command->av[i]);
-        if (command->av[i] != NULL)
+		str = 1;
+        if (command->av[i + 1] != NULL)
             printf(" ");
        	g_ms.exit = 0;
     }
-    if (i > 0)
+    if (option != 'n')
 	printf("\n");
+	g_ms.exit = 0;
     return ;
 }

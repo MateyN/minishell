@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 14:07:39 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/16 15:09:17 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/07/11 10:43:40 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	prompt_handle(void)
 		test.cmd = test.av[0];
 		if (check_builtin(test.cmd) == TRUE)
 			exec_builtin(&test, 1);
+        add_history(shell);
 		//while (*(test.av))
 			//printf("%s\n", *(test.av++));
 	}
