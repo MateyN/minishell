@@ -27,5 +27,4 @@ void 	init_struct(t_lst *li, char **tab)
 	li->pipe = check_pipe(li->tab);
 	li->head = NULL;
 	tab = NULL;
-	li->redir->limiter = NULL;
 }

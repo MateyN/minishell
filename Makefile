@@ -6,7 +6,7 @@
 #    By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/14 18:02:56 by rmamison          #+#    #+#              #
-#    Updated: 2022/06/24 11:05:46 by rmamison         ###   ########.fr        #
+#    Updated: 2022/07/21 14:09:29 by rmamison         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRC =	main.c \
 	jud/free_utils.c \
 	jud/redirection_parse.c \
 	jud/treat_quote_dollar.c \
-	jud/heredoc.c \
+#	jud/heredoc.c \
 	
 SRCS = $(addprefix srcs/, $(SRC))
 DIR_S = srcs

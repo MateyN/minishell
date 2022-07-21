@@ -1,5 +1,5 @@
 #include "minishell.h"
-
+/*
 static int	token_exist(char *s);
 
 void	push_tab(char **tab, char *data)
@@ -25,7 +25,7 @@ void	redim_tab(t_lst **li, int token, char **dest, int *pos)
 		while ((*li)->tab[before])
 		{
 			(*li)->tab[time++] = (*li)->tab[before];
-			(*li)->tab[before++] == NULL;
+			(*li)->tab[before++] = NULL;
 		}
 	}
 	else 
@@ -42,7 +42,7 @@ int	count_limiter(char **tab, int i, int token)
 	int	ret;
 
 	ret = 0;
-	while (tab[i] && tab[i] != "|")
+	while (tab[i] && tab[i][0] != '|')
 	{
 		if (token_exist(tab[i]) == token)
 			ret++;
@@ -80,9 +80,28 @@ void	take_limiter(t_lst **li, int *pos, int	token)
 	else if (token == REDIR_OUT_S || token == REDIR_OUT_D)
 		(*li)->redir->outfile = redir;
 	--(*pos);
+}*/
+
+int	quote_exist(char *s)
+{
+	int	i;
+
+	i = -1;
+	if (!s)
+		return (FALSE);
+	while (s[++i])
+	{
+		if (s[i] == '\'')
+			return (S_QUOTE);
+		else if (s[i] == '\"')
+			return (D_QUOTE);
+		else if (s[i] == '$')
+			return (DOLLAR);
+	}
+	return (FALSE); 
 }
 
-static int	token_exist(char *s)
+int	redir_exist(char *s)
 {
 	int	i;
 
@@ -96,13 +115,9 @@ static int	token_exist(char *s)
 		else if (s[i] == '<') 		//PRIORI 2
 			return (REDIR_IN);
 		else if (s[i] == '>' && s[i + 1] == '>') //LAST 3
-			return (REDIR_OUT_S);
-		else if (s[i] == '>')			//LAST 3
 			return (REDIR_OUT_D);
-		else if (s[i] == '\'')
-			return (S_QUOTE);
-		else if (s[i] == '\"' || s[i] == '$')
-			return (D_QUOTE);
+		else if (s[i] == '>')			//LAST 3
+			return (REDIR_OUT_S);
 	}
 	return (FALSE); 
 }
@@ -110,22 +125,18 @@ static int	token_exist(char *s)
 void	handle_action(t_lst *li)
 {
 	int	i;
-	int 	token;
+	int 	flag;
 	char	*temp;
 
 	i = -1;
 	temp = NULL;
 	while (li->tab[++i])
 	{
-		token = token_exist(li->tab[i]);
-		if (token  == S_QUOTE)// ('')
+		flag = quote_exist(li->tab[i]);
+		if (flag  == S_QUOTE)// ('')
 			temp = news_s_quote(li->tab[i]);
-		else if (token == D_QUOTE)//treat ("") & ("$") & ($)
+		else if (flag == D_QUOTE || flag == DOLLAR)//treat ("") & ("$") & ($)
 			temp = news_d_quote(li->tab[i]);
-		else if (token && token != REDIR_IN) //TO DO free LIMITER & T_REDIR///
-			take_limiter(&li, &i, token);
-		//else if (token == REDIR_IN)
-			//TO DO
 		if (temp)
 		{
 			free(li->tab[i]);
@@ -133,15 +144,6 @@ void	handle_action(t_lst *li)
 			temp = NULL;
 		}
 	}
-/*	i = 0;
-	if (li->redir->limiter[i])
-	{
-		while (li->redir->limiter[i])
-			printf("---limiter---\n%s\n", li->redir->limiter[i++]);}
-//	i = 0;
-//	while (li->redir->outfile[i])
-//		printf("---outfile---\n%s\n", li->redir->outfile[i++]);
-*/
 }
 
 

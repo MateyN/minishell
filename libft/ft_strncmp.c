@@ -6,23 +6,20 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 13:57:59 by rmamison          #+#    #+#             */
-/*   Updated: 2021/11/04 18:47:23 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/07/21 11:10:22 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	unsigned char	cs1;
-	unsigned char	cs2;
-
+	if (!s1 || !s2)
+		return (0);
 	while (n-- > 0)
 	{
-		cs1 = (unsigned char) *s1++;
-		cs2 = (unsigned char) *s2++;
-		if (cs1 != cs2)
-			return (cs1 - cs2);
-		if (cs1 == '\0')
+		if (*s1 != *s2++)
+			return ((unsigned char *)s1 - (unsigned char *)s2);
+		if (*s1++ == '\0')
 			return (0);
 	}
 	return (0);

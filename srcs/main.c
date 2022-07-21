@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 14:07:39 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/07/13 17:10:19 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/07/21 18:45:44 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,8 @@ void	getprompt(char **shell)
 void	prompt_handle(void)
 {
 	t_lst	li;
-	t_redir *red;
 	char	*shell;
 	
-	red = malloc(sizeof(*red));
-	li.redir = red;
 	while (1)
 	{
 		getprompt(&shell);
@@ -59,14 +56,10 @@ void	prompt_handle(void)
 		{
 			init_struct(&li, lex_split(shell, ' '));
 			handle_action(&li);
-			if (li.pipe > 0)
-				take_tab(&li);
-			if (check_builtin(*li.tab) == TRUE)
-				exec_builtin(&li, 1);
-		//	free_tab(li.tab);
-			li.tab = NULL;
-			if (li.head)
-				free_list(&li);
+			take_tab(&li);
+			if (check_builtin(li.head->cmd) == TRUE)
+				exec_builtin(li.head->av, 1);
+			free_all(&li);
 		}
 		free(shell);
 	}

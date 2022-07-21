@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 12:03:41 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/09 09:08:20 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/07/21 17:50:29 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ int    check_builtin(char *cmd)
     return (FALSE);
 }
 
-int     exec_builtin(t_lst *command, int flag)
+int     exec_builtin(char **av, int flag)
 {
-	if (!ft_strncmp(command->tab[0], "echo", ft_strlen(command->tab[0])))
-		echo(command);/*
+	if (!ft_strncmp(av[0], "echo", ft_strlen(av[0])))
+		echo(av);/*
         else if (!ft_strncmp(command->cmd, "cd", ft_strlen(command->cmd)))
         	cd(command);
         else if (!ft_strncmp(command->cmd, "env", ft_strlen(command->cmd)))

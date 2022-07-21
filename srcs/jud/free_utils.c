@@ -21,3 +21,10 @@ void	free_list(t_lst *li)
 	while (li->head)
 		delete_first(li);
 }
+
+void	free_all(t_lst *li)
+{
+	free_tab(li->tab);
+	li->tab = NULL;
+	free_list(li);
+}
