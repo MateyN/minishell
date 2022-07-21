@@ -1,4 +1,21 @@
-/* ************************************************************************** */
+#include "libft.h"
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	unsigned char	str1;
+	unsigned char	str2;
+
+	while (1)
+	{
+		str1 = (unsigned char) *s1++;
+		str2 = (unsigned char) *s2++;
+		if (str1 != str2)
+			return (str1 - str2);
+		if (str1 == '\0')
+			return (0);
+	}
+	return (0);
+}/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
@@ -10,41 +27,47 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
-
-static void	file_in_out(char *argv, char *path, t_pipex *pipex)
+#include "minishell.h"
+/*
+static void	file_in_out(t_lst *li)
 {
-	pipex->infile = open(path, O_RDONLY);
+
+	li->redir->limiter = open(path, O_RDONLY);
 	if (pipex->infile < 0)
 	{	
 		unlink(path);
 		msg_error("Error: infile");
 	}
-	pipex->outfile = open(argv, O_CREAT | O_WRONLY | O_APPEND, 0777);
+	li->redir->outfile = open(li->redir, O_CREAT | O_WRONLY | O_APPEND, 0777);
 	if (pipex->outfile < 0)
 		msg_error("Error: outfile");
 }
+*/
 
-void	here_doc(int argc, char **argv, t_pipex *pipex)
+void	here_doc(t_lst *li)
 {
-	int		file_temp;
-	char	*limiter;
+	int	file_temp;
 	char	*temp;
+	int	i;
 
-	file_temp = open(".heredoc", O_CREAT | O_WRONLY | O_TRUNC, 00777);
+	file_temp = open(".heredoc", O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	if (file_temp < 0)
-		msg_error("Error: file_temp_here_doc");
-	pipex->here_doc = 1;
+		msg_error("Error: file_temp_here_doc\n", 0, NULL);
+	i = 0;
 	temp = NULL;
-	limiter = argv[actu + 1];
 	while (1)
 	{
 		write(1, "> ", 2);
 		temp = get_next_line(0);
 		if (!temp)
 			exit(1);
-		if (!ft_strncmp(limiter, temp, ft_strlen(limiter)))
-			break ;
+		if (!ft_strcmp(li->redir->limiter[i], temp))
+		{
+			printf("je pass \n");
+			i++;
+			if (!li->redir->limiter[i])
+				break ;
+		}
 		write(file_temp, temp, ft_strlen(temp));
 		write(file_temp, "\n", 1);
 		free(temp);
@@ -52,5 +75,5 @@ void	here_doc(int argc, char **argv, t_pipex *pipex)
 	if (temp)
 		free(temp);
 	close(file_temp);
-	file_in_out(argv[argc - 1], ".heredoc", pipex);
+	//file_in_out(argv[argc - 1], ".heredoc", pipex);
 }

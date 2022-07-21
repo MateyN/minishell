@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+static char	*handle_sign(char *s, int *i);
+
 static int      len_var(char    *s, int i)
 {
 	int     ret;
@@ -12,32 +14,8 @@ static int      len_var(char    *s, int i)
 }
 /*-----------------------------------*/
 
-static char *news_s_quote(char *s)
-{	
-	int	i;
-	int	j;
-	int	quote;
-	char	*temp;
 
-	i = -1;
-	quote = 0;
-	while (s[++i])
-		if (s[i] == '\'')
-			quote++;
-	temp = malloc(sizeof(char) * ((i - quote) + 1));
-	if (!temp)
-		return (NULL);
-	i = -1;
-	j = 0;
-	while (s[++i])
-		if (s[i] != '\'')
-			temp[j++] = s[i];
-	temp[j] = '\0';
-	return (temp);		
-}
-/*-----------------------------------*/
-
-int	len_d_quote(char *s)
+static int	len_d_quote(char *s)
 {
 	int	i;
 	int	quote;
@@ -69,7 +47,21 @@ int	len_d_quote(char *s)
 }
 /*-----------------------------------*/
 
-char	*take_val_var(char *s)
+static int	recheck_cmp(char *env, char *temp)
+{
+	int	i;
+	
+	i = -1;
+	while (env[++i] && env[i] != '=')
+		;
+	if (ft_strncmp(env, temp, i) == 0)
+		return (TRUE);
+	else 
+		return (FALSE);
+}
+	/*-------------------*/
+
+static char	*take_val_var(char *s)
 {
 	int	i;
 	int	j;
@@ -93,21 +85,7 @@ char	*take_val_var(char *s)
 }
 /*-----------------------------------*/
 
-static int	recheck_cmp(char *env, char *temp)
-{
-	int	i;
-	
-	i = -1;
-	while (env[++i] && env[i] != '=')
-		;
-	if (ft_strncmp(env, temp, i) == 0)
-		return (TRUE);
-	else 
-		return (FALSE);
-}
-	/*-------------------*/
-
-char	*handle_sign(char *s, int *i)
+static char	*handle_sign(char *s, int *i)
 {
 	char	*temp;
 	int	j;
@@ -137,8 +115,32 @@ char	*handle_sign(char *s, int *i)
 }
 /*-----------------------------------*/
 
+char *news_s_quote(char *s)
+{	
+	int	i;
+	int	j;
+	int	quote;
+	char	*temp;
 
-static char	*news_d_quote(char *s)
+	i = -1;
+	quote = 0;
+	while (s[++i])
+		if (s[i] == '\'')
+			quote++;
+	temp = malloc(sizeof(char) * ((i - quote) + 1));
+	if (!temp)
+		return (NULL);
+	i = -1;
+	j = 0;
+	while (s[++i])
+		if (s[i] != '\'')
+			temp[j++] = s[i];
+	temp[j] = '\0';
+	return (temp);		
+}
+/*-----------------------------------*/
+
+char	*news_d_quote(char *s)
 {
 	int	i;
 	int	j;
@@ -173,39 +175,3 @@ static char	*news_d_quote(char *s)
 	return (temp);
 }
 
-static int	quote_exist(char *s)
-{
-	int	i;
-
-	i = -1;
-	while (s[++i])
-	{
-		if (s[i] == '\'')
-			return (S_QUOTE);
-		else if (s[i] == '\"' || s[i] == '$')
-			return (D_QUOTE);
-	}
-	return (FALSE); 
-}
-
-void	handle_action(t_lst *li)
-{
-	int	i;
-	char	*temp;
-
-	i = -1;
-	temp = NULL;
-	while (li->tab[++i])
-	{
-		if (quote_exist(li->tab[i]) == S_QUOTE)
-			temp = news_s_quote(li->tab[i]);
-		else if (quote_exist(li->tab[i]) == D_QUOTE)
-			temp = news_d_quote(li->tab[i]);
-		if (temp)
-		{
-			free(li->tab[i]);
-			li->tab[i] = temp;
-			temp = NULL;
-		}
-	}
-}

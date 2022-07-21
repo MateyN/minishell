@@ -3,38 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/26 11:13:45 by mnikolov          #+#    #+#             */
-/*   Updated: 2021/11/10 13:56:32 by mnikolov         ###   ########.fr       */
+/*   Created: 2021/10/21 15:13:27 by rmamison          #+#    #+#             */
+/*   Updated: 2022/05/04 23:11:09 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "libft.h"
 
 int	ft_atoi(const char *str)
-
 {
-	int				i;
-	long long int	n;
-	int				sign;
+	int	conv;
+	int	negative;
 
-	i = 0;
-	n = 0;
-	sign = 1;
-	while (str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
-		|| str[i] == '\f' || str[i] == '\r' || str[i] == ' ')
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	conv = 0;
+	negative = 1;
+	while ((*str >= '\t' && *str <= '\r') || *str == ' ')
+		str++;
+	if (*str == '+' || *str == '-')
 	{
-		if (str[i] == '-')
-			sign *= -1;
-		i++;
+		if (*str++ == '-')
+			negative = -1;
 	}
-	while (ft_isdigit(str[i]))
-	{
-		n = n * 10 + str[i] - '0';
-		i++;
-	}
-	return (n * sign);
+	while (*str && (ft_isdigit(*str)))
+		conv = conv * 10 + (*str++ - '0');
+	return (conv * negative);
 }

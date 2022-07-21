@@ -3,64 +3,77 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/10 12:39:04 by mnikolov          #+#    #+#             */
-/*   Updated: 2021/11/10 13:58:55 by mnikolov         ###   ########.fr       */
+/*   Created: 2021/10/29 11:12:30 by rmamison          #+#    #+#             */
+/*   Updated: 2022/04/15 18:56:34 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_count(char const *s, char c)
+static int	count(const char *s, char c)
 {
-	size_t	ret;
-	size_t	i;
+	int	i;
+	int	def;
 
-	ret = 0;
 	i = 0;
-	while (s[i])
+	def = 0;
+	while (*s)
 	{
-		if ((!s[i + 1] || s[i + 1] == c) && s[i] != c)
-			ret++;
-		i++;
+		if (*s != c && def == 0)
+		{
+			def = 1;
+			i++;
+		}
+		else if (*s == c)
+			def = 0;
+		s++;
 	}
-	return (ret + 1);
+	return (i);
 }
 
-char	**ft_free(char **s, size_t i)
+static char	*word_dup(char const *s, int deb, int fin)
 {
-	while (i--)
-		free(s[i]);
-	free(s);
-	return (NULL);
+	char	*word;
+	int		i;
+
+	if (!s)
+		return (NULL);
+	i = 0;
+	word = (char *) malloc (sizeof(char) * (fin - deb + 1));
+	if (!word)
+		return (NULL);
+	while (deb < fin)
+		word[i++] = s[deb++];
+	word[i] = '\0';
+	return (word);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	size_t	len;
-	char	**ret;
-	size_t	i;
+	int		deb;
+	int		fin;
+	size_t	j;
+	char	**tab;
 
-	if (!s)
+	tab = (char **) malloc (sizeof(char *) * (count(s, c) + 1));
+	if (!tab || !s)
 		return (NULL);
-	ret = (char **)malloc(sizeof(char *) * ft_count(s, c));
-	if (!ret)
-		return (NULL);
-	i = 0;
-	while (*s)
+	deb = -1;
+	fin = 0;
+	j = 0;
+	while (fin <= (int)ft_strlen(s))
 	{
-		while (*s == c)
-			s++;
-		len = 0;
-		while (s[len] && s[len] != c)
-			len++;
-		if (len)
-			ret[i] = ft_substr(s, 0, len);
-		if (len && !ret[i++])
-			return (ft_free(ret, i));
-		s += len;
+		if (s[fin] != c && deb < 0)
+			deb = fin;
+		else if ((s[fin] == c || fin == (int)ft_strlen(s)) && deb >= 0)
+		{
+			tab[j++] = word_dup (s, deb, fin);
+			deb = -1;
+		}
+		fin++;
 	}
-	ret[i] = NULL;
-	return (ret);
+	tab[j] = 0;
+	return (tab);
 }

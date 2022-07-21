@@ -22,11 +22,13 @@ SRC =	main.c \
 	utils/errors.c \
 	jud/check_input.c \
 	jud/lexical_split.c \
-	jud/treat_input.c \
+	jud/analyse_lexical.c \
 	jud/init_struct.c \
 	jud/list_utils.c \
 	jud/free_utils.c \
 	jud/redirection_parse.c \
+	jud/treat_quote_dollar.c \
+	jud/heredoc.c \
 	
 SRCS = $(addprefix srcs/, $(SRC))
 DIR_S = srcs

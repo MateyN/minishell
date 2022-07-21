@@ -31,7 +31,7 @@ static int	error_redirection(char *s, int *i)
 	int 	redir;
 
 	error = 0;
-	redir = 1;
+	redir = 0;
 	c = s[*i];
 	while (s[*i] == c)
 	{

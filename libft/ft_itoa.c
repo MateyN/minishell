@@ -3,63 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/04 12:52:07 by mnikolov          #+#    #+#             */
-/*   Updated: 2021/11/16 13:54:43 by mnikolov         ###   ########.fr       */
+/*   Created: 2021/11/02 11:53:10 by rmamison          #+#    #+#             */
+/*   Updated: 2022/04/09 10:51:13 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_len(int nbr)
-
+static int	count(int nb)
 {
-	int	len;
+	int	i;
 
-	if (nbr <= 0)
-		len = 1;
-	else
-		len = 0;
-	while (nbr != 0)
+	i = 0;
+	if (nb < 0 || nb == 0)
+		i = 1;
+	while (nb != 0)
 	{
-		nbr = nbr / 10;
-		len++;
-	}
-	return (len);
+		i++;
+		nb /= 10;
+	}	
+	return (i);
 }
 
-int	ft_pos_help(int nbr)
+static void	convnbr(long nb, char *str, int *i)
 {
-	if (nbr < 0)
-		return (-nbr);
+	if (nb > 9)
+	{
+		convnbr(nb / 10, str, i);
+		convnbr(nb % 10, str, i);
+	}
 	else
-		return (nbr);
+		str[(*i)++] = nb + '0';
 }
 
 char	*ft_itoa(int n)
 {
-	int		sign;
-	int		len;
-	char	*res;
+	int		i;
+	long	nb;
+	char	*str;
 
-	if (n < 0)
-		sign = -1;
-	else
-		sign = 1;
-	len = ft_len(n);
-	res = (char *)malloc(sizeof(char) * len + 1);
-	if (res == NULL)
-		return (0);
-	res[len] = '\0';
-	len--;
-	while (len >= 0)
-	{
-		res[len] = '0' + ft_pos_help(n % 10);
-		n = ft_pos_help(n / 10);
-		len--;
+	nb = n;
+	str = (char *)malloc(sizeof(char) * (count(n) + 1));
+	if (!str)
+		return (NULL);
+	if (nb == 0)
+		str[0] = '0';
+	i = 0;
+	if (nb < 0)
+	{	
+		str[i++] = '-';
+		nb *= -1;
 	}
-	if (sign == -1)
-		*res = '-';
-	return (res);
+	convnbr(nb, str, &i);
+	str[i] = '\0';
+	return (str);
 }

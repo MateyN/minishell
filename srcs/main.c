@@ -47,8 +47,11 @@ void	getprompt(char **shell)
 void	prompt_handle(void)
 {
 	t_lst	li;
+	t_redir *red;
 	char	*shell;
-
+	
+	red = malloc(sizeof(*red));
+	li.redir = red;
 	while (1)
 	{
 		getprompt(&shell);
@@ -60,7 +63,7 @@ void	prompt_handle(void)
 				take_tab(&li);
 			if (check_builtin(*li.tab) == TRUE)
 				exec_builtin(&li, 1);
-			free_tab(li.tab);
+		//	free_tab(li.tab);
 			li.tab = NULL;
 			if (li.head)
 				free_list(&li);
