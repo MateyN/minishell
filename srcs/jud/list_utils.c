@@ -38,7 +38,7 @@ void	delete_redir(t_redir *node)
 	}
 }
 
-void	delete_first(t_lst *li)
+void	delete_first(t_lst **li)
 {
 
 	t_cmd *temp;	
@@ -46,10 +46,10 @@ void	delete_first(t_lst *li)
 
 	new = NULL;
 	temp = NULL;
-	if (!li->head)
+	if (!(*li)->head)
 		return ;
-	temp = li->head;
-	while (temp != NULL)
+	temp = (*li)->head;
+	if (temp != NULL)
 	{
 		new = temp->next;
 		if (new)
@@ -59,9 +59,8 @@ void	delete_first(t_lst *li)
 		free(temp->av);
 		temp->av = NULL;
 		temp->cmd = NULL;
-		free(li->head);
-		li->head = new;
-		temp = li->head;
+		free((*li)->head);
+		(*li)->head = new;
 	}
 }
 
@@ -116,6 +115,8 @@ char	**take_argv(char **tab, int *pos, t_cmd *node)
 	i = 0;
 	while (tab[*pos] && ft_strcmp(tab[*pos], "|") != 0)
 	{
+		if (redir_exist(tab[*pos]) == HEREDOC && !tab[*pos + 1])
+			break ;
 		if (redir_exist(tab[*pos]))
 				(*pos) += 2;
 		else	   	

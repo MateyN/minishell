@@ -2,15 +2,13 @@
 //cette fonction dois verifier aussi les chaines qui ne sont pas dans les quotes
 int     check_pipe(char **tab)
 {
-	//pipe ne doit pas Ãtre a l'intÃrieur des quotes
-
 	int     i;
 	int	j;
 	
-	j = -1;
 	i = 0;
+	j = -1;
  	while (tab[++j])
-		if (tab[j][0] == '|')
+		if (ft_strcmp(tab[j], "|") == 0)
 			i++;
 	return (i);
 }
@@ -26,5 +24,7 @@ void 	init_struct(t_lst *li, char **tab)
 		li->nb_arg++;
 	li->pipe = check_pipe(li->tab);
 	li->head = NULL;
+	li->outfile = 0;
+	li->infile = 0;
 	tab = NULL;
 }

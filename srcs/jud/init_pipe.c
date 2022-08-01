@@ -10,41 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "minishell.h"
 
-static void	init_redirection(t_lst	*li)
-{
-	if (li->heredoc == 1)
-		here_doc(argc, argv, pipex);
-	else
-	{
-		pipex->infile = open(argv[1], O_RDONLY);
-		if (pipex->infile < 0)
-			msg_error("Error: infile");
-		pipex->outfile = open(argv[argc - 1], \
-				O_TRUNC | O_CREAT | O_RDWR, 0644);
-		if (pipex->outfile < 0)
-			msg_error("Error: outfile");
-	}
-	pipex->path = NULL;
-	pipex->cmd = NULL;
-	pipex->nb_cmd = argc - (3 + pipex->here_doc);
-	pipex->nb_pipe = 2 * (pipex->nb_cmd - 1);
-	pipex->cmd_arg = NULL;
-}
-
-static void	pipe_init(t_pipex *pipex)
+void	init_pipe(t_lst *li)
 {
 	int	i;
 
-	i = 0;
-	while (i < pipex->nb_cmd - 1)
+	li->tube_fd = malloc(sizeof(int) * li->pipe);
+	if (!li->tube_fd)
 	{
-		if (pipe(pipex->tube + (i * 2)) < 0)
+		msg_error("error: allocaion tube_fd\n", 0, NULL);
+		exit(EXIT_FAILURE);
+	}
+	i = 0;
+	while (i < li->pipe)
+	{
+		if (pipe(li->tube_fd + (i * 2)) < 0)
 		{
-			free_pipex(pipex, ALL);
-			msg_error("Error: pipe_init");
+			//free_pipex(pipex, ALL);
+			msg_error("Error: function pipe\n", 0, NULL);
 		}
+		if (i == li->pipe -1)
+			break ;
 		i++;
 	}
 }

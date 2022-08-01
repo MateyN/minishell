@@ -28,7 +28,9 @@ SRC =	main.c \
 	jud/free_utils.c \
 	jud/redirection_parse.c \
 	jud/treat_quote_dollar.c \
-#	jud/heredoc.c \
+	jud/heredoc.c \
+	jud/exec.c \
+	jud/init_pipe.c \
 	
 SRCS = $(addprefix srcs/, $(SRC))
 DIR_S = srcs
@@ -39,7 +41,7 @@ INCLUDE = -I includes/ -I libft/ \
 READLINE_LIB = -L /Users/$(USER)/.brew/Cellar/readline/8.1.2/lib -lreadline
 LIB_LIBFT = libft/libft.a
 
-FLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -g3 -o0 -fsanitize=address
 CC = gcc
 
 RM = rm -rf

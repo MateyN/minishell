@@ -19,6 +19,7 @@ void	print_list(t_lst *li)
 	int	i;
 
 	t_cmd *temp;
+	t_redir *red;
 
 	temp = li->head;
 	if (!li->head)
@@ -33,6 +34,16 @@ void	print_list(t_lst *li)
 		while (temp->av[++i])
 			printf("%s\n", temp->av[i]);
 		printf("------\n\n");
+		i = -1;
+		red = temp->redir;
+		if (!red)
+			printf("EMPTY =>> REDIR\n");
+		else{
+		while (red)
+		{
+			printf("REDIR SIGN NAME:\n------\n%s\n", red->name);
+			red = red->next;
+		}}
 		temp = temp->next;
 	}
 	
@@ -48,7 +59,9 @@ void	prompt_handle(void)
 {
 	t_lst	li;
 	char	*shell;
+	int	id;
 	
+	li.head = NULL;
 	while (1)
 	{
 		getprompt(&shell);
@@ -57,11 +70,15 @@ void	prompt_handle(void)
 			init_struct(&li, lex_split(shell, ' '));
 			handle_action(&li);
 			take_tab(&li);
-			if (check_builtin(li.head->cmd) == TRUE)
-				exec_builtin(li.head->av, 1);
+			//print_list(&li);
+			if (!(id = exec_process(&li)))
+				;//to_do save error id
+			//print_list(&li);
 			free_all(&li);
 		}
 		free(shell);
+	//	if (li.head)
+	//		print_list(&li);
 	}
 }
 

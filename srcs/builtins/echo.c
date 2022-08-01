@@ -42,10 +42,9 @@ void    echo(char **av)
 {
     char    option;
     int     i;
-    //int     str;
-
+    int	fd;
+	
     i = 0;
-    //str = 0;
     option = 0;
     while (av[++i])
     {
@@ -53,7 +52,7 @@ void    echo(char **av)
             i++;
         if (av[i] == NULL)
             break ;
-        printf("%s", av[i]);
+        printf(av[i]);
         if (av[i] != NULL)
             printf(" ");
        	g_ms.exit = 0;

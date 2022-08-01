@@ -144,6 +144,9 @@ void	handle_action(t_lst *li)
 			temp = NULL;
 		}
 	}
+	/*i = 0;
+	while (li->tab[i])
+		printf("tab=> %s\n", li->tab[i++]);*/
 }
 
 

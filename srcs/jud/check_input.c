@@ -36,17 +36,19 @@ static int	error_redirection(char *s, int *i)
 	while (s[*i] == c)
 	{
 		++redir;
-		if (redirection(s[*i + 1]) && s[*i + 1] != s[*i])
+		if (redirection(s[*i + 1]) && s[*i + 1] != s[*i] && c != '|')
 			error = s[*i + 1];
 		else if (s[*i + 1] == ' ')
 		{
 			while (s[++(*i)] && s[*i] == ' ')
 				;
-			if (redirection(s[*i]))
+			if (redirection(s[*i]) && c != '|')
 				error = s[*i];
 		}
 		else if (redir > 2 || (redir == 2 && c == '|'))
 			error = s[*i];
+		else if (redir == 2 && c == '<' && !s[*i])
+			break ;
 		if (error)
 		{
 			msg_error("minishel: syntax error near unexpected token `", error, "\"\n");
@@ -62,7 +64,7 @@ int	error_exist(char *s)
 {	
 	int		i;
 
-	if (redirection(s[ft_strlen(s) - 1]))
+	if (redirection(s[ft_strlen(s) - 1]) && s[ft_strlen(s) - 2] != '<')
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
 		return (TRUE);

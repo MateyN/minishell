@@ -1,79 +1,124 @@
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
+void	zero_newline(char **old)
 {
-	unsigned char	str1;
-	unsigned char	str2;
+	char	*s;
+	int	i;
+	
+	s = ft_strdup(*old);
+	free(*old);
+	i = -1;
+	while (s[++i] && s[i] != '\n')
+		;
+	s[i] = '\0';
+	*old = s;
+}
 
-	while (1)
+int	count_heredoc(t_lst *li)
+{
+	int	ret;
+	t_cmd 	*temp;
+	t_redir *red;
+
+	temp = li->head;
+	ret = 0;
+	while (temp)
+	{	
+		red = temp->redir;
+		while (red)
+		{
+			if (red->sign == HEREDOC)
+				ret++;
+			red = red->next;
+		}
+		temp = temp->next;
+	}
+	return (ret);
+}
+
+int	push_redir(t_cmd **node, t_redir **ret_redir, int flag)
+{
+	t_redir	*red;
+	
+	*ret_redir = NULL;
+	while (*node)
 	{
-		str1 = (unsigned char) *s1++;
-		str2 = (unsigned char) *s2++;
-		if (str1 != str2)
-			return (str1 - str2);
-		if (str1 == '\0')
+		red = (*node)->redir;
+		while (red && red->sign != flag)
+			red = red->next;
+		if (!red && flag != HEREDOC)
 			return (0);
+		if (red && red->sign == HEREDOC && red->name == NULL)
+			return (0);
+		else if (red && red->sign == flag)
+		{
+			*ret_redir = red;
+			return (1);
+		}
+		else if (flag == HEREDOC)
+			*node = (*node)->next;
 	}
 	return (0);
-}/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   here_doc.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/16 19:17:25 by rmamison          #+#    #+#             */
-/*   Updated: 2022/07/13 17:20:27 by rmamison         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+}
 
-#include "minishell.h"
-/*
-static void	file_in_out(t_lst *li)
+void	check_limiter(t_redir *red, char *s, int *i, int *time)
 {
 
-	li->redir->limiter = open(path, O_RDONLY);
-	if (pipex->infile < 0)
-	{	
-		unlink(path);
-		msg_error("Error: infile");
+	if (red->sign == HEREDOC)
+	{
+		if (ft_strcmp(red->name, s) == 0)
+		{
+			red->sign = 0;
+			(*i)++;
+			(*time) = 1;
+		}
 	}
-	li->redir->outfile = open(li->redir, O_CREAT | O_WRONLY | O_APPEND, 0777);
-	if (pipex->outfile < 0)
-		msg_error("Error: outfile");
+	return ;
 }
-*/
 
-void	here_doc(t_lst *li)
+int	here_doc(t_cmd *node, int nb)
 {
 	int	file_temp;
 	char	*temp;
 	int	i;
+	int	time;
+	t_cmd	*temp_node;
+	t_redir	*node_lim;
 
+	temp_node = node;
 	file_temp = open(".heredoc", O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	if (file_temp < 0)
 		msg_error("Error: file_temp_here_doc\n", 0, NULL);
-	i = 0;
 	temp = NULL;
+	i = 0;
+	time = 1;
 	while (1)
 	{
+		if (time  == 1)
+		{
+			if (!push_redir(&temp_node, &node_lim, HEREDOC))
+			{
+				ft_putstr_fd("minishell: syntax error near unexpectead token `newline'\n", 2);	
+				return (-1);
+			}
+			time = 0;
+		}
 		write(1, "> ", 2);
 		temp = get_next_line(0);
+		zero_newline(&temp);
 		if (!temp)
 			exit(1);
-		if (!ft_strcmp(li->redir->limiter[i], temp))
-		{
-			printf("je pass \n");
-			i++;
-			if (!li->redir->limiter[i])
-				break ;
-		}
+		check_limiter(node_lim, temp, &i, &time);
+		if (i == nb)
+			break ;
 		write(file_temp, temp, ft_strlen(temp));
 		write(file_temp, "\n", 1);
 		free(temp);
 	}
 	if (temp)
 		free(temp);
+	unlink(".heredoc");
 	close(file_temp);
+	return (1);
 	//file_in_out(argv[argc - 1], ".heredoc", pipex);
 }

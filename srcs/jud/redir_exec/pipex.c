@@ -12,29 +12,6 @@
 
 #include "pipex_bonus.h"
 
-static void	dup_fd(int in, int out, t_pipex *pip)
-{
-	if (dup2(in, 0) < 0)
-	{
-		free_pipex(pip, ALL);
-		msg_error("Error dup2");
-	}
-	if (dup2(out, 1) < 0)
-	{
-		free_pipex(pip, ALL);
-		msg_error("Error dup2");
-	}
-}
-
-static void	close_fd(t_pipex *pipex)
-{
-	int	i;
-
-	i = -1;
-	while (++i < pipex->nb_pipe)
-		close(pipex->tube[i]);
-}
-
 static int	process_child(char **argv, char **envp, t_pipex pipex)
 {
 	pipex.pid = fork();

@@ -14,17 +14,19 @@
 
 int    check_builtin(char *cmd)
 {
-    if (!ft_strncmp("cd", cmd, 3) || !ft_strncmp("echo", cmd, 5) || 
-        !ft_strncmp("env", cmd, 4) || !ft_strncmp("exit", cmd, 5) || 
-        !ft_strncmp("export", cmd, 6) || !ft_strncmp("pwd", cmd, 4) || 
-        !ft_strncmp("unset", cmd, 6))
-        return (TRUE);
+	if (!cmd)
+		return (FALSE);
+    if (!ft_strncmp("cd", cmd, 3) || !ft_strncmp("echo", cmd, 5) ||\
+	!ft_strncmp("env", cmd, 4) || !ft_strncmp("exit", cmd, 5) ||\
+	!ft_strncmp("export", cmd, 6) || !ft_strncmp("pwd", cmd, 4) ||\
+	!ft_strncmp("unset", cmd, 6))
+        	return (TRUE);
     return (FALSE);
 }
 
 int     exec_builtin(char **av, int flag)
 {
-	if (!ft_strncmp(av[0], "echo", ft_strlen(av[0])))
+	if (!ft_strncmp(av[0], "echo", ft_strlen(av[0]) + 1))
 		echo(av);/*
         else if (!ft_strncmp(command->cmd, "cd", ft_strlen(command->cmd)))
         	cd(command);

@@ -22,6 +22,8 @@
 # include <termios.h>
 # include <string.h>
 # include <sys/stat.h>
+# include <sys/wait.h>
+# include <sys/types.h>
 # include <fcntl.h>
 # include <limits.h> //for mac
 # include "../libft/libft.h"
@@ -71,9 +73,8 @@ typedef struct s_redir{
 //	int	infile;
 //	int	outfile;
 //	int	fd[2];
-//	int	pid;
 	int 	pos; 
-	int		sign;
+	int	sign;
 	char	*name;
 	struct	s_redir	*next;
 }	t_redir;
@@ -83,10 +84,13 @@ typedef struct s_lst
 	struct	s_cmd	*head;
 	char	**tab;
 	int		nb_arg;
-	int		redir_in; // <
 	int		heredoc; // <<
-	int		redir_out; // > & >>
+	int		infile; // <
+	int		outfile; // > & >>
 	int		pipe;
+	int		pid;
+	int		*tube_fd;
+	int		times;
 }	t_lst;
 
 void    cd(t_cmd *command);
@@ -114,7 +118,8 @@ void	double_quote(char **tab, int *j, char *s, int *i);
 void	handle_action(t_lst *li);
 void	take_tab(t_lst *li);
 void	free_all(t_lst *li);
-void	delete_first(t_lst *li);
+void	delete_first(t_lst **li);
+void	print_list(t_lst *li);
 	/*Redirection.c SPLIT*/
 int		redir_exist(char *s);
 void	msg_redir(char c);
@@ -125,8 +130,13 @@ void	write_redirection(char **p_word, char *s, int *i);
 int		quote_exist(char *s);
 char	*news_s_quote(char *s);
 char	*news_d_quote(char *s);
-void	here_doc(t_lst *li);
 	/*treat_redirection*/
+int	count_heredoc(t_lst *li);
+int	here_doc(t_cmd *node, int nb);
+int	push_redir(t_cmd **node, t_redir **node_redir, int flag);
+int	std_in_out(t_lst *li, t_redir *redir);
+int	exec_process(t_lst *li);
+void	init_pipe(t_lst *li);
 /*-----------------------------------------------------------------------------*/
 
 # endif
