@@ -70,9 +70,6 @@ typedef struct s_cmd
 }   t_cmd;
 
 typedef struct s_redir{
-//	int	infile;
-//	int	outfile;
-//	int	fd[2];
 	int 	pos; 
 	int	sign;
 	char	*name;

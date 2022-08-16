@@ -71,6 +71,11 @@ int	init_redir(t_cmd *node, t_lst *li)
 	return (0);
 }
 
+int	ft_exec(t_lst *li)
+{
+	
+}
+
 static int	process_daddy(t_lst **li)
 {
 	int	status;	
@@ -105,6 +110,8 @@ static int	process_child(t_lst *li, t_cmd node)
 	}
 	if (check_builtin(node.cmd) == TRUE)
 		exec_builtin(node.av, 1);
+	else
+		ft_exec()
 	close_fd(li);
 	exit(0);
 	/*	if (execv("test_redir/test", li->head->av) == -1)
