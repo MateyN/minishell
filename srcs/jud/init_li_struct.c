@@ -24,7 +24,5 @@ void 	init_struct(t_lst *li, char **tab)
 		li->nb_arg++;
 	li->pipe = check_pipe(li->tab);
 	li->head = NULL;
-	li->outfile = 0;
-	li->infile = 0;
 	tab = NULL;
 }

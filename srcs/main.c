@@ -55,13 +55,8 @@ void	getprompt(char **shell)
 	//return (*shell);
 }
 
-void	prompt_handle(void)
+/*void	prompt_handle(void)
 {
-	t_lst	li;
-	char	*shell;
-	int	id;
-	
-	li.head = NULL;
 	while (1)
 	{
 		getprompt(&shell);
@@ -72,7 +67,7 @@ void	prompt_handle(void)
 			take_tab(&li);
 			//print_list(&li);
 			if (!(id = exec_process(&li)))
-				;//to_do save error id
+				printf("error exec\n");//to_do save error id
 			//print_list(&li);
 			free_all(&li);
 		}
@@ -81,15 +76,36 @@ void	prompt_handle(void)
 	//		print_list(&li);
 	}
 }
+*/
 
 int	main(int ac, char **av, char **envp)
 {
-	//while (*envp)
-	//	printf("%s\n",*envp++);
+	t_lst	li;
+	char	*shell;
+	int	id;
 	(void)ac;
 	(void)av;
+
+	li.head = NULL;
 	g_ms.env_p = envp; //to do//just for test
-    	prompt_handle();
+	while (1)
+	{
+		getprompt(&shell);
+		if (!error_exist(shell)) //quote/redir/;/(\)
+		{
+			init_struct(&li, lex_split(shell, ' '));
+			handle_action(&li);
+			take_tab(&li);
+			//print_list(&li);
+			if (!(id = exec_process(&li)))
+				printf("error exec\n");//to_do save error id
+			//print_list(&li);
+			free_all(&li);
+		}
+		free(shell);
+	//	if (li.head)
+	//		print_list(&li);
+	}
 	g_ms.exit = 1;
 	return (g_ms.exit);
 }

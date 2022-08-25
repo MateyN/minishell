@@ -138,6 +138,9 @@ void	get_list(t_lst **li, int *pos)
 	node->redir = NULL;
 	node->av = take_argv((*li)->tab, pos, node);
 	node->cmd = node->av[0]; 
+	node->infile = 0;
+	node->outfile = 0;
+	node->fd_file = 0;
 	node->next = NULL;
 	if (!(*li)->head)
 	{

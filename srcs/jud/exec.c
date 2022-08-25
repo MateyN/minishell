@@ -1,6 +1,5 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
+
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
@@ -12,130 +11,105 @@
 
 #include "../includes/minishell.h"
 
-void	dup_fd(int fd_in, int fd_out)
+int	ft_exec(t_cmd *node)
 {
-	if (dup2(fd_in, fd_out) < 0)
-		msg_error("error: dup2\n", 0, NULL);
-}
-
-void	close_fd(t_lst *li)
-{
+	char 	**tab;
 	int	i;
 
+	tab = NULL;
+	take_path(&tab, node->cmd);
 	i = -1;
-	while (++i < li->pipe)
-		close(li->tube_fd[i]);
-	if (li->infile)
-		close(li->infile);
-	if (li->outfile)
-		close(li->outfile);
-}
-
-int	std_in_out(t_lst *li, t_redir *redir)
-{
-	if (redir->sign == REDIR_IN)
-		li->infile = open(redir->name, O_RDONLY);
-	else if (redir->sign == REDIR_OUT_S)
-		li->outfile = open(redir->name, O_TRUNC | O_CREAT | O_WRONLY, 0644);
-	else if (redir->sign == REDIR_OUT_D)
-		li->outfile = open(redir->name, O_CREAT | O_WRONLY | O_APPEND, 0644);
-	if (li->infile < 0 || li->outfile < 0)
+	while(tab[++i])
 	{
-		if (redir->sign == REDIR_IN)
+		if (!access(tab[i], X_OK))
 		{
-			msg_error("minishell: ", 0, redir->name);
-			write(2, ": No such file or directory\n", 28);
+			node->cmd = tab[i];
+			if (execve(node->cmd, node->av, g_ms.env_p) == -1)
+			{
+				free_tab(tab);
+				exit(1);
+			}
+			free_tab(tab);
+			return (1);
 		}
-		else
-			msg_error("Error: outfile", 0, "\n");
-		return (0);
 	}
-	if (li->infile > 0 || li->outfile > 0)
-		redir->sign = 0;
-	return (1);
-}
-
-int	init_redir(t_cmd *node, t_lst *li)
-{
-	t_redir	*red;
-
-	red = node->redir;
-	while (red)
-	{
-		if (!red->sign)
-			red = red->next;
-		else if (push_redir(&node, &red, red->sign))
-			if (!std_in_out(li, red))
-				return (-1);
-	}
+	free_tab(tab);
 	return (0);
-}
-
-int	ft_exec(t_lst *li)
-{
-	
 }
 
 static int	process_daddy(t_lst **li)
 {
-	int	status;	
-	
-	waitpid(-1, &status, 0);
-	if (WIFEXITED(status))
+	int	status;
+	int	statuscod;	
+	int	i;
+
+	i = -1;
+	while (++i <= (*li)->pipe)
 	{
-		int statuscod = WEXITSTATUS(status);
-		if (statuscod == 0)
-			;//printf("succes statcode\n");
-		else
-			printf("failure stat code => %d\n", statuscod);
+		waitpid(-1, &status, WCONTINUED);
+		if (WIFEXITED(status))
+		{
+			statuscod = WEXITSTATUS(status);
+			if (statuscod == 0)
+				;//printf("succes process\n")
+			else
+			{
+				printf("failure process => %d\n", statuscod);
+				return (0);
+			}
+		}
 	}
 	return (1);
 }
 
-static int	process_child(t_lst *li, t_cmd node)
+static int	process_child(t_lst *li, t_cmd node, int times)
 {	
-	init_redir(&node, li);
-	if (li->infile)
-		dup_fd(li->infile, STDIN_FILENO);
-	if (li->outfile)
-		dup_fd(li->outfile, STDOUT_FILENO);
-	else if (li->times == 0 && li->pipe)
-		dup_fd(li->tube_fd[1], 1); //close(fd 0)
-	if (li->times > 0) 
+	if (node.infile)
+		dup_fd(node.infile, STDIN_FILENO);
+	if (node.outfile)
+		dup_fd(node.outfile, STDOUT_FILENO);
+	if (times == 0 && li->pipe && !node.outfile)
+		dup_fd(li->tube_fd[times][1], 1); //close(fd 0)
+	if (times > 0) 
 	{
-		if (!li->infile)
-			dup_fd(li->tube_fd[(li->times * 2) - 2], 0);
-		if (li->times != li->pipe && !li->outfile)
-			dup_fd(li->tube_fd[(li->times * 2) + 1], 1);
+		if (!node.infile)
+			dup_fd(li->tube_fd[times - 1][0], 0);
+		if (times != li->pipe && !node.outfile)
+			dup_fd(li->tube_fd[times][1], 1);
 	}
+	close_fd(&node, &li);	
 	if (check_builtin(node.cmd) == TRUE)
 		exec_builtin(node.av, 1);
-	else
-		ft_exec()
-	close_fd(li);
-	exit(0);
-	/*	if (execv("test_redir/test", li->head->av) == -1)
-		{
-			printf("soucis execv\n");
-		}*/
+	else if (node.cmd && !ft_exec(&node))
+	{
+		msg_error("minishell: ", 0, node.av[0]); 
+		ft_putstr_fd(": command not found\n", 2);
+		exit(EXIT_FAILURE);
+	}
+	exit(EXIT_SUCCESS);
 }
 
 int	exec_process(t_lst *li)
 {
-	if (li->pipe)
+	int	status;	
+	int	ret;
+	int	pid[li->pipe + 1];
+	int	times;
+	
+	if(li->pipe)
 		init_pipe(li);
-	if (count_heredoc(li))
-		if (here_doc(li->head, count_heredoc(li)) == -1)
-			return (-1);
-	li->times = -1;
-	while (++(li->times) <= li->pipe)
+	times = -1;
+	init_redir(li->head, li);
+	while (++times <= li->pipe)
 	{
-		li->pid = fork();
-		if (li->pid == -1)
+		pid[times] = fork();
+		if (pid[times] == -1)
 			return (-1);
-		else if (li->pid == 0)
-			process_child(li, *li->head);
+		else if (pid[times] == 0)
+			process_child(li, *li->head, times);
 		delete_first(&li);
 	}
+	close_fd(NULL, &li);
+	unlink(".heredoc");
 	return (process_daddy(&li));
 }

@@ -15,23 +15,25 @@
 void	init_pipe(t_lst *li)
 {
 	int	i;
-
-	li->tube_fd = malloc(sizeof(int) * li->pipe);
+	
+	li->tube_fd = (int **)malloc(sizeof(int *) * li->pipe);
 	if (!li->tube_fd)
 	{
 		msg_error("error: allocaion tube_fd\n", 0, NULL);
 		exit(EXIT_FAILURE);
 	}
-	i = 0;
-	while (i < li->pipe)
+	i = -1;
+	while (++i < li->pipe)
 	{
-		if (pipe(li->tube_fd + (i * 2)) < 0)
+		if(!(li->tube_fd[i] = malloc(sizeof(int) * 2)))
 		{
-			//free_pipex(pipex, ALL);
+			msg_error("error: allocation *tube_fd\n", 0, NULL);
+			exit(EXIT_FAILURE);
+		}
+		if (pipe(li->tube_fd[i]) == -1)
+		{
+			free_pipe(li);
 			msg_error("Error: function pipe\n", 0, NULL);
 		}
-		if (i == li->pipe -1)
-			break ;
-		i++;
 	}
 }

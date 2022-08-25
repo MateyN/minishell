@@ -60,13 +60,16 @@ extern t_ms    g_ms;   //global
 
 typedef struct s_cmd
 {	
-    char    *cmd;
-    char	**av;
-    int		ac;
+    char    		*cmd;
+    char		**av;
+    int			ac;
+    int			fd_file;
+    int			infile; // <
+    int			outfile; // > & >>
     int     		sys_call;
-	struct	s_redir	*redir;
-    struct s_cmd    *next;
-    struct s_cmd    *prev;
+    struct s_redir	*redir;
+    struct s_cmd    	*next;
+    struct s_cmd    	*prev;
 }   t_cmd;
 
 typedef struct s_redir{
@@ -82,11 +85,9 @@ typedef struct s_lst
 	char	**tab;
 	int		nb_arg;
 	int		heredoc; // <<
-	int		infile; // <
-	int		outfile; // > & >>
 	int		pipe;
 	int		pid;
-	int		*tube_fd;
+	int		**tube_fd;
 	int		times;
 }	t_lst;
 
@@ -115,6 +116,8 @@ void	double_quote(char **tab, int *j, char *s, int *i);
 void	handle_action(t_lst *li);
 void	take_tab(t_lst *li);
 void	free_all(t_lst *li);
+void	free_tab(char **tab);
+void	free_pipe(t_lst *li);
 void	delete_first(t_lst **li);
 void	print_list(t_lst *li);
 	/*Redirection.c SPLIT*/
@@ -129,11 +132,15 @@ char	*news_s_quote(char *s);
 char	*news_d_quote(char *s);
 	/*treat_redirection*/
 int	count_heredoc(t_lst *li);
-int	here_doc(t_cmd *node, int nb);
-int	push_redir(t_cmd **node, t_redir **node_redir, int flag);
-int	std_in_out(t_lst *li, t_redir *redir);
+int	here_doc(t_redir *red);
 int	exec_process(t_lst *li);
 void	init_pipe(t_lst *li);
+int	init_redir(t_cmd *node, t_lst *li);
+	/*exec_utils*/
+void	dup_fd(int fd_in, int fd_out);
+void	close_fd(t_cmd *node, t_lst **li);
+void	*take_path(char ***dest, char *cmd);
+
 /*-----------------------------------------------------------------------------*/
 
 # endif

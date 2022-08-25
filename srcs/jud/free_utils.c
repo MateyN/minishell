@@ -21,25 +21,24 @@ void	free_list(t_lst *li)
 	while (li->head)
 		delete_first(&li);
 }
-/*
-void	free_pipe_fd(t_lst *li)
+
+void	free_pipe(t_lst *li)
 {
 	int	i;
-	int	j;
 
 	if (!li->pipe)
 		return ;
-	i = li->pipe * 2;
-	j = 0;
-	while (i--)
-		free(li->tube_fd[j++]);
-}*/
+	i = -1;
+	while (++i < li->pipe)
+		free(li->tube_fd[i]);
+	free(li->tube_fd);
+}
 
 void	free_all(t_lst *li)
 {
 	free_tab(li->tab);
 	li->tab = NULL;
 	if (li->pipe)
-		free(li->tube_fd);
+		free_pipe(li);
 	free_list(li);
 }
