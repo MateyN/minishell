@@ -1,5 +1,6 @@
 #include "minishell.h"
 //cette fonction dois verifier aussi les chaines qui ne sont pas dans les quotes
+
 int     check_pipe(char **tab)
 {
 	int     i;
@@ -12,6 +13,11 @@ int     check_pipe(char **tab)
 			i++;
 	return (i);
 }
+/*
+int	check_redirection(char **tab)
+{
+	
+}*/
 
 void 	init_struct(t_lst *li, char **tab)
 {

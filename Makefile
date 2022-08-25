@@ -20,7 +20,7 @@ SRC =	main.c \
 	builtins/env.c builtins/exit.c \
 	builtins/pwd.c env/environment.c \
 	utils/errors.c \
-	jud/check_input.c \
+	jud/handle_input.c \
 	jud/lexical_split.c \
 	jud/analyse_lexical.c \
 	jud/init_li_struct.c \

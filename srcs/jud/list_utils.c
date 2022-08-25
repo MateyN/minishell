@@ -18,7 +18,7 @@ int	check_pipe(t_lst *li)
 	return (li->pipe);
 }*/
 /*--------------------------------*/
-void	delete_redir(t_redir *node)
+static void	delete_redir(t_redir *node)
 {
 
 	t_redir *temp;	
@@ -64,7 +64,7 @@ void	delete_first(t_lst **li)
 	}
 }
 
-void	take_redir(char *s, int flag, t_cmd **cmd_node)
+static void	take_redir(char *s, int flag, t_cmd **cmd_node)
 {
 	t_redir *node_redir;
 	t_redir *temp;
@@ -89,7 +89,7 @@ void	take_redir(char *s, int flag, t_cmd **cmd_node)
 }
 /*----------------------------------*/
 
-char	**take_argv(char **tab, int *pos, t_cmd *node)
+static char	**take_argv(char **tab, int *pos, t_cmd *node)
 {
 	int	i;
 	int	count;
@@ -127,7 +127,7 @@ char	**take_argv(char **tab, int *pos, t_cmd *node)
 }
 /*--------------------------------*/
 
-void	get_list(t_lst **li, int *pos)
+static void	get_list(t_lst **li, int *pos)
 {
 	t_cmd 	*node;
 	t_cmd	*temp;
@@ -156,7 +156,7 @@ void	get_list(t_lst **li, int *pos)
 }
 /*-------------------------------*/
 
-void	take_tab(t_lst *li)
+void	create_list(t_lst *li)
 {
 	int	i;
 	int	pos;
@@ -165,12 +165,9 @@ void	take_tab(t_lst *li)
 	pos = 0;
 	if (!li->tab)
 		exit(1);
-	else if (li->pipe >= 0)
+	while (i++ <= li->pipe)
 	{
-		while (i++ <= li->pipe)
-		{
-			get_list(&li, &pos);
-			pos++;
-		}
+		get_list(&li, &pos);
+		pos++;
 	}
 }

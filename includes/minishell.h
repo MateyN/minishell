@@ -64,7 +64,7 @@ typedef struct s_cmd
     char		**av;
     int			ac;
     int			fd_file;
-    int			infile; // <
+    int			infile; // < & <<
     int			outfile; // > & >>
     int     		sys_call;
     struct s_redir	*redir;
@@ -84,7 +84,7 @@ typedef struct s_lst
 	struct	s_cmd	*head;
 	char	**tab;
 	int		nb_arg;
-	int		heredoc; // <<
+	int		redirection;
 	int		pipe;
 	int		pid;
 	int		**tube_fd;
@@ -105,41 +105,49 @@ int     check_exit(char *str);
 void    ft_exit(t_cmd *command);
 
 /*----------------------------------------------------------------------------*/
-	/*JUD HEADERS MY PART*/	
+//JUD
+	/*handle_input.c*/
 void	msg_error(char *s1, char c, char *s2);
-int		error_exist(char *s);
+int	error_exist(char *s);
 void	init_struct(t_lst *li, char **tab);
-char	**lex_split(char *s, char sep);
-void	double_quote(char **tab, int *j, char *s, int *i);
-//char	*handle_sign(char *s, int *i);
-	/*Utils_lists*/
-void	handle_action(t_lst *li);
-void	take_tab(t_lst *li);
-void	free_all(t_lst *li);
-void	free_tab(char **tab);
-void	free_pipe(t_lst *li);
-void	delete_first(t_lst **li);
-void	print_list(t_lst *li);
-	/*Redirection.c SPLIT*/
-int		redir_exist(char *s);
-void	msg_redir(char c);
-int		redirection(char c);
-int		count_redirection(char *s, int i);
+	
+	/*lexical_split.c && redirection.parse*/
+int	redirection(char c);
+int	count_redirection(char *s, int i);
 void	write_redirection(char **p_word, char *s, int *i);
+char	**lex_split(char *s, char sep);
+
+	/*analyse_lexical.c*/
+int	quote_exist(char *s);
+int	redir_exist(char *s);
+void	handle_action(t_lst *li);	
 	/*treat_quote_dollar.c*/
-int		quote_exist(char *s);
 char	*news_s_quote(char *s);
 char	*news_d_quote(char *s);
-	/*treat_redirection*/
-int	count_heredoc(t_lst *li);
-int	here_doc(t_redir *red);
-int	exec_process(t_lst *li);
+
+	/*list_utils.c*/
+void	create_list(t_lst *li);
+void	delete_first(t_lst **li);
+	
+	/*init_redirection.c && init_pipe*/
 void	init_pipe(t_lst *li);
-int	init_redir(t_cmd *node, t_lst *li);
-	/*exec_utils*/
+int	init_redir(t_cmd *node, t_lst *li);	
+	/*here_doc*/
+int	here_doc(t_redir *red);	
+
+	/*exec.c && exec_utils.c*/
 void	dup_fd(int fd_in, int fd_out);
 void	close_fd(t_cmd *node, t_lst **li);
 void	*take_path(char ***dest, char *cmd);
+int	exec_process(t_lst *li);
+	
+	/*free_utils.c*/
+void	free_all(t_lst *li);
+void	free_list(t_lst *li);
+void	free_tab(char **tab);
+void	free_pipe(t_lst *li);
+void	print_list(t_lst *li);
+
 
 /*-----------------------------------------------------------------------------*/
 

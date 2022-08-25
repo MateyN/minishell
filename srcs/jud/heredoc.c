@@ -24,7 +24,7 @@
 	return (0);
 }*/
 
-void	zero_newline(char **old)
+static void	zero_newline(char **old)
 {
 	char	*s;
 	int	i;
@@ -40,7 +40,7 @@ void	zero_newline(char **old)
 	*old = s;
 }
 
-int	process_heredoc(t_redir *red, int *file_temp)
+static int	process_heredoc(t_redir *red, int *file_temp)
 {
 	char	*temp;
 	

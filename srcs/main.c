@@ -51,7 +51,7 @@ void	print_list(t_lst *li)
 
 void	getprompt(char **shell)
 {
-	*shell = readline(BOLDGREEN"Minishell$> "RESET);
+	*shell = readline(BOLDGREEN"minishell$> "RESET);
 	//return (*shell);
 }
 
@@ -95,7 +95,7 @@ int	main(int ac, char **av, char **envp)
 		{
 			init_struct(&li, lex_split(shell, ' '));
 			handle_action(&li);
-			take_tab(&li);
+			create_list(&li);
 			//print_list(&li);
 			if (!(id = exec_process(&li)))
 				printf("error exec\n");//to_do save error id

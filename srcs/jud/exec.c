@@ -11,7 +11,7 @@
 
 #include "../includes/minishell.h"
 
-int	ft_exec(t_cmd *node)
+static int	ft_exec(t_cmd *node)
 {
 	char 	**tab;
 	int	i;
@@ -98,8 +98,9 @@ int	exec_process(t_lst *li)
 	
 	if(li->pipe)
 		init_pipe(li);
-	times = -1;
+	//if (li->redir)
 	init_redir(li->head, li);
+	times = -1;
 	while (++times <= li->pipe)
 	{
 		pid[times] = fork();
