@@ -40,7 +40,7 @@ int	redir_exist(char *s)
 	return (FALSE); 
 }
 
-void	handle_action(t_lst *li)
+void	parsing_tab(t_lst *li)
 {
 	int	i;
 	int 	flag;

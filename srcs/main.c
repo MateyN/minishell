@@ -91,11 +91,11 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		getprompt(&shell);
-		if (!error_exist(shell)) //quote/redir/;/(\)
+		if (!error_exist(shell)) //check syntax error
 		{
-			init_struct(&li, lex_split(shell, ' '));
-			handle_action(&li);
-			create_list(&li);
+			init_struct(&li, lex_split(shell, ' '));//tokenizing
+			parsing_tab(&li);//treat and clean tab
+			create_list(&li);//init the t_cmd
 			//print_list(&li);
 			if (!(id = exec_process(&li)))
 				printf("error exec\n");//to_do save error id

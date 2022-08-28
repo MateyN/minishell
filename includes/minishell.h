@@ -120,7 +120,7 @@ char	**lex_split(char *s, char sep);
 	/*analyse_lexical.c*/
 int	quote_exist(char *s);
 int	redir_exist(char *s);
-void	handle_action(t_lst *li);	
+void	parsing_tab(t_lst *li);	
 	/*treat_quote_dollar.c*/
 char	*news_s_quote(char *s);
 char	*news_d_quote(char *s);
