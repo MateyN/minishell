@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_str.c                                        :+:      :+:    :+:   */
+/*   lexical_split.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 19:30:03 by rmamison          #+#    #+#             */
-/*   Updated: 2022/06/16 19:33:10 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/11 22:15:15 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	exception(const char *s, int *i)
+static void	exception(char *s, int *i, int flag)
 {
-	char	quote;
+	char	c;
 
-	quote = s[*i];
-	while (s[++(*i)] != quote)
-		;
+	c = s[*i];
+	if (flag == QUOTE)
+		while (s[++(*i)] && s[*i] != c)
+			;
+	else if (flag == REDIR)
+		while (s[++(*i)] && s[*i] == c)
+			;
 }
 
-static	int	count_sep(const char *s, char sep)
+static	int	count_sep(char *s, char sep)
 {
 	int	ret;
 	int	time;
@@ -32,12 +36,18 @@ static	int	count_sep(const char *s, char sep)
 	i = -1;
 	while (s[++i])
 	{
-		while (s[i] != sep && s[i])
+		while (s[i] && (s[i] != sep && !redirection(s[i])))
 		{
 			if (s[i] == '\'' || s[i] == '\"')
-				exception(s, &i);
+				exception(s, &i, QUOTE);
 			++i;
 			time = 1;
+		}
+		if (redirection(s[i]))
+		{
+			exception(s, &i, REDIR);
+			ret++;
+			--i;
 		}
 		if (time == 1)
 			ret ++;
@@ -47,55 +57,60 @@ static	int	count_sep(const char *s, char sep)
 }
 /*-------------------------------------------*/
 
-static int	len_word(const char *s, char sep, int i)
+static int	len_word(char *s, char sep, int i)
 {
+	int		ret;
 	char	quote;
-	int	ret;
 
-	ret = 0;
 	quote = ' ';
-	while (s[i] && s[i] != sep)
+	ret = 0;
+	if (redirection(s[i]) == 1)
+		return (count_redirection(s, i));
+	while (s[i] && (s[i] != sep && !redirection(s[i])))
 	{
 		if (s[i] == '\'' || s[i] == '\"')
 		{
 			quote = s[i];
+			ret++;
 			while (s[++i] && s[i] != quote)
 				ret++;
-			++i;
 		}
-		else
-		{
-			ret++;
-			i++;
-		}
+		ret++;
+		i++;
 	}
 	return (ret);
 }
+/*---------------------------------------------------*/
 
-static char	*take_word(const char *s, char sep, int *i)
+static char	*take_word(char *s, char sep, int *i)
 {
-	char	quote;
 	char	*word;
-	int	j;
-	
+	char	quote;
+	int		j;
+
 	j = -1;
 	word = malloc(sizeof(char) * (len_word(s, sep, *i) + 1));
 	if (!word)
 		return (NULL);
-	quote = ' ';
-	while (s[*i] && s[*i] != sep)
+	if (redirection(s[*i]) == 1)
+		write_redirection(&word, s, i);
+	else
 	{
-		if (s[*i] == '\'' || s[*i] == '\"')
+		while (s[*i] && (s[*i] != sep && !redirection(s[*i])))
 		{
-			quote = s[*i];
-			while (s[++(*i)] && s[*i] != quote)
+			if (s[*i] == '\'' || s[*i] == '\"')
+			{	
+				quote = s[*i];
 				word[++j] = s[*i];
+				while (s[++(*i)] && s[*i] != quote)
+					word[++j] = s[*i];
+			}
+			word[++j] = s[(*i)];
 			++(*i);
 		}
-		else
-			word[++j] = s[(*i)++];
+		word[++j] = '\0';
 	}
-	word[++j] = '\0';
+	--(*i);
 	return (word);
 /* when the quote its not close I increment the index
 for count the all char, my split must ignore the seperator 
@@ -103,23 +118,23 @@ in betwen the quote*/
 }
 /*-------------------------------------------------*/
 
-char	**lex_split(const char *s, char sep)
+char	**lex_split(char *s, char sep)
 {
 	char	**tab;
-	int	i;
-	int	start;
-	int	j;
-	
+	int		i;
+	int		j;
+
 	if (!s)
 		return (NULL);
 	j = -1;
 	i = -1;
-	start = -1;
 	tab = (char **)malloc(sizeof(char *) * (count_sep(s, sep) + 1));
 	if (!tab)
 		return (NULL);
 	while (++i <= (ft_strlen(s)))
 	{	
+		if (!s[i])
+			break ;
 		if (s[i] == sep)
 			while (s[++i] == sep)
 				;
@@ -127,5 +142,6 @@ char	**lex_split(const char *s, char sep)
 			tab[++j] = take_word(s, sep, &i);
 	}
 	tab[j + 1] = NULL;
+	j = -1;
 	return (tab);
 }

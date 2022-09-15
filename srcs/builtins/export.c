@@ -6,85 +6,105 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 12:10:06 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/15 17:01:20 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/09/11 11:41:44 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*get_key(char *cmd, int start)
+void	sort_export(t_lst *ms)
 {
+	char	**export;
+	char	*tmp;
 	int		i;
-	int		length;
-	char	*key;
+	int		j;
 
-	length = 0;
-	if (cmd[start] == '$')
-		start++;
-	i = start;
-	while (cmd[i])
-	{
-		if (cmd[i] == '/' || cmd[i] == '$' || cmd[i] == '"' \
-			|| cmd[i] == ' ' || cmd[i] == '.' || cmd[i] == '=' \
-			|| cmd[i] == '|')
-			break ;
-		i++;
-		length++;
-	}
-	key = ft_substr(cmd, start, length);
-	return (key);
-}
-
-char	*get_nval(char *key, char *str)
-{
-	int	i; // the start index of the substr in the str
-	int	length;
-
-	i = ft_strlen(key);
-	length = ft_strlen(str);
-	if (i == length)
-		return (ft_strdup(""));
-	else if (i > length)
-		return (NULL);
-	return (ft_substr(str, i, length));
-}
-
-void	set_new_env(char *new_val, char *key)
-{
-	int		i;
-	int		length;
-	char	**tmp;
-	char	*new_tmp;
-
-	new_tmp = ft_strjoin("=", new_val);
-	tmp = (char **)malloc(sizeof(char *) * (length + 1));
-	if (!tmp)
-		return (ft_error());
+	export = env_2_str(ms);
 	i = -1;
-	while (g_ms.env_p[++i])
-		tmp[i] = g_ms.env_p[i];
-	if (new_tmp != NULL)
-		tmp[i++] = ft_strjoin(key, new_val);
-	else
-		tmp[i++] = ft_strdup(key);
-	tmp[i] = NULL;
-	free (g_ms.env_p);
-	g_ms.env_p = tmp;
-	free (new_tmp);
-	new_tmp = NULL;
-	return ;
+	while (export[++i])
+	{
+		j = i;
+		while (export[++j])
+		{
+			if (ft_strcmp(export[i], export[j]) > 0)
+			{
+				tmp = export[i];
+				export[i] = export[j];
+				export[j] = tmp;
+			}
+		}
+	}
+	i = -1;
+	while (export[++i])
+		printf("declare -x %s\n", export[i]);
+	free_2ptr(export);
 }
 
-void	export_error(char *av)
+static void	sort_env(char *str, t_env **env)
 {
-	ft_putstr_fd("MINISHELL: export: ", STDERR_FILENO);
-	ft_putstr_fd(av, STDERR_FILENO);
-	ft_putendl_fd(": not a valid identifier", STDERR_FILENO);
-	g_ms.exit = 1;
-	return ;
+	t_env	*cur;
+	t_env	*aft;
+	t_env	*tmp;
+
+	tmp = *env;
+	while (tmp->next)
+	{
+		aft = tmp;
+		tmp = tmp->next;
+	}
+	aft->next = NULL;
+	cur = *env;
+	while (cur->next)
+	{
+		aft = cur->next;
+		if (!ft_strncmp(aft->value, "OLDPWD=", 7))
+		{
+			tmp->next = aft;
+			cur->next = tmp;
+			return ;
+		}
+		cur = cur->next;
+	}
 }
 
-void	export()
+static int	check_export(char *str, t_lst *ms)
 {
-	
+	t_env	*temp;
+	char	**id;
+	int		i;
+
+	temp = ms->env;
+	i = -1;
+	while (str[++i] != '=')
+		;
+	i++;
+	while (temp)
+	{
+		if (!ft_strncmp(temp->value, str, i))
+		{
+			free(temp->value);
+			temp->value = ft_strdup(str);
+			return (1);
+		}
+		temp = temp->next;
+	}
+	return (0);
+}
+
+int	ft_export(char *str, t_lst *ms)
+{
+	int		check;
+	int		i;
+
+	if (*str == '$' || *str == '*' || ft_isdigit(*str) == 1)
+	{
+		ft_error("export", str);
+		return (1);
+	}
+	if (!check_export(str, ms))
+	{
+		new_env(str, ms);
+		sort_env(str, &ms->env);
+	}
+	return (0);
 }

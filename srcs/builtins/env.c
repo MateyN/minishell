@@ -6,22 +6,26 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 12:07:01 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/05/19 12:09:41 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/08/15 11:39:42 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void    env(void)
+void	ft_env(t_lst *ms)
 {
-    int i;
+	t_env	*tmp;
+	char	*value;
 
-    i = -1;
-    while (g_ms.env_p[++i])
-    {
-        if (ft_strchr(g_ms.env_p[i], '='))
-            printf("%s\n", g_ms.env_p[i]);
-    }
-    g_ms.exit = 0;
-    return ;
+	tmp = ms->env;
+	while (tmp != NULL)
+	{
+		value = ft_strchr(tmp->value, '=');
+		if (value != NULL)
+		{
+			ft_putstr_fd(tmp->value, 1);
+			ft_putchar_fd('\n', 1);
+		}
+		tmp = tmp->next;
+	}
 }

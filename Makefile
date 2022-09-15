@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+         #
+#    By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/14 18:02:56 by rmamison          #+#    #+#              #
-#    Updated: 2022/06/16 19:04:13 by rmamison         ###   ########.fr        #
+#    Updated: 2022/09/12 14:07:49 by rmamison         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,25 +15,43 @@ NAME = minishell
 LIBFT = libft
 
 SRC =	main.c \
-	builtins/builtin.c \
-	builtins/echo.c builtins/cd.c \
-	builtins/env.c builtins/exit.c \
-	builtins/pwd.c env/environment.c \
-	signals/signals.c utils/errors.c \
-	jud/check_input.c \
-	jud/lexical_split.c \
-	
+		builtins/builtin.c \
+		builtins/echo.c \
+		builtins/cd.c \
+		builtins/env.c \
+		builtins/exit.c \
+		builtins/export.c \
+		builtins/unset.c \
+		builtins/pwd.c \
+		signals/signals.c \
+		env/environment.c \
+		utils/errors.c \
+		utils/utils.c \
+		jud/handle_input.c \
+		jud/lexical_split.c \
+		jud/analyse_lexical.c \
+		jud/init_struct_shell.c \
+		jud/list_utils.c \
+		jud/free_utils.c \
+		jud/redirection_parse.c \
+		jud/treat_quote_dollar.c \
+		jud/heredoc.c \
+		jud/exec.c \
+		jud/exec_utils.c \
+		jud/init_pipe.c \
+		jud/init_redirection.c \
+
 SRCS = $(addprefix srcs/, $(SRC))
 DIR_S = srcs
 
-INCLUDE = -I includes/ -I libft/
-		  #-I ~/.brew/Cellar/readline/8.1.2/include/readline
+INCLUDE = -I includes/ -I libft/ \
+		  -I ~/.brew/Cellar/readline/8.1.2/include/readline
 
 READLINE_LIB = -L /Users/$(USER)/.brew/Cellar/readline/8.1.2/lib -lreadline
 LIB_LIBFT = libft/libft.a
 
-FLAGS = -Wall -Wextra -Werror -g -fsanitize=address
-CC = clang
+FLAGS = -Wall -Wextra -Werror -g3 -o0 -fsanitize=address
+CC = gcc
 
 RM = rm -rf
 

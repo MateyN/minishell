@@ -1,4 +1,5 @@
 # minishell
 This project is about creating a simple shell.
 
-To be done.
+TO DO SIGNALS, all builtins lgtm for now, maybe little modifications needed and some error msgs!
+TO DO NORMINETTE

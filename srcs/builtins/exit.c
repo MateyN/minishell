@@ -6,58 +6,48 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 12:10:03 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/09 09:04:06 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/08/15 11:39:43 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void    exit_handler(int av)
+static	int	ft_str_isdigit(char *str)
 {
-    if (av < 0)
-        exit(255);
-    else
-        exit(av);
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		if (!(str[i] >= '0' && str[i] <= '9'))
+			return (0);
+	if (ft_atoi(str) >= 256)
+		exit(ft_atoi(str) - 256);
+	return (1);
 }
 
-int check_exit(char *str)
+void	ft_exit(char **cmd, t_lst *li)
 {
-    int i;
-
-    i = 0;
-    while (str[i])
-    {
-        if (!ft_isdigit(str[i]) && str[i] != '-')
-        	return (FALSE);
-	i++;
-    }
-    return (TRUE);
-}
-
-void    ft_exit(t_cmd *command)
-{
-    if (!command->sys_call && (!command->prev || !command->prev->sys_call))
-    {
-        ft_putendl_fd("exit", STDERR_FILENO);
-        if (!command->av[1])
-        exit(127);
-    }
-    if (!check_exit(command->av[1]))
-    {
-        ft_putstr_fd("MINISHELL: exit: ", STDERR_FILENO);
-        ft_putstr_fd(command->av[1], STDERR_FILENO);
-        ft_putendl_fd(": error", STDERR_FILENO);
-        exit(255);
-    }
-    else if (command->ac > 2)
-    {
-        ft_putendl_fd("MINISHELL: exit: too many arguments", STDERR_FILENO);
-        	if (command->sys_call || (command->prev && command->prev->sys_call))
-			exit(1);
-		else
-			g_ms.exit = 1;
+	int	status;
+	
+	status = 0;
+	write(1, "exit\n", 6);
+	if (cmd[1] != NULL && ft_str_isdigit(cmd[1]) == 0)
+	{
+		status = 2;
+		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+		ft_putstr_fd(cmd[1], STDERR_FILENO);
+		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+	}
+	else if (cmd[1] != NULL && cmd[2] != NULL)
+	{
+		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);	
+		g_ms.exit = 127;
+		if (li->pipe)
+			exit(g_ms.exit);
 		return ;
-    }
-    else
-        exit_handler(ft_atoi(command->av[1]));
+	}
+	else if (cmd[1] != NULL && ft_str_isdigit(cmd[1]) == 1)
+		status = ft_atoi(cmd[1]);
+	free_all(li);
+	exit(status);
 }

@@ -6,59 +6,58 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:33:24 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/17 09:50:25 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/09/11 11:39:10 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void    path_error(char *path, int file)
+char	*cd_only(t_lst *ms)
 {
-    if (file)
-    {
-        ft_putstr_fd("MINISHELL: cd: ", STDERR_FILENO);
-        ft_putstr_fd(path, STDERR_FILENO);
-        ft_putendl_fd(": not a directory", STDERR_FILENO);
-    }
-    else
-    {
-        ft_putstr_fd("MINISHELL: cd: ", STDERR_FILENO);
-        ft_putstr_fd(path, STDERR_FILENO);
-        ft_putstr_fd(": ", STDERR_FILENO);
-        ft_putendl_fd(strerror(2), STDERR_FILENO);
-    }
-   // g_ms.exit = 1;
-}
-void    changedir(char *path, int file)
-{
-    char    *old_path;
-    old_path = getcwd(0, _PC_PATH_MAX);
-    if (chdir(path) == 0)
-    //    chdir_handler(old_path);
-    //else
-        path_error(path, file);
-    free(old_path);
-    old_path = NULL;
-    return ;
+	char	*path;
+
+	path = get_env_value("HOME", ms);
+	if (path == NULL)
+	{
+		g_ms.exit = 1;
+		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+		return (NULL);
+	}
+	return (path);
 }
 
-void    cd(t_cmd *command)
+void	print_error(char *path)
 {
-    char    *home;
-    int     file;
-    struct stat buff;
+	ft_putstr_fd("cd: ", 2);
+	ft_putstr_fd(strerror(errno), 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(path, 2);
+	ft_putchar_fd('\n', 2);
+}
 
-    home = getenv("HOME=");
-    file = FALSE;
-    if(command->ac == 1)
-        changedir(home, file);
-    else
-    {
-        if(stat(command->av[1], &buff) == 0)
-        file = TRUE;
-        changedir(home, file);
-    }
-    free(home);
-    home = NULL;
-    return ;
+int	ft_cd(char *path, t_lst *ms)
+{
+	char	tmp[PATH_MAX];
+	char	*temp_join;
+	char	*nwd;
+
+	getcwd(tmp, PATH_MAX);
+//	tmp = get_env_value("PWD", ms); //cwd
+	if (!path)
+		nwd = cd_only(ms);
+	else
+		nwd = path;
+	if (chdir(nwd) != 0)
+	{
+		msg_error("minishell: cd:", ' ', nwd);//temporary
+		ft_putstr_fd(": No such file or directory\n", 2);
+		return (-1);
+	}
+	temp_join = ft_strjoin("OLDPWD=", tmp);
+	//ft_export(temp_join, ms);
+	free(temp_join);
+	temp_join = ft_strjoin("PWD=", nwd);
+	//ft_export(temp_join, ms);
+	free(temp_join);
+	return (0);
 }

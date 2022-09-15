@@ -6,13 +6,11 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 09:10:00 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/09 09:23:15 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/09/11 22:29:51 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-// newline error
 
 int error_print(char *token, int exit)
 {
@@ -22,14 +20,18 @@ int error_print(char *token, int exit)
     return (TRUE);
 }
 
-void    ft_error(void)
+void	ft_error(char *func, char *str)
 {
-    ft_putendl_fd("MALLOC ERROR", STDERR_FILENO);
-    exit(1);
+	ft_putstr_fd("bash-3.2: ", STDOUT_FILENO);
+	ft_putstr_fd(func, STDOUT_FILENO);
+	ft_putstr_fd(": ", STDOUT_FILENO);
+	ft_putchar_fd('`', STDOUT_FILENO);
+	ft_putstr_fd(str, STDOUT_FILENO);
+	ft_putstr_fd("': not a valid identifier\n", STDOUT_FILENO);
 }
-
+/*
 int invalid_command(char *cmd)
-{	
+{
 	(void) cmd;
     ft_putstr_fd("MINISHELL: ", STDERR_FILENO);
     ft_putstr_fd("cmd", STDERR_FILENO);
@@ -38,3 +40,4 @@ int invalid_command(char *cmd)
     g_ms.exit = 127;
     return (FAIL);
 }
+*/

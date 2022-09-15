@@ -5,30 +5,54 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/09 09:28:34 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/06/10 12:34:41 by mnikolov         ###   ########.fr       */
+/*   Created: 2022/09/11 11:54:12 by mnikolov          #+#    #+#             */
+/*   Updated: 2022/09/12 19:33:52 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void    sigint_handler(int sig)
-{
-    (void)sig;
-    printf("\n");
-    rl_on_new_line();
-    rl_replace_line("", 0);
-    rl_redisplay();
+void	rl_replace_line(const char *text, int clear_undo);
+
+void	child_signal(int flag)
+{	
+	signal(SIGINT, SIG_DFL);
+	if (flag == HEREDOC)
+		signal(SIGQUIT, SIG_IGN);
+	else
+		signal(SIGQUIT, SIG_DFL);
 }
 
-void    sigquit_handler(int sig)
+void	sig_handler(int sig)
 {
-    (void)sig;
-    printf("Quit: %d\n", sig);
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }
 
-void    init_signals(void)
+void	init_signals(void)
 {
-    signal(SIGINT, sigint_handler);
-    signal(SIGQUIT, SIG_IGN);
+	if (g_ms.pid_sig)
+		signal(SIGINT, SIG_IGN);
+	else  
+		signal(SIGINT, &sig_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+int	get_line(t_lst *term)
+{
+	struct termios news;
+	
+	tcgetattr(0, &term->saved);
+	tcgetattr(0, &news);
+	news.c_lflag &= ~ECHOCTL;
+	tcsetattr(0, TCSAFLUSH, &news);
+	init_signals();
+	term->line = readline(BOLDGREEN"minishell$> "RESET);
+	if (!term->line) //for ctrl - D if rdline = EOF
+		return (0);
+	if (*term->line)
+		add_history(term->line);
+	return (1);
 }
