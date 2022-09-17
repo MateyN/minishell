@@ -42,7 +42,6 @@ int	ft_cd(char *path, t_lst *ms)
 	char	*nwd;
 
 	getcwd(tmp, PATH_MAX);
-//	tmp = get_env_value("PWD", ms); //cwd
 	if (!path)
 		nwd = cd_only(ms);
 	else
@@ -54,10 +53,10 @@ int	ft_cd(char *path, t_lst *ms)
 		return (-1);
 	}
 	temp_join = ft_strjoin("OLDPWD=", tmp);
-	//ft_export(temp_join, ms);
+	ft_export(temp_join, ms);
 	free(temp_join);
-	temp_join = ft_strjoin("PWD=", nwd);
-	//ft_export(temp_join, ms);
+	temp_join = ft_strjoin("PWD=", getcwd(tmp, PATH_MAX));
+	ft_export(temp_join, ms);
 	free(temp_join);
 	return (0);
 }

@@ -39,7 +39,10 @@ int	check_redir(t_lst **li)
 	while(tab_temp[++i])
 	{
 		if (!ft_strncmp(tab_temp[i], "<<", 3))
+		{
 			(*li)->heredoc++;
+			ret = TRUE;
+		}
 		if (!ft_strncmp(tab_temp[i], "<", 2) || \
 		!ft_strncmp(tab_temp[i], ">", 2) || \
 		!ft_strncmp(tab_temp[i], ">>", 3))

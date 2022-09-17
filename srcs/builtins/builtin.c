@@ -50,16 +50,3 @@ void	exec_builtin(t_cmd *node, t_lst *ms)
 	else if (!ft_strncmp(node->cmd, "pwd\0", 4))
 		pwd();
 }
-/*
-int	parse_cmds(char *path, t_lst *ms)
-{
-	char	**args;
-
-	if (!path)
-		return (0);
-	args = ft_split(path, ' ');
-	if (check_builtin(args[0]))
-		exec_builtin(args, path, ms);
-	free_2ptr(args);
-	return (0);
-}*/

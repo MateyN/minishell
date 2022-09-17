@@ -11,30 +11,18 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*int	count_heredoc(t_lst *li)
-{
-	int	ret;
-	t_cmd 	*temp;
-	t_redir *red;
+static void	ctrl_d_push(char *limiter,int len)
+{	
+	char	*tmp;
 
-	temp = li->head;
-	ret = 0;
-	while (temp)
-	{	
-		red = temp->redir;
-		while (red)
-		{
-			if (red->sign == HEREDOC)
-				ret++;
-			red = red->next;
-		}
-		temp = temp->next;
-	}
-	li->heredoc = ret;
-	if (ret)
-		return (1);
-	return (0);
-}*/
+	tmp = ft_itoa(len);
+	ft_putstr_fd("minishell: warning: here-document at line ", 2);
+	msg_error(tmp, 0, " delimited by end-of-file ");
+	msg_error("(wanted `", 0, limiter);
+	write(2, "')\n", 3);
+	free(tmp);
+	exit(0);
+}
 
 static void	zero_newline(char **old)
 {
@@ -51,18 +39,21 @@ static void	zero_newline(char **old)
 	s[i] = '\0';
 	*old = s;
 }
-
+void	rl_replace_line(const char *text, int clear_undo);
 static int	process_heredoc(t_redir *red, int *file_temp)
 {
-	char	*temp;
-
-	write(1, "> ", 2);
-	temp = get_next_line(0);
+	char		*temp;
+	static int 	len = 1;
+	char	buf[sizeof(char)];
+	
+	temp = readline("> ");
 	if (!temp)
-		exit(1);
+		ctrl_d_push(red->name, len);
+	add_history(temp);
 	zero_newline(&temp);
 	if (ft_strcmp(red->name, temp) != 0)
 	{
+		++len;
 		write(*file_temp, temp, ft_strlen(temp));
 		write(*file_temp, "\n", 1);
 		free(temp);
@@ -75,12 +66,24 @@ static int	process_heredoc(t_redir *red, int *file_temp)
 int	here_doc(t_redir *red)
 {
 	int	file_temp;
+	struct termios news;
+	struct termios sav;
 
+	tcgetattr(0, &news);
+	sav = news;
+	news.c_lflag &= ~ECHOCTL;
+	tcsetattr(0, 0, &news);
 	file_temp = open(".heredoc", O_CREAT | O_TRUNC | O_WRONLY, 0644);
+	if (errno)
+	{
+		msg_error("minishel: error: open()", '\n', NULL);
+		exit(EXIT_FAILURE);
+	}
 	if (file_temp < 0)
 		msg_error("Error: file_temp_here_doc\n", 0, NULL);
 	while (process_heredoc(red, &file_temp))
 		;
+	tcsetattr(0, TCSANOW, &sav);
 	close(file_temp);
 	return (1);
 }

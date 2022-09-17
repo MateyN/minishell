@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-
+#include <stdio.h>
 static char	*stradd(char *s, char c)
 {
 	char	*p;
@@ -44,7 +44,7 @@ static	char	read_buf(t_type *buf)
 {
 	if (++(buf->pos) == buf->max)
 	{
-		buf->max = read(buf->fd, &buf-> data, 1);
+		buf->max = read(buf->fd, &buf->data, 1);
 		buf->pos = 0;
 	}
 	if (!buf->max)
@@ -55,8 +55,8 @@ static	char	read_buf(t_type *buf)
 char	*get_next_line(int fd)
 {
 	static t_type	buf;	
-	char			*line;
-	char			c;
+	char		*line;
+	char		c;
 
 	buf.fd = -1;
 	if (buf.fd != fd)
@@ -64,6 +64,8 @@ char	*get_next_line(int fd)
 			return (NULL);
 	line = 0;
 	c = read_buf(&buf);
+	if (c == 0)
+		return (NULL);
 	while (c)
 	{
 		line = stradd(line, c);

@@ -54,11 +54,11 @@ char	**env_2_str(t_lst *ms)
 	char	**str;
 	t_env	*env;
 
-	i = -1;
 	env = ms->env;
 	str = malloc(sizeof(char *) * ms->n_env);
 	if (!str)
 		return (NULL);
+	i = -1;
 	while (env)
 	{
 		str[++i] = ft_strdup(env->value);

@@ -15,30 +15,75 @@
 //env_2_str convert env list to env tab
 void	rl_replace_line(const char *text, int clear_undo);
 
+
+static void	check_error(char *path)
+{
+	struct	stat	sb;
+	int		i;
+	char		*t;
+	
+	i = 0;
+	msg_error("minishell: ", 0, path);
+	if (path[ft_strlen(path) - 1] == '/')
+	{
+		t = malloc(sizeof(char) * (ft_strlen(path) - 1));
+		if (!t)
+			return ;
+		ft_strlcpy(t, path, ft_strlen(path));
+		path = t;
+		i = 1;
+	}
+	if (stat(path, &sb) == -1)
+		ft_putstr_fd(": No such file or directory\n", 2);
+	else if(sb.st_mode & S_IFDIR)
+		ft_putstr_fd(": Is a directory\n", 2);
+	else if(sb.st_mode & S_IFREG)
+	{
+		if (i == 1)
+		{
+			ft_putstr_fd(": Not a directory\n", 2);
+			free(t);
+		}
+		else
+			ft_putstr_fd(": Permission denied\n", 2);
+		exit(126);
+	}
+	if (i == 1)
+		free(t);
+	exit(127);
+}
+
 static int	ft_exec(t_cmd *node, t_lst *li, pid_t *pid)
 {
+	struct	stat	sb;
 	char	**tab;
-	int		i;
+	int	i;
 
 	tab = NULL;
-	take_path(&tab, node->cmd, li);
-	i = -1;
-	while (tab[++i])
+	if (!ft_strchr(node->cmd, '/'))
 	{
-		if (!access(tab[i], X_OK))
+		take_path(&tab, node->cmd, li);
+		i = -1;
+		while (tab[++i] && access(tab[i], X_OK) != 0)
+			;
+		if (!tab[i])
 		{
-			node->cmd = tab[i];
-			if (execve(node->cmd, node->av, env_2_str(li)) == -1)
-			{
-				free_tab(tab);
-				exit(1);
-			}
 			free_tab(tab);
-			return (1);
+			return (0);
 		}
+		node->cmd = ft_strdup(tab[i]);
+		free_tab(tab);
+	}	
+	tab =  env_2_str(li);
+	if (execve(node->cmd, node->av, tab) == -1)
+	{
+		if (ft_strchr(node->cmd, '/'))
+			check_error(node->cmd);
+		free_tab(tab);
+		return (0);
+		//exit(EXIT_FAILURE);
 	}
-	free_tab(tab);
-	return (0);
+	return(1);
 }
 
 static int	process_daddy(t_lst **li, pid_t *pid)
@@ -91,7 +136,7 @@ static int	process_child(t_lst *li, t_cmd node, int times, pid_t *pid)
 	{
 		msg_error("minishell: ", 0, node.av[0]);
 		ft_putstr_fd(": command not found\n", 2);
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
 	exit(0);
 }
@@ -100,12 +145,11 @@ int	exec_process(t_lst *li)
 {
 	int		status;	
 	int		ret;
-	pid_t	pid[li->pipe + 1];
 	int		times;
+	pid_t		pid[li->pipe + 1];
 
 	if (li->pipe)
 		init_pipe(li);
-	//if (li->redir)
 	times = -1;
 	while (++times <= li->pipe)
 	{
@@ -114,7 +158,8 @@ int	exec_process(t_lst *li)
 			return (-1);
 		else if (pid[times] == 0)
 		{
-			init_redir(li->head, li);
+			if (li->redirection)
+				init_redir(li->head, li);
 			process_child(li, *li->head, times, pid);
 		}
 		

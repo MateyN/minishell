@@ -12,6 +12,23 @@
 
 #include "minishell.h"
 
+void	home_sign(char **s, t_lst *li)
+{
+	char	*path_home;
+	char	*temp_str;
+	char	*temp;
+
+	if ((*s)[0] == '~' && ((*s)[1] == '/' || !(*s)[1]))
+	{
+		temp_str = *s;
+		path_home = get_env_value("HOME", li);
+		temp = ft_strjoin(path_home, ++(temp_str));
+		free(*s);
+		*s = temp;
+		temp = NULL;
+	}
+}
+
 int	quote_exist(char *s)
 {
 	int	i;
@@ -63,6 +80,7 @@ void	handle_action(t_lst **li)
 	while ((*li)->tab[++i])
 	{
 		flag = quote_exist((*li)->tab[i]);
+		home_sign(&(*li)->tab[i], *li);
 		if (flag == S_QUOTE) // ('')
 			temp = news_s_quote((*li)->tab[i]);
 		else if (flag == D_QUOTE || flag == DOLLAR) //treat ("") & ("$") & ($)
@@ -73,9 +91,5 @@ void	handle_action(t_lst **li)
 			(*li)->tab[i] = temp;
 			temp = NULL;
 		}
-	//	if (flag && !temp)
 	}
-	/*i = 0;
-	while (li->tab[i])
-		printf("tab=> %s\n", li->tab[i++]);*/
 }
