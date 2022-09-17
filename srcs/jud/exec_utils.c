@@ -6,11 +6,54 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 21:54:21 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 17:08:32 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 21:17:36 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static void	help_check(char *path, char *t, int i)
+{
+	struct stat	sb;
+
+	if (stat(path, &sb) == -1)
+		ft_putstr_fd(": No such file or directory\n", 2);
+	else if (sb.st_mode & S_IFDIR)
+		ft_putstr_fd(": Is a directory\n", 2);
+	else if (sb.st_mode & S_IFREG)
+	{
+		if (i == 1)
+		{
+			ft_putstr_fd(": Not a directory\n", 2);
+			free(t);
+		}
+		else
+			ft_putstr_fd(": Permission denied\n", 2);
+		exit(126);
+	}
+	if (i == 1)
+		free(t);
+}
+
+void	check_error(char *path)
+{
+	int			i;
+	char		*t;
+
+	i = 0;
+	msg_error("minishell: ", 0, path);
+	if (path[ft_strlen(path) - 1] == '/')
+	{
+		t = malloc(sizeof(char) * (ft_strlen(path) - 1));
+		if (!t)
+			return ;
+		ft_strlcpy(t, path, ft_strlen(path));
+		path = t;
+		i = 1;
+	}
+	help_check(path, t, i);
+	exit(127);
+}
 
 void	dup_fd(int fd_in, int fd_out)
 {

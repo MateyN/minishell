@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:33:24 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/09/17 19:02:53 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 20:03:01 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	ft_cd(char *path, t_lst *ms)
 	if (chdir(nwd) != 0)
 	{
 		g_ms.exit = 1;
-		msg_error("minishell: cd:", ' ', nwd);//temporary
+		msg_error("minishell: cd:", ' ', nwd);
 		ft_putstr_fd(": No such file or directory\n", 2);
 		return (-1);
 	}

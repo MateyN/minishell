@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:01:02 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/11 22:03:38 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/09/17 22:15:16 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	error_redirection(char *s, int *i)
 				error = s[*i];
 		}
 		else if (redir > 2 || (redir == 2 && c == '|'))
-			error = s[*i];
+			error = s[*i];>
 		else if (redir == 2 && c == '<' && !s[*i])
 			break ;
 		if (error)

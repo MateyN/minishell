@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:18:51 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/09/17 18:52:12 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 21:05:04 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@
 typedef struct s_ms
 {
 	char	**env_p;
-	int	exit;
+	int		exit;
 	pid_t	pid_sig;
 }	t_ms;
 
@@ -94,20 +94,20 @@ typedef struct s_redir
 
 typedef struct s_lst
 {
-	char				*line;
-	char				**tab;
+	char			*line;
+	char			**tab;
 	int				nb_arg;
-	int				heredoc; // <<
+	int				heredoc;
 	int				redirection;
 	int				pipe;
-	int				pid;
+	pid_t			*pid;
 	int				**tube_fd;
 	int				times;
 	int				n_env;
 	int				test;
 	struct s_cmd	*head;
 	struct s_env	*env;
-	struct termios		saved;
+	struct termios	saved;
 }	t_lst;
 
 /*---------- Builtins ----------*/
@@ -157,11 +157,12 @@ void		free_2ptr(char **str);
 
 /*----------------------------------------------------------------------------*/
 //JUD
-int	get_line(t_lst *term);
+int			get_line(t_lst *term);
 	/*handle_input.c*/
 void		msg_error(char *s1, char c, char *s2);
 int			error_exist(char *s);
 void		init_shell(t_lst *li, char **tab);
+void		malloc_pid(t_lst **li);
 
 	/*lexical_split.c && redirection.parse*/
 int			redirection(char c);
@@ -193,6 +194,7 @@ void		dup_fd(int fd_in, int fd_out);
 void		close_fd(t_cmd *node, t_lst **li);
 void		take_path(char ***dest, char *cmd, t_lst *li);
 int			exec_process(t_lst *li);
+void		check_error(char *path);
 
 	/*free_utils.c*/
 void		free_all(t_lst *li);

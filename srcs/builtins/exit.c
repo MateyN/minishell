@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 12:10:03 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/09/17 19:05:16 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 20:03:30 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static	int	ft_str_isdigit(char *str)
 void	ft_exit(char **cmd, t_lst *li)
 {
 	int	status;
-	
+
 	status = 0;
 	write(1, "exit\n", 6);
 	if (cmd[1] != NULL && ft_str_isdigit(cmd[1]) == 0)
@@ -40,7 +40,7 @@ void	ft_exit(char **cmd, t_lst *li)
 	}
 	else if (cmd[1] != NULL && cmd[2] != NULL)
 	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);	
+		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
 		g_ms.exit = 127;
 		if (li->pipe)
 			exit(g_ms.exit);

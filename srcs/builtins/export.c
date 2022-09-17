@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 12:10:06 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/09/17 15:39:54 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 20:03:47 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int	check_export(char *str, t_lst *ms)
 
 	temp = ms->env;
 	i = -1;
-	while ( str[++i] && str[i] != '=')
+	while (str[++i] && str[i] != '=')
 		;
 	i++;
 	while (temp)

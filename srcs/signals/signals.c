@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:54:12 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/09/17 18:31:05 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 20:08:13 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,22 @@ void	init_signals(void)
 {
 	if (g_ms.pid_sig)
 		signal(SIGINT, SIG_IGN);
-	else  
+	else
 		signal(SIGINT, &sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 }
 
 int	get_line(t_lst *term)
 {
-	struct termios news;
-	
+	struct termios	news;
+
 	tcgetattr(0, &term->saved);
 	tcgetattr(0, &news);
 	news.c_lflag &= ~ECHOCTL;
 	tcsetattr(0, TCSAFLUSH, &news);
 	init_signals();
 	term->line = readline(BOLDGREEN"minishell$> "RESET);
-	if (!term->line) //for ctrl - D if rdline = EOF
+	if (!term->line)
 		return (0);
 	if (*term->line)
 		add_history(term->line);

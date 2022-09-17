@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 11:12:30 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 17:02:19 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 20:04:53 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	**ft_split(char const *s, char c)
 	int		fin;
 	size_t	j;
 	char	**tab;
-	
+
 	if (!s)
 		return (NULL);
 	tab = (char **) malloc (sizeof(char *) * (count(s, c) + 1));

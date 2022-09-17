@@ -6,12 +6,46 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:05:13 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 18:57:25 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 20:52:03 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-//cette fonction dois verifier aussi les chaines qui ne sont pas dans les quotes
+void	malloc_pid(t_lst **li)
+{
+	(*li)->pid = malloc(sizeof(pid_t) * ((*li)->pipe + 1));
+	if (!(*li)->pid)
+	{
+		msg_error("Error: malloc(): pid: ", 0, NULL);
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	init_pipe(t_lst *li)
+{
+	int	i;
+	
+	li->tube_fd = (int **)malloc(sizeof(int *) * li->pipe);
+	if (!li->tube_fd)
+	{
+		msg_error("error: allocaion tube_fd\n", 0, NULL);
+		exit(EXIT_FAILURE);
+	}
+	i = -1;
+	while (++i < li->pipe)
+	{
+		if (!(li->tube_fd[i] = malloc(sizeof(int) * 2)))
+		{
+			msg_error("error: allocation *tube_fd\n", 0, NULL);
+			exit(EXIT_FAILURE);
+		}
+		if (pipe(li->tube_fd[i]) == -1)
+		{
+			free_pipe(li);
+			msg_error("Error: function pipe\n", 0, NULL);
+		}
+	}
+}
 
 int	check_pipe(char **tab)
 {
@@ -28,15 +62,15 @@ int	check_pipe(char **tab)
 
 int	check_redir(t_lst **li)
 {
-	int	i;
-	int	ret;
+	int		i;
+	int		ret;
 	char	**tab_temp;
 
 	ret = 0;
 	i = -1;
 	(*li)->heredoc = 0;
 	tab_temp = (*li)->tab;
-	while(tab_temp[++i])
+	while (tab_temp[++i])
 	{
 		if (!ft_strncmp(tab_temp[i], "<<", 3))
 		{
@@ -64,6 +98,7 @@ void	init_shell(t_lst *li, char **tab)
 	li->pipe = check_pipe(li->tab);
 	li->redirection = check_redir(&li);
 	li->head = NULL;
-	handle_action(&li);//parsing 
-	create_list(&li); //li->head init
+	li->pid = NULL;
+	handle_action(&li);
+	create_list(&li);
 }

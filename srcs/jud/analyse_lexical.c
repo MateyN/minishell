@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 12:11:10 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 18:57:33 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 22:15:47 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,16 @@ int	redir_exist(char *s)
 {
 	int	i;
 
-	i = -1;
-	if (!s || s[0] != '<' || s[0] != '>')
-		return (FALSE);
-	while (s[++i])
+	i = 0;
+	if (s || *s == '<' || *s == '>')
 	{
-		if (s[i] == '<' && s[i + 1] == '<') //PRIORI EXEC 1
+		if (s[i] == '<' && s[i + 1] == '<')
 			return (HEREDOC);
-		else if (s[i] == '<') //PRIORI 2
+		else if (s[i] == '<')
 			return (REDIR_IN);
-		else if (s[i] == '>' && s[i + 1] == '>') //LAST 3
+		else if (s[i] == '>' && s[i + 1] == '>')
 			return (REDIR_OUT_D);
-		else if (s[i] == '>') //LAST 3
+		else if (s[i] == '>')
 			return (REDIR_OUT_S);
 	}
 	return (FALSE);
@@ -81,9 +79,9 @@ void	handle_action(t_lst **li)
 	{
 		flag = quote_exist((*li)->tab[i]);
 		home_sign(&(*li)->tab[i], *li);
-		if (flag == S_QUOTE) // ('')
+		if (flag == S_QUOTE)
 			temp = news_s_quote((*li)->tab[i]);
-		else if (flag == D_QUOTE || flag == DOLLAR) //treat ("") & ("$") & ($)
+		else if (flag == D_QUOTE || flag == DOLLAR)
 			temp = news_d_quote((*li)->tab[i], *li);
 		if (temp)
 		{

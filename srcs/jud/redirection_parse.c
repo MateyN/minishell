@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:19:02 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 18:51:34 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 20:01:03 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	redirection(char c)
 	return (1);
 }
 
-int	count_redirection(char *s, int i) //to do separer checkerror et count(check a mettre dans prompt tout au debut)
+int	count_redirection(char *s, int i)
 {
 	int		redir;
 	char	c;

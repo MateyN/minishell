@@ -6,12 +6,13 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 10:54:39 by rmamison          #+#    #+#             */
-/*   Updated: 2022/04/09 11:54:09 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 20:06:03 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
+
 static char	*stradd(char *s, char c)
 {
 	char	*p;
@@ -54,9 +55,9 @@ static	char	read_buf(t_type *buf)
 
 char	*get_next_line(int fd)
 {
-	static t_type	buf;	
-	char		*line;
-	char		c;
+	static t_type	buf;
+	char			*line;
+	char			c;
 
 	buf.fd = -1;
 	if (buf.fd != fd)

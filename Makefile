@@ -6,7 +6,7 @@
 #    By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/14 18:02:56 by rmamison          #+#    #+#              #
-#    Updated: 2022/09/12 14:07:49 by rmamison         ###   ########.fr        #
+#    Updated: 2022/09/17 20:42:51 by rmamison         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,6 @@ SRC =	main.c \
 		jud/heredoc.c \
 		jud/exec.c \
 		jud/exec_utils.c \
-		jud/init_pipe.c \
 		jud/init_redirection.c \
 
 SRCS = $(addprefix srcs/, $(SRC))

@@ -6,13 +6,13 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:04:24 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 17:08:30 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 19:58:24 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	ctrl_d_push(char *limiter,int len)
+static void	ctrl_d_push(char *limiter, int len)
 {	
 	char	*tmp;
 
@@ -40,13 +40,15 @@ static void	zero_newline(char **old)
 	s[i] = '\0';
 	*old = s;
 }
+
 void	rl_replace_line(const char *text, int clear_undo);
+
 static int	process_heredoc(t_redir *red, int *file_temp)
 {
 	char		*temp;
-	static int 	len = 1;
-	char	buf[sizeof(char)];
-	
+	static int	len = 1;
+	char		buf[sizeof(char)];
+
 	temp = readline("> ");
 	if (!temp)
 		ctrl_d_push(red->name, len);
@@ -66,9 +68,9 @@ static int	process_heredoc(t_redir *red, int *file_temp)
 
 int	here_doc(t_redir *red)
 {
-	int	file_temp;
-	struct termios news;
-	struct termios sav;
+	int				file_temp;
+	struct termios	news;
+	struct termios	sav;
 
 	tcgetattr(0, &news);
 	sav = news;

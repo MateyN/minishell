@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:20:34 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 18:17:21 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 20:00:44 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,10 @@ static int	len_var(char *s, int i)
 
 	ret = 0;
 	while ((s[++i]) && (s[i] != '\"' && s[i] != ' ') \
-		 && s[i] != '\'') //s[i] != $ delete
+		&& s[i] != '\'')
 		ret++;
 	return (ret);
 }
-/*-----------------------------------*/
 
 static int	len_d_quote(char *s, t_lst *li)
 {
@@ -56,7 +55,6 @@ static int	len_d_quote(char *s, t_lst *li)
 	}
 	return (car + dollar);
 }
-/*-----------------------------------*/
 
 static int	recheck_cmp(char *env, char *temp)
 {
@@ -70,7 +68,6 @@ static int	recheck_cmp(char *env, char *temp)
 	else
 		return (FALSE);
 }
-	/*-------------------*/
 
 static char	*take_val_var(char *s)
 {
@@ -94,7 +91,6 @@ static char	*take_val_var(char *s)
 	temp[++i] = '\0';
 	return (temp);
 }
-/*-----------------------------------*/
 
 static char	*handle_sign(char *s, int *i, t_lst *li)
 {
@@ -107,14 +103,14 @@ static char	*handle_sign(char *s, int *i, t_lst *li)
 		return (NULL);
 	j = -1;
 	while ((s[++(*i)]) && (s[*(i)] != ' ' && s[*(i)] != '\"') \
-		&& s[*i] != '\'')//s[i] != $ delete
+		&& s[*i] != '\'')
 		temp[++j] = s[(*i)];
-	temp[++j] = '\0'; //take name var ($NAME_VAR)
+	temp[++j] = '\0';
 	if (!temp[1] && temp[0] == '?')
 		ret = ft_itoa(g_ms.exit);
 	else if (ft_strchr(temp, '$'))
 		ret = ft_strdup(temp);
-	else 
+	else
 		ret = ft_strdup(get_env_value(temp, li));
 	free(temp);
 	return (ret);
@@ -143,7 +139,6 @@ char	*news_s_quote(char *s)
 	temp[j] = '\0';
 	return (temp);
 }
-/*-----------------------------------*/
 
 char	*news_d_quote(char *s, t_lst *li)
 {
@@ -152,7 +147,7 @@ char	*news_d_quote(char *s, t_lst *li)
 	int		a;
 	char	*temp;
 	char	*env_val;
-	
+
 	temp = malloc(sizeof(char) * (len_d_quote(s, li) + 1));
 	if (!temp)
 		return (NULL);
