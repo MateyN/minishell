@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:20:34 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/12 10:12:06 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/09/17 15:43:01 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ char	*news_d_quote(char *s, t_lst *li)
 	char	*temp;
 	char	*env_val;
 
-	temp = malloc(sizeof(char) * i + 1);
+	temp = malloc(sizeof(char) * (len_d_quote(s, li) + 1));
 	if (!temp)
 		return (NULL);
 	i = -1;

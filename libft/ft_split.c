@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 11:12:30 by rmamison          #+#    #+#             */
-/*   Updated: 2022/04/15 18:56:34 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 16:00:17 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,21 @@
 static int	count(const char *s, char c)
 {
 	int	i;
+	int	j;
 	int	def;
 
 	i = 0;
 	def = 0;
-	while (*s)
+	j = -1;
+	while (s[++j])
 	{
-		if (*s != c && def == 0)
+		if (s[j] != c && def == 0)
 		{
 			def = 1;
 			i++;
 		}
-		else if (*s == c)
+		else if (s[j] == c)
 			def = 0;
-		s++;
 	}
 	return (i);
 }
