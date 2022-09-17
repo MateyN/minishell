@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 12:11:10 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 15:53:04 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 18:57:33 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	redir_exist(char *s)
 	int	i;
 
 	i = -1;
-	if (!s)
+	if (!s || s[0] != '<' || s[0] != '>')
 		return (FALSE);
 	while (s[++i])
 	{

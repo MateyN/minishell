@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 12:10:03 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/08/15 11:39:43 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/09/17 19:05:16 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_exit(char **cmd, t_lst *li)
 	write(1, "exit\n", 6);
 	if (cmd[1] != NULL && ft_str_isdigit(cmd[1]) == 0)
 	{
-		status = 2;
+		status = 255;
 		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 		ft_putstr_fd(cmd[1], STDERR_FILENO);
 		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);

@@ -6,11 +6,12 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:04:24 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/11 22:04:56 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/09/17 17:08:30 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 static void	ctrl_d_push(char *limiter,int len)
 {	
 	char	*tmp;
@@ -74,7 +75,7 @@ int	here_doc(t_redir *red)
 	news.c_lflag &= ~ECHOCTL;
 	tcsetattr(0, 0, &news);
 	file_temp = open(".heredoc", O_CREAT | O_TRUNC | O_WRONLY, 0644);
-	if (errno)
+	if (file_temp < 0)
 	{
 		msg_error("minishel: error: open()", '\n', NULL);
 		exit(EXIT_FAILURE);

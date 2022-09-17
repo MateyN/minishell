@@ -1,33 +1,4 @@
-
-Skip to content
-Pull requests
-Issues
-Marketplace
-Explore
-@Jud42
-fire-poy /
-minishell
-Public
-
-Code
-Issues
-Pull requests
-Actions
-Projects
-Security
-
-    Insights
-
-minishell/z_test_sh
-@fire-poy
-fire-poy try #4 _#5_ *#6* ** **#9** **BOLD?**
-Latest commit c2cf025 11 days ago
-History
-1 contributor
-130 lines (110 sloc) 1.33 KB
 //simple command & global
-// commit?
-
 make -n
 /bin/ls
 /bin/wc

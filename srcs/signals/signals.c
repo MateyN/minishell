@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:54:12 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/09/17 15:38:49 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 18:31:05 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	sig_handler(int sig)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
+	g_ms.exit = 1;
 }
 
 void	init_signals(void)

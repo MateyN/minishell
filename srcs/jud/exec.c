@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 21:55:29 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 16:00:13 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 17:08:34 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,12 @@ static int	ft_exec(t_cmd *node, t_lst *li, pid_t *pid)
 	if (!ft_strchr(node->cmd, '/'))
 	{
 		take_path(&tab, node->cmd, li);
+		if (!tab)
+		{
+			msg_error("minishell: ", 0, node->cmd);
+			ft_putstr_fd(": No such file or directory\n", 2);
+			exit(127);
+		}
 		i = -1;
 		while (tab[++i] && access(tab[i], X_OK) != 0)
 			;

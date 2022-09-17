@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 21:54:21 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 16:00:16 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 17:08:32 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	take_path(char	***dest, char *cmd, t_lst *li)
 	int		i;	
 
 	*dest = ft_split(get_env_value("PATH", li), ':');
+	if (!*dest)
+		return ;
 	i = -1;
 	while ((*dest)[++i])
 	{

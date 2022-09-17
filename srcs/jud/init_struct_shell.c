@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:05:13 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 15:25:44 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/17 18:57:25 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,6 @@ void	init_shell(t_lst *li, char **tab)
 	li->pipe = check_pipe(li->tab);
 	li->redirection = check_redir(&li);
 	li->head = NULL;
-	handle_action(&li);//parsing 	
+	handle_action(&li);//parsing 
 	create_list(&li); //li->head init
 }
