@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   treat_quote_dollar.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:20:34 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 20:00:44 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/18 15:21:43 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static int	len_d_quote(char *s, t_lst *li)
 	return (car + dollar);
 }
 
+/*
 static int	recheck_cmp(char *env, char *temp)
 {
 	int	i;
@@ -91,7 +92,7 @@ static char	*take_val_var(char *s)
 	temp[++i] = '\0';
 	return (temp);
 }
-
+*/
 static char	*handle_sign(char *s, int *i, t_lst *li)
 {
 	char	*temp;

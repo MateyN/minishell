@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_li_struct.c                                   :+:      :+:    :+:   */
+/*   init_struct_shell.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:05:13 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 20:52:03 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/18 14:55:40 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 void	malloc_pid(t_lst **li)
 {
 	(*li)->pid = malloc(sizeof(pid_t) * ((*li)->pipe + 1));
@@ -24,7 +25,7 @@ void	malloc_pid(t_lst **li)
 void	init_pipe(t_lst *li)
 {
 	int	i;
-	
+
 	li->tube_fd = (int **)malloc(sizeof(int *) * li->pipe);
 	if (!li->tube_fd)
 	{

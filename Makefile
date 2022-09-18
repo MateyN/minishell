@@ -6,7 +6,7 @@
 #    By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/14 18:02:56 by rmamison          #+#    #+#              #
-#    Updated: 2022/09/17 20:42:51 by rmamison         ###   ########.fr        #
+#    Updated: 2022/09/18 15:17:11 by mnikolov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,9 +32,11 @@ SRC =	main.c \
 		jud/analyse_lexical.c \
 		jud/init_struct_shell.c \
 		jud/list_utils.c \
+		jud/help_list_utils.c \
 		jud/free_utils.c \
 		jud/redirection_parse.c \
 		jud/treat_quote_dollar.c \
+		jud/help_treat_quote_dollar.c \
 		jud/heredoc.c \
 		jud/exec.c \
 		jud/exec_utils.c \

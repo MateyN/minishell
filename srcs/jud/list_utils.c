@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:15:36 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 22:12:53 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/18 15:23:49 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int	check_pipe(t_lst *li)
 	return (li->pipe);
 }*/
 /*--------------------------------*/
-static void	delete_redir(t_redir *node)
+/*
+void	delete_redir(t_redir *node)
 {
 	t_redir	*temp;	
 	t_redir	*old;	
@@ -73,7 +74,7 @@ void	delete_first(t_lst **li)
 		(*li)->head = new;
 	}
 }
-
+*/
 static void	take_redir(char *s, int flag, t_cmd **cmd_node)
 {
 	t_redir	*node_redir;

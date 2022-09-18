@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:18:51 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/09/17 21:05:04 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/18 15:21:15 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ void		free_2ptr(char **str);
 /*----------------------------------------------------------------------------*/
 //JUD
 int			get_line(t_lst *term);
+
 	/*handle_input.c*/
 void		msg_error(char *s1, char c, char *s2);
 int			error_exist(char *s);
@@ -173,19 +174,25 @@ char		**lex_split(char *s, char sep);
 	/*analyse_lexical.c*/
 int			quote_exist(char *s);
 int			redir_exist(char *s);
-void		handle_action(t_lst **li);	
+void		handle_action(t_lst **li);
+
 	/*treat_quote_dollar.c*/
 char		*news_s_quote(char *s);
 char		*news_d_quote(char *s, t_lst *li);
 static char	*handle_sign(char *s, int *i, t_lst *li);
 
+	/*help_treat_quote_dollar.c*/
+char    	*take_val_var(char *s);
+
 	/*list_utils.c*/
 void		create_list(t_lst **li);
 void		delete_first(t_lst **li);
+void		delete_redir(t_redir *node);
 
 	/*init_redirection.c && init_pipe*/
 void		init_pipe(t_lst *li);
-int			init_redir(t_cmd *node, t_lst *li);	
+int			init_redir(t_cmd *node, t_lst *li);
+
 	/*here_doc*/
 int			here_doc(t_redir *red);	
 

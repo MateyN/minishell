@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 14:07:39 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/09/17 22:15:50 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/18 15:30:01 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	main(int ac, char **av, char **envp)
 		if (!error_exist(li.line))
 		{
 			init_shell(&li, lex_split(li.line, ' '));
-			if (exception_built(&li))// || \
+			if (exception_built(&li)) // ||
 			//!li.pipe && check_builtin(li.head->cmd))
 				exec_builtin(li.head, &li);
 			else if (!exec_process(&li))

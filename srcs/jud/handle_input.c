@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_input.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:01:02 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 22:15:16 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/18 14:58:00 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,13 @@ static int	error_redirection(char *s, int *i)
 				error = s[*i];
 		}
 		else if (redir > 2 || (redir == 2 && c == '|'))
-			error = s[*i];>
+			error = s[*i];
 		else if (redir == 2 && c == '<' && !s[*i])
 			break ;
 		if (error)
 		{
-			msg_error("minishel: syntax error near unexpected token `", error, "\"\n");
+			msg_error("minishel: syntax error near unexpected token `" \
+				, error, "\"\n");
 			return (TRUE);
 		}
 		++(*i);
@@ -78,7 +79,8 @@ int	error_exist(char *s)
 
 	if (redirection(s[ft_strlen(s) - 1]) && s[ft_strlen(s) - 2] != '<')
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
+		ft_putstr_fd("minishell: syntax error near unexpected token `\
+			newline'\n", 2);
 		return (TRUE);
 	}
 	i = -1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexical_split.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 19:30:03 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 15:43:41 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/18 14:56:44 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,6 @@ static char	*take_word(char *s, char sep, int *i)
 	}
 	--(*i);
 	return (word);
-/* when the quote its not close I increment the index
-for count the all char, my split must ignore the seperator 
-in betwen the quote*/
 }
 /*-------------------------------------------------*/
 
