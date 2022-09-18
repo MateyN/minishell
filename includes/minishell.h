@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:18:51 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/09/18 15:21:15 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/09/18 15:33:02 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ char		*news_d_quote(char *s, t_lst *li);
 static char	*handle_sign(char *s, int *i, t_lst *li);
 
 	/*help_treat_quote_dollar.c*/
-char    	*take_val_var(char *s);
+char		*take_val_var(char *s);
 
 	/*list_utils.c*/
 void		create_list(t_lst **li);
