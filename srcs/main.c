@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 14:07:39 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/09/19 11:35:17 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/09/19 12:55:25 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,41 +21,6 @@ void	msg_error(char *s1, char c, char *s2)
 		write(2, &c, 1);
 	if (s2)
 		ft_putstr_fd(s2, 2);
-}
-
-void	print_list(t_lst *li)
-{
-	int		i;
-	t_cmd	*temp;
-	t_redir	*red;
-
-	if (!li->head)
-	{
-		printf("Empty list\n");
-		return ;
-	}
-	temp = li->head;
-	while (temp && temp->av)
-	{
-		i = -1;
-		printf("LIST:\n------\n");
-		while (temp->av[++i])
-			printf("%s\n", temp->av[i]);
-		printf("------\n\n");
-		i = -1;
-		red = temp->redir;
-		if (!red)
-			printf("EMPTY =>> REDIR\n");
-		else
-		{
-			while (red)
-			{
-				printf("REDIR SIGN NAME:\n------\n%s\n", red->name);
-				red = red->next;
-			}
-			temp = temp->next;
-		}
-	}
 }
 
 int	exception_built(t_lst *li)
@@ -86,16 +51,12 @@ int	main(int ac, char **av, char **envp)
 			init_shell(&li, lex_split(li.line, ' '));
 			if (exception_built(&li))
 				exec_builtin(li.head, &li);
-			else if (!exec_process(&li))
-				;
+			exec_process(&li);
 			free_all(&li);
-			if (!li.line)
-				break ;
 		}
 		tcsetattr(0, TCSANOW, &li.saved);
 		free(li.line);
 	}
 	free_env(&li.env);
-	write(1, "exit\n", 5);
 	return (0);
 }

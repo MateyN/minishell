@@ -130,9 +130,6 @@ cd minishell
 unset PATH
 ls
 wc
-exit
-./minishell
-
 //redirection
 '//ls > f1 | wc -l << eof >f2 >> f1
 ls > f1 | wc -l >f2 >> f1

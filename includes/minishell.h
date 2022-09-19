@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:18:51 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/09/19 11:33:00 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/09/19 12:54:53 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ static	int	ft_str_isdigit(char *str);
 void		ctl_d_exit(void);
 /*--------- signals ---------*/
 void		init_signals(void);
+int			get_line(t_lst *term);
 void		sig_handler(int signum);
 void		child_signal(int flag);
 void		daddy_signal(t_lst *li);
@@ -157,8 +158,6 @@ void		free_2ptr(char **str);
 
 /*----------------------------------------------------------------------------*/
 //JUD
-int			get_line(t_lst *term);
-
 	/*handle_input.c*/
 void		msg_error(char *s1, char c, char *s2);
 int			error_exist(char *s);
@@ -178,9 +177,10 @@ int			redir_exist(char *s);
 void		handle_action(t_lst **li);
 
 	/*treat_quote_dollar.c*/
+int			len_d_quote(char *s, t_lst *li);
 char		*news_s_quote(char *s);
 char		*news_d_quote(char *s, t_lst *li);
-static char	*handle_sign(char *s, int *i, t_lst *li);
+char		*handle_sign(char *s, int *i, t_lst *li);
 
 	/*help_treat_quote_dollar.c*/
 char		*take_val_var(char *s);
@@ -201,7 +201,7 @@ int			here_doc(t_redir *red);
 void		dup_fd(int fd_in, int fd_out);
 void		close_fd(t_cmd *node, t_lst **li);
 void		take_path(char ***dest, char *cmd, t_lst *li);
-int			exec_process(t_lst *li);
+void		exec_process(t_lst *li);
 void		check_error(char *path);
 
 	/*free_utils.c*/

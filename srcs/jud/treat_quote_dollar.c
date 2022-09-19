@@ -6,13 +6,11 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:20:34 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/18 15:21:43 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/09/19 12:41:22 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-static char	*handle_sign(char *s, int *i, t_lst *li);
 
 static int	len_var(char *s, int i)
 {
@@ -24,11 +22,20 @@ static int	len_var(char *s, int i)
 		ret++;
 	return (ret);
 }
+/*------------------------------------------*/
 
-static int	len_d_quote(char *s, t_lst *li)
+static void	help_len_d_quote(char **temp, int *dollar)
+{
+	if (*temp)
+	{	
+		*dollar += (int)ft_strlen(*temp);
+		free(*temp);
+	}
+}
+
+int	len_d_quote(char *s, t_lst *li)
 {
 	int		i;
-	int		quote;
 	int		dollar;
 	int		car;
 	char	*temp;
@@ -40,13 +47,9 @@ static int	len_d_quote(char *s, t_lst *li)
 	while (s[i])
 	{
 		if (s[i] == '$' && (s[i + 1] != ' ' && s[i + 1]))
-		{	
+		{
 			temp = handle_sign(s, &i, li);
-			if (temp)
-			{	
-				dollar += (int)ft_strlen(temp);
-				free(temp);
-			}
+			help_len_d_quote(&temp, &dollar);
 		}
 		else if (s[i] != '\"')
 			car++;
@@ -55,8 +58,9 @@ static int	len_d_quote(char *s, t_lst *li)
 	}
 	return (car + dollar);
 }
+/*--------------------------------------*/
 
-static char	*handle_sign(char *s, int *i, t_lst *li)
+char	*handle_sign(char *s, int *i, t_lst *li)
 {
 	char	*temp;
 	char	*ret;
@@ -78,63 +82,4 @@ static char	*handle_sign(char *s, int *i, t_lst *li)
 		ret = ft_strdup(get_env_value(temp, li));
 	free(temp);
 	return (ret);
-}
-
-char	*news_s_quote(char *s)
-{	
-	int		i;
-	int		j;
-	int		quote;
-	char	*temp;
-
-	i = -1;
-	quote = 0;
-	while (s[++i])
-		if (s[i] == '\'')
-			quote++;
-	temp = malloc(sizeof(char) * ((i - quote) + 1));
-	if (!temp)
-		return (NULL);
-	i = -1;
-	j = 0;
-	while (s[++i])
-		if (s[i] != '\'')
-			temp[j++] = s[i];
-	temp[j] = '\0';
-	return (temp);
-}
-
-char	*news_d_quote(char *s, t_lst *li)
-{
-	int		i;
-	int		j;
-	int		a;
-	char	*temp;
-	char	*env_val;
-
-	temp = malloc(sizeof(char) * (len_d_quote(s, li) + 1));
-	if (!temp)
-		return (NULL);
-	i = -1;
-	j = 0;
-	while (s[++i])
-	{
-		if (s[i] == '$' && (s[i + 1] != ' ' && s[i + 1] != '\"'\
-			&& s[i + 1] != '\'' && s[i + 1]))
-		{
-			env_val = handle_sign(s, &i, li);
-			if (env_val)
-			{
-				a = -1;
-				while (env_val[++a])
-					temp[j++] = env_val[a];
-				free(env_val);
-			}
-			--i;
-		}
-		else if (s[i] && s[i] != '\"')
-			temp[j++] = s[i];
-	}
-	temp[j] = '\0';
-	return (temp);
 }

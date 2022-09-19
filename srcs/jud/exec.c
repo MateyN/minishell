@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 21:55:29 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 21:17:34 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/19 12:54:05 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	ft_exec(t_cmd *node, t_lst *li, pid_t *pid)
 	return (1);
 }
 
-static int	process_daddy(t_lst **li, pid_t *pid)
+static void	process_daddy(t_lst **li, pid_t *pid)
 {
 	int	status;
 	int	i;
@@ -80,7 +80,6 @@ static int	process_daddy(t_lst **li, pid_t *pid)
 			g_ms.exit = WEXITSTATUS(status);
 		g_ms.pid_sig = 0;
 	}
-	return (1);
 }
 
 static int	process_child(t_lst *li, t_cmd node, int times, pid_t *pid)
@@ -111,7 +110,7 @@ static int	process_child(t_lst *li, t_cmd node, int times, pid_t *pid)
 	exit(0);
 }
 
-int	exec_process(t_lst *li)
+void	exec_process(t_lst *li)
 {
 	int		status;	
 	int		ret;
@@ -125,7 +124,7 @@ int	exec_process(t_lst *li)
 	{
 		li->pid[times] = fork();
 		if (li->pid[times] == -1)
-			return (-1);
+			exit(EXIT_FAILURE);
 		else if (li->pid[times] == 0)
 		{
 			if (li->redirection)
@@ -135,5 +134,5 @@ int	exec_process(t_lst *li)
 		delete_first(&li);
 	}
 	unlink(".heredoc");
-	return (process_daddy(&li, li->pid));
+	process_daddy(&li, li->pid);
 }

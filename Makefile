@@ -6,7 +6,7 @@
 #    By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/14 18:02:56 by rmamison          #+#    #+#              #
-#    Updated: 2022/09/18 15:17:11 by mnikolov         ###   ########.fr        #
+#    Updated: 2022/09/19 12:37:05 by rmamison         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ SRC =	main.c \
 		jud/redirection_parse.c \
 		jud/treat_quote_dollar.c \
 		jud/help_treat_quote_dollar.c \
+		jud/parse_clean_quote.c \
 		jud/heredoc.c \
 		jud/exec.c \
 		jud/exec_utils.c \

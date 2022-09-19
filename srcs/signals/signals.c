@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:54:12 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/09/17 20:08:13 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/19 12:49:51 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ int	get_line(t_lst *term)
 	init_signals();
 	term->line = readline(BOLDGREEN"minishell$> "RESET);
 	if (!term->line)
+	{
+		write(1, "exit\n", 5);
 		return (0);
+	}
 	if (*term->line)
 		add_history(term->line);
 	return (1);
