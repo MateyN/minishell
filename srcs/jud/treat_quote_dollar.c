@@ -17,8 +17,7 @@ static int	len_var(char *s, int i)
 	int	ret;
 
 	ret = 0;
-	while ((s[++i]) && ((int)s[i] > 47))//!= '\"' && s[i] != ' ') \
-		&& s[i] != '\'')
+	while ((s[++i]) && ((int) s[i] > 47))
 		ret++;
 	return (ret);
 }
@@ -70,14 +69,11 @@ char	*handle_sign(char *s, int *i, t_lst *li)
 	if (!temp)
 		return (NULL);
 	j = -1;
-	while ((s[++(*i)]) && ((int)s[*(i)] > 47))//!= ' ' && s[*(i)] != '\"') \
-		&& s[*i] != '\'')
+	while ((s[++(*i)]) && ((int)s[*(i)] > 47))
 		temp[++j] = s[(*i)];
 	temp[++j] = '\0';
 	if (!temp[1] && temp[0] == '?')
 		ret = ft_itoa(g_ms.exit);
-//	else if (ft_strchr(temp, '$'))
-//		ret = ft_strdup(temp);
 	else
 		ret = ft_strdup(get_env_value(temp, li));
 	free(temp);
