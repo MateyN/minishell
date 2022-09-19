@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 19:30:03 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/18 14:56:44 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/09/19 11:36:30 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	len_word(char *s, char sep, int i)
 static void	help_take_word(char *s, char **word, char sep, int *i)
 {
 	char	quote;
-	int	j;
+	int		j;
 
 	j = -1;
 	quote = 0;
@@ -63,7 +63,7 @@ static char	*take_word(char *s, char sep, int *i)
 {
 	char	*word;
 	char	quote;
-	
+
 	word = malloc(sizeof(char) * (len_word(s, sep, *i) + 1));
 	if (!word)
 		return (NULL);

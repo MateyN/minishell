@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 11:18:51 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/09/19 11:12:59 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/19 11:33:00 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,9 +166,9 @@ void		init_shell(t_lst *li, char **tab);
 void		malloc_pid(t_lst **li);
 
 	/*lexical_split.c && redirection.parse*/
-int		redirection(char c);
-int		count_redirection(char *s, int i);
-int		count_sep(char *s, char sep);
+int			redirection(char c);
+int			count_redirection(char *s, int i);
+int			count_sep(char *s, char sep);
 void		write_redirection(char **p_word, char *s, int *i);
 char		**lex_split(char *s, char sep);
 

@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:01:02 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/19 10:55:35 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/19 11:36:05 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	help_error_redir(char *s, char c, int i, int redir)
 static int	error_redirection(char *s, int *i)
 {
 	char	c;
-	int	redir;
+	int		redir;
 
 	redir = 0;
 	c = s[*i];

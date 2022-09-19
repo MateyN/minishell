@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:00:18 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/19 11:14:21 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/19 11:35:43 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	free_tab(char **tab)
 
 void	free_list(t_lst *li)
 {
-	if(li->head)
+	if (li->head)
 		return ;
 	while (li->head)
 		delete_first(&li);
@@ -79,7 +79,7 @@ void	free_all(t_lst *li)
 	if (li->pipe)
 		free_pipe(li);
 	if (li->pid)
-			free(li->pid);
+		free(li->pid);
 	li->pid = NULL;
 	free_list(li);
 }

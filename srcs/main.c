@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 14:07:39 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/09/19 10:59:05 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/19 11:35:17 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 t_ms	g_ms;
 
-void    msg_error(char *s1, char c, char *s2)
+void	msg_error(char *s1, char c, char *s2)
 {
-        ft_putstr_fd(s1, 2);
-        if (c)
-                write(2, &c, 1);
-        if (s2)
-                ft_putstr_fd(s2, 2);
+	ft_putstr_fd(s1, 2);
+	if (c)
+		write(2, &c, 1);
+	if (s2)
+		ft_putstr_fd(s2, 2);
 }
 
 void	print_list(t_lst *li)
@@ -61,7 +61,7 @@ void	print_list(t_lst *li)
 int	exception_built(t_lst *li)
 {
 	if (!li->head)
-		return (0);	
+		return (0);
 	if (!ft_strncmp(li->head->cmd, "cd", 3) || \
 	!ft_strncmp(li->head->cmd, "export", 7) || \
 	!ft_strncmp(li->head->cmd, "unset", 6) || \
@@ -84,14 +84,7 @@ int	main(int ac, char **av, char **envp)
 		if (!error_exist(li.line))
 		{
 			init_shell(&li, lex_split(li.line, ' '));
-		//	printf("---ap init---\n");
-		//	print_list(&li);
-		//	t_lst *bi = &li;
-		//	delete_first(&bi);
-		//	printf("---ap del---\n");
-		//	print_list(&li);
-			if (exception_built(&li)) // ||
-			//!li.pipe && check_builtin(li.head->cmd))
+			if (exception_built(&li))
 				exec_builtin(li.head, &li);
 			else if (!exec_process(&li))
 				;

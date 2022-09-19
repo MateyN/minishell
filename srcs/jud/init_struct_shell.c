@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:05:13 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/19 11:31:24 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/19 11:38:31 by mnikolov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	init_pipe(t_lst *li)
 	while (++i < li->pipe)
 	{
 		li->tube_fd[i] = malloc(sizeof(int) * 2);
-		if (!li->tube)
+		if (!li->tube_fd)
 		{
 			msg_error("error: allocation *tube_fd\n", 0, NULL);
 			exit(EXIT_FAILURE);
