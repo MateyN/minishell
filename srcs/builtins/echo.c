@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 12:03:26 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/09/19 14:27:33 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/19 17:32:35 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	ft_echo(char **cmd)
 	while (cmd && cmd[i])
 	{
 		printf("%s", cmd[i]);
+		if (cmd[i + 1])
+			printf(" ");
 		i++;
 	}
 	if (flag == false)

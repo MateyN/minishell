@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 21:54:21 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 21:17:36 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/19 16:40:50 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ void	check_error(char *path)
 void	dup_fd(int fd_in, int fd_out)
 {
 	if (dup2(fd_in, fd_out) < 0)
+	{
 		msg_error("error: dup2\n", 0, NULL);
+		exit(EXIT_FAILURE);
+	}
 }
 
 void	close_fd(t_cmd *node, t_lst **li)

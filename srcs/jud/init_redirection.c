@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:10:49 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/19 11:29:52 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/19 16:41:01 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static int	help_std_in_out(t_cmd *cmd, t_redir *redir)
 		{
 			msg_error("minishell: ", 0, redir->name);
 			write(2, ": No such file or directory\n", 28);
+			exit(EXIT_FAILURE);
 		}
 		else
 			msg_error("Error: outfile", 0, "\n");
