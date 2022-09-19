@@ -11,70 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-int	check_pipe(t_lst *li)
-{
-	int	i;
-	int	j;
-	char	**temp;
 
-	temp = li->tab;
-	i = -1;
-	j = -1;
-	while (*temp)
-	{
-		if ((**temp) == '|')
-			li->pipe++;
-		(*temp)++;
-	}
-	return (li->pipe);
-}*/
-/*--------------------------------*/
-/*
-void	delete_redir(t_redir *node)
-{
-	t_redir	*temp;	
-	t_redir	*old;	
-
-	old = NULL;
-	temp = NULL;
-	if (!node)
-		return ;
-	temp = node;
-	while (temp != NULL)
-	{
-		old = temp;
-		temp = temp->next;
-		free(old);
-		old = NULL;
-	}
-}
-
-void	delete_first(t_lst **li)
-{
-	t_cmd	*temp;	
-	t_cmd	*new;	
-
-	new = NULL;
-	temp = NULL;
-	if (!(*li)->head)
-		return ;
-	temp = (*li)->head;
-	if (temp != NULL)
-	{
-		new = temp->next;
-		if (new)
-			new->prev = NULL;
-		if (temp->redir)
-			delete_redir(temp->redir);
-		free(temp->av);
-		temp->av = NULL;
-		temp->cmd = NULL;
-		free((*li)->head);
-		(*li)->head = new;
-	}
-}
-*/
 static void	take_redir(char *s, int flag, t_cmd **cmd_node)
 {
 	t_redir	*node_redir;
@@ -99,6 +36,22 @@ static void	take_redir(char *s, int flag, t_cmd **cmd_node)
 	temp->next = node_redir;
 }
 /*----------------------------------*/
+static char	help_take_arg(char **tab, char ***new, int **pos)
+{
+	int	i;
+
+	i = 0;
+	while (tab[**pos] && ft_strcmp(tab[**pos], "|") != 0)
+	{
+		if (redir_exist(tab[**pos]) == HEREDOC && !tab[**pos + 1])
+			break ;
+		if (redir_exist(tab[**pos]))
+				(**pos) += 2;
+		else
+			(*new)[i++] = tab[(**pos)++];
+	}
+	(*new)[i] = NULL;
+}
 
 static char	**take_argv(char **tab, int *pos, t_cmd *node)
 {
@@ -123,17 +76,7 @@ static char	**take_argv(char **tab, int *pos, t_cmd *node)
 	new = malloc(sizeof(char *) * (((i - *pos) - count) + 1));
 	if (!new)
 		return (NULL);
-	i = 0;
-	while (tab[*pos] && ft_strcmp(tab[*pos], "|") != 0)
-	{
-		if (redir_exist(tab[*pos]) == HEREDOC && !tab[*pos + 1])
-			break ;
-		if (redir_exist(tab[*pos]))
-				(*pos) += 2;
-		else
-			new[i++] = tab[(*pos)++];
-	}
-	new[i] = NULL;
+	help_take_arg(tab, &new, &pos);
 	return (new);
 }
 /*--------------------------------*/

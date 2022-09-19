@@ -49,6 +49,8 @@ void	free_tab(char **tab)
 
 void	free_list(t_lst *li)
 {
+	if(li->head)
+		return ;
 	while (li->head)
 		delete_first(&li);
 }

@@ -29,6 +29,7 @@ SRC =	main.c \
 		utils/utils.c \
 		jud/handle_input.c \
 		jud/lexical_split.c \
+		jud/help_lexical_split.c \
 		jud/analyse_lexical.c \
 		jud/init_struct_shell.c \
 		jud/list_utils.c \

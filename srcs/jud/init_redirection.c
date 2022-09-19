@@ -12,19 +12,8 @@
 
 #include "../includes/minishell.h"
 
-static int	std_in_out(t_cmd *cmd, t_redir *redir)
+static int	help_std_in_out(t_cmd *cmd, t_redir *redir)
 {
-	if (redir->sign == HEREDOC)
-	{
-		if (!(cmd->infile = open(".heredoc", O_RDONLY)))
-			printf("open heredoc soucis\n");
-	}
-	else if (redir->sign == REDIR_IN)
-		cmd->infile = open(redir->name, O_RDONLY);
-	else if (redir->sign == REDIR_OUT_S)
-		cmd->outfile = open(redir->name, O_TRUNC | O_CREAT | O_WRONLY, 0644);
-	else if (redir->sign == REDIR_OUT_D)
-		cmd->outfile = open(redir->name, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (cmd->infile < 0 || cmd->outfile < 0)
 	{
 		if (redir->sign == REDIR_IN)
@@ -38,6 +27,26 @@ static int	std_in_out(t_cmd *cmd, t_redir *redir)
 	}
 	if (cmd->infile > 0 || cmd->outfile > 0)
 		redir->sign = 0;
+	return (1);
+}
+
+static int	std_in_out(t_cmd *cmd, t_redir *redir)
+{
+	if (redir->sign == HEREDOC)
+	{
+		if (!(cmd->infile = open(".heredoc", O_RDONLY)))
+			printf("open heredoc soucis\n");
+	}
+	else if (redir->sign == REDIR_IN)
+		cmd->infile = open(redir->name, O_RDONLY);
+	else if (redir->sign == REDIR_OUT_S)
+		cmd->outfile = open(redir->name, \
+		O_TRUNC | O_CREAT | O_WRONLY, 0644);
+	else if (redir->sign == REDIR_OUT_D)
+		cmd->outfile = open(redir->name, \
+		O_CREAT | O_WRONLY | O_APPEND, 0644);
+	if (!help_std_in_out(cmd, redir));
+		return (0);
 	return (1);
 }
 
@@ -67,7 +76,8 @@ int	init_redir(t_cmd *node, t_lst *li)
 		{
 			if (!push_redir(&red, red->sign))
 			{
-				ft_putstr_fd("minishell: syntax error near unexpectead token \
+				ft_putstr_fd("minishell: \
+				syntax error near unexpectead token \
 				`newline'\n", 2);
 				exit(EXIT_FAILURE);
 			}

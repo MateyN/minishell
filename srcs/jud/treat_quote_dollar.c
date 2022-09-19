@@ -56,43 +56,6 @@ static int	len_d_quote(char *s, t_lst *li)
 	return (car + dollar);
 }
 
-/*
-static int	recheck_cmp(char *env, char *temp)
-{
-	int	i;
-
-	i = -1;
-	while (env[++i] && env[i] != '=')
-		;
-	if (ft_strncmp(env, temp, i) == 0)
-		return (TRUE);
-	else
-		return (FALSE);
-}
-
-static char	*take_val_var(char *s)
-{
-	int		i;
-	int		j;
-	char	*temp;
-
-	i = -1;
-	while (s[++i] && s[i] != '=')
-		;
-	++i;
-	j = i;
-	while (s[i])
-		i++;
-	temp = malloc(sizeof(char) * (i - j + 1));
-	if (!temp)
-		return (NULL);
-	i = -1;
-	while (s[j])
-		temp[++i] = s[j++];
-	temp[++i] = '\0';
-	return (temp);
-}
-*/
 static char	*handle_sign(char *s, int *i, t_lst *li)
 {
 	char	*temp;

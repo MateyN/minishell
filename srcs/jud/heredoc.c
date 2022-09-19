@@ -41,8 +41,6 @@ static void	zero_newline(char **old)
 	*old = s;
 }
 
-void	rl_replace_line(const char *text, int clear_undo);
-
 static int	process_heredoc(t_redir *red, int *file_temp)
 {
 	char		*temp;
