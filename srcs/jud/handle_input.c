@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:01:02 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/18 14:58:00 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/09/19 10:55:35 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,15 @@ int	error_exist(char *s)
 	while (s[++i])
 	{
 		if (s[i] == '\'' || s[i] == '\"')
+		{
 			if (error_quote(s, &i))
 				return (TRUE);
+		}
 		else if (redirection(s[i]))
+		{
 			if (error_redirection(s, &i))
 				return (TRUE);
+		}
 		else if (s[i] == ';' || s[i] == '\\')
 		{
 			msg_error("minishell: Error caracter forbiden\n", \

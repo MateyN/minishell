@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:15:36 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/18 15:23:49 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/09/19 11:15:35 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	take_redir(char *s, int flag, t_cmd **cmd_node)
 	temp->next = node_redir;
 }
 /*----------------------------------*/
-static char	help_take_arg(char **tab, char ***new, int **pos)
+static void	help_take_arg(char **tab, char ***new, int **pos)
 {
 	int	i;
 

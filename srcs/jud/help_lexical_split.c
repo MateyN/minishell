@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 19:30:03 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/18 14:56:44 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/09/19 10:56:14 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	exception(char *s, int *i, int flag)
 			;
 }
 
-static int	help_count_sep(char *s, int *i, int *ret, int *time)
+static void	help_count_sep(char *s, int *i, int *ret, int *time)
 {
 	if (redirection(s[*i]))
 	{

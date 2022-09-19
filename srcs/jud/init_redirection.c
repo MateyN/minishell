@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:10:49 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/18 15:27:31 by mnikolov         ###   ########.fr       */
+/*   Updated: 2022/09/19 11:29:52 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,12 @@ static int	std_in_out(t_cmd *cmd, t_redir *redir)
 {
 	if (redir->sign == HEREDOC)
 	{
-		if (!(cmd->infile = open(".heredoc", O_RDONLY)))
-			printf("open heredoc soucis\n");
+		cmd->infile = open(".heredoc", O_RDONLY);
+		if (cmd->infile < 0)
+		{
+			msg_error("minishel: error: open()\n", 0, NULL);
+			exit(EXIT_FAILURE);
+		}
 	}
 	else if (redir->sign == REDIR_IN)
 		cmd->infile = open(redir->name, O_RDONLY);
@@ -45,7 +49,7 @@ static int	std_in_out(t_cmd *cmd, t_redir *redir)
 	else if (redir->sign == REDIR_OUT_D)
 		cmd->outfile = open(redir->name, \
 		O_CREAT | O_WRONLY | O_APPEND, 0644);
-	if (!help_std_in_out(cmd, redir));
+	if (!help_std_in_out(cmd, redir))
 		return (0);
 	return (1);
 }

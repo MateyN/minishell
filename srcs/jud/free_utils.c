@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 22:00:18 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/17 20:51:55 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/19 11:14:21 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	free_pipe(t_lst *li)
 	while (++i < li->pipe)
 		free(li->tube_fd[i]);
 	free(li->tube_fd);
+	li->tube_fd = NULL;
 }
 
 void	free_all(t_lst *li)
@@ -78,7 +79,6 @@ void	free_all(t_lst *li)
 	if (li->pipe)
 		free_pipe(li);
 	if (li->pid)
-		while (++i <= li->pipe)
 			free(li->pid);
 	li->pid = NULL;
 	free_list(li);
