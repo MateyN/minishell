@@ -6,7 +6,7 @@
 /*   By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 14:07:39 by mnikolov          #+#    #+#             */
-/*   Updated: 2022/09/19 12:55:25 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/19 15:04:44 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,10 @@ int	main(int ac, char **av, char **envp)
 		if (!error_exist(li.line))
 		{
 			init_shell(&li, lex_split(li.line, ' '));
-			if (exception_built(&li))
+			if (exception_built(&li) && !li.pipe)
 				exec_builtin(li.head, &li);
-			exec_process(&li);
+			else
+				exec_process(&li);
 			free_all(&li);
 		}
 		tcsetattr(0, TCSANOW, &li.saved);

@@ -6,7 +6,7 @@
 /*   By: rmamison <marvin@42lausanne.ch>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 21:55:29 by rmamison          #+#    #+#             */
-/*   Updated: 2022/09/19 12:54:05 by rmamison         ###   ########.fr       */
+/*   Updated: 2022/09/19 14:49:34 by rmamison         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void	process_daddy(t_lst **li, pid_t *pid)
 		if (WIFSIGNALED(status))
 		{
 			if (WTERMSIG(status) == SIGQUIT)
-				write(1, "Quit :3\n", 8);
+				write(1, "Quit: 3\n", 8);
 			else if (WTERMSIG(status) == SIGINT)
 				write(1, "\n", 1);
 			g_ms.exit = 128 + status;

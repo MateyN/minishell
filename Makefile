@@ -6,7 +6,7 @@
 #    By: mnikolov <marvin@42lausanne.ch>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/14 18:02:56 by rmamison          #+#    #+#              #
-#    Updated: 2022/09/19 12:37:05 by rmamison         ###   ########.fr        #
+#    Updated: 2022/09/19 14:04:28 by rmamison         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,7 @@ INCLUDE = -I includes/ -I libft/ \
 READLINE_LIB = -L /Users/$(USER)/.brew/Cellar/readline/8.1.2/lib -lreadline
 LIB_LIBFT = libft/libft.a
 
-FLAGS = -Wall -Wextra -Werror -g3 -o0 -fsanitize=address
+FLAGS = -Wall -Wextra -Werror #-g3 -o0 -fsanitize=address
 CC = gcc
 
 RM = rm -rf
